@@ -3,8 +3,7 @@
 Live at **<https://mijicuet.github.io>**
 
 A single self-contained web page for Grade 3 mathematics practice and timed testing.
-One HTML file, no dependencies, no build step. Runs standalone; an optional
-backend can be switched on for real accounts and OTP email.
+One HTML file, no dependencies, no build step, no backend, no accounts and no tracking.
 
 ---
 
@@ -55,42 +54,30 @@ no extra clicking.
 
 ---
 
-## Home page, accounts and the guest gate
+## The welcome page
 
-Visitors land on a **welcome page** explaining what the site does, with two calls to action:
-*Try a practice session* and *Take a test*.
+Visitors land on a page about **why mathematics is worth learning** — not a sign-up form.
 
-A guest may complete **one free session**. After that, Practice and Test route to sign-in or
-registration.
+It opens with the idea that mathematics is how we read the world, then rotates through
+**sixteen quotations** from mathematicians across four centuries — Galileo, Gauss, Cantor,
+Poincaré, Hilbert, Einstein, Ada Lovelace, Sofia Kovalevskaya, Katherine Johnson, Shakuntala
+Devi, William Thurston and Maryam Mirzakhani among them. Each is shown with its source, and
+where a line is a condensed version of a longer passage the note says so rather than passing
+the short form off as the original. A *Another one ↻* button shuffles through the whole set
+before repeating any.
 
-**Registration asks for five things and nothing more:**
+Below that, four short cards on what mathematics actually explains — why the Moon does not
+fall, why bees build hexagons, how Eratosthenes measured the Earth with two shadows, how
+Katherine Johnson's arithmetic carried Apollo home — and four on what is inside the app.
 
-| Field | Why |
-|-------|-----|
-| Child's **first name** | To greet them — no surname |
-| Child's age (4–18) | Difficulty, and to know whether COPPA applies |
-| **Parent/guardian email** | Login identity, consent contact, OTP delivery |
-| Password + confirmation | Login |
-| Parental consent ✓ + terms ✓ | Recorded with a timestamp and method |
+Then two buttons, and nothing else:
 
-No phone number, no child's own email address, no surname, no school. Every field dropped is
-one that cannot be lost in a breach.
+**Practice** · **Take a Test**
 
-The email is then verified with a **6-digit code valid for 2 minutes**. The OTP is generated
-with `crypto.getRandomValues`, stored only as a SHA-256 hash, discarded on expiry or first
-use, locked after 5 wrong attempts, with a 30-second resend cool-down. Passwords are hashed
-with PBKDF2 (150 000 iterations, per-user salt).
-
-> ### ⚠️ It runs in demo mode until you paste in two keys
-> GitHub Pages cannot send email, so right now the code is **shown on screen** rather than
-> emailed, accounts live only in the visitor's browser, and the guest gate resets if you
-> clear site data or open a private window.
->
-> The Supabase integration is **already written and tested** — connecting it is two config
-> values plus one CSP line, no code changes. **[BACKEND.md](BACKEND.md)** has the step-by-step
-> (including the email-template edit that is easy to miss) and covers the
-> **COPPA / GDPR-K obligations** that apply the moment you collect a child's details.
-> Please read it before going live.
+**There are no accounts, no registration, no sign-in and no gate.** Both buttons go straight
+to the session setup. The only text field anywhere on the site is an optional first name on
+the setup screen, used purely to print on your own results page; it is never stored and
+disappears on refresh.
 
 ---
 
@@ -136,15 +123,17 @@ generated questions** across every subject × level, all well-formed and answera
 The app was security-tested; findings and fixes are documented in **[SECURITY.md](SECURITY.md)**.
 
 Headlines: two XSS vulnerabilities and two answer-integrity flaws were found and fixed; there
-are no dependencies and no cookies; the page ships a hash-pinned Content-Security-Policy with
-no `unsafe-inline` or `unsafe-eval`, and `connect-src 'none'` until you deliberately open it
-up to a backend.
+are no dependencies, no cookies, no `localStorage`, no analytics and no network calls of any
+kind. The page ships a hash-pinned Content-Security-Policy with `default-src 'none'`,
+`connect-src 'none'` and no `unsafe-inline` or `unsafe-eval`.
 
-**In demo mode, nothing a student types ever leaves their browser.**
+**Nothing a child types ever leaves their browser** — which is also why the site sits outside
+COPPA and GDPR-K data-collection obligations entirely. It collects nothing, so there is
+nothing to consent to, nothing to breach and nothing to delete.
 
-The suites are re-run on every change — currently **180 assertions** across four files:
-feature behaviour (40), XSS payloads (52), resource-abuse resilience, auth and OTP lifecycle
-(50), and the Supabase path verified against a mock server (19).
+The suites are re-run on every change — currently **130 assertions** across four files:
+feature behaviour (40), XSS payloads (52), resource-abuse resilience, and the accountless
+home page and quote rotation (38).
 
 > ⚠️ If you edit `index.html`, the CSP script/style hashes must be recomputed or the browser
 > will refuse to run the page. The one-shot snippet is in SECURITY.md.
@@ -155,9 +144,8 @@ feature behaviour (40), XSS payloads (52), resource-abuse resilience, auth and O
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The entire application (~164 KB, self-contained) |
+| `index.html` | The entire application (~147 KB, self-contained) |
 | `SECURITY.md` | Security assessment and maintenance notes |
-| `BACKEND.md` | Connecting real accounts + OTP email, and child-data obligations |
 | `robots.txt`, `sitemap.xml` | Search-engine metadata |
 | `.nojekyll` | Serve files as-is on GitHub Pages |
 
