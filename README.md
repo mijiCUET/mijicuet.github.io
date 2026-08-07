@@ -54,6 +54,31 @@ no extra clicking.
 
 ---
 
+## Home page, accounts and the guest gate
+
+Visitors land on a **welcome page** explaining what the site does, with two calls to action:
+*Try a practice session* and *Take a test*.
+
+A guest may complete **one free session**. After that, Practice and Test route to sign-in or
+registration. Registration collects student name, age, email, phone, parent/guardian name and
+email, parental consent and a password, then verifies the email with a **6-digit code that is
+valid for 2 minutes**.
+
+The OTP is generated with `crypto.getRandomValues`, stored only as a SHA-256 hash, discarded
+on expiry or first use, locked after 5 wrong attempts, with a 30-second resend cool-down.
+Passwords are hashed with PBKDF2 (150 000 iterations, per-user salt).
+
+> ### ⚠️ It runs in demo mode until you connect a backend
+> GitHub Pages cannot send email, so the code is currently **shown on screen** rather than
+> emailed, accounts live only in the visitor's browser, and the guest gate can be reset by
+> clearing site data or opening a private window.
+>
+> **[BACKEND.md](BACKEND.md)** explains how to switch on real accounts and real OTP email
+> (Supabase, free tier, about fifteen minutes) — and covers the **COPPA / GDPR-K obligations**
+> that apply the moment you collect a child's details. Please read it before going live.
+
+---
+
 ## The question bank
 
 **166 generators** producing 76 distinct topics:
@@ -112,6 +137,7 @@ hash-pinned Content-Security-Policy with no `unsafe-inline` or `unsafe-eval`.
 |------|---------|
 | `index.html` | The entire application (~100 KB, self-contained) |
 | `SECURITY.md` | Security assessment and maintenance notes |
+| `BACKEND.md` | Connecting real accounts + OTP email, and child-data obligations |
 | `robots.txt`, `sitemap.xml` | Search-engine metadata |
 | `.nojekyll` | Serve files as-is on GitHub Pages |
 

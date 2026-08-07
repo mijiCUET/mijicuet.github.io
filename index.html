@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-EPm39IWe1J37QRTs8gdeJ2xX6mtn17eYWSoFT/UYYOE='; style-src 'sha256-owz0DuS86pd23T0xO7SU6NU3fCsIQOzRLbKUS6YdjDU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lHszBobZ6iKREIjnxWHDEq2e4DyYlrPqKHKpPXBTC2A='; style-src 'sha256-acYyTBLBsgXTpefx9OSEw7oBtTe7oP0uvfNEe1NkgD4='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -45,6 +45,49 @@ h1,h2,h3{line-height:1.18;font-weight:650;text-wrap:balance}
 :focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:4px}
 .skip-link{position:absolute;left:-9999px;background:var(--ink);color:#fff;padding:.7rem 1.1rem;z-index:99}
 .skip-link:focus{left:0}
+
+/* ---------- home / auth ---------- */
+.acctbar{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap;justify-content:flex-end;
+  padding:.7rem 0 0;font-size:.86rem;color:var(--muted)}
+.acctbar .who{margin-right:auto}
+.linkbtn{background:none;border:0;color:var(--brand);font:inherit;font-weight:650;cursor:pointer;
+  padding:.2rem .1rem;text-decoration:underline;text-underline-offset:.18em}
+.linkbtn:hover{color:var(--brand-ink)}
+.kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--brand);font-weight:650;margin-bottom:.5rem}
+.welcome{padding:clamp(1.6rem,1.2rem+1.6vw,2.6rem)}
+.wel-h{font-family:var(--font-display);font-weight:500;letter-spacing:-.02em;
+  font-size:clamp(1.5rem,1.2rem+1.5vw,2.15rem);line-height:1.14}
+.wel-h.sm{font-size:clamp(1.35rem,1.15rem+1vw,1.7rem)}
+.wel-lead{margin-top:.85rem;color:var(--ink-soft);font-size:clamp(1rem,.96rem+.25vw,1.1rem);
+  max-width:62ch}
+.feat{grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin-top:1.6rem}
+.fcard{border:1px solid var(--rule);border-radius:12px;padding:1rem 1.05rem;background:var(--surface)}
+.fcard b{display:block;margin:.45rem 0 .25rem;font-size:.99rem}
+.fcard small{color:var(--muted);font-size:.84rem;line-height:1.45;display:block}
+.fico{font-size:1.4rem;color:var(--brand);line-height:1}
+.cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.8rem}
+.signin-line{margin-top:1.1rem}
+.signin-line a{color:var(--brand);font-weight:600}
+
+.formcard{max-width:820px}
+.formcard.narrow{max-width:520px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0 1.1rem}
+.field .err,.err{color:var(--red);font-size:.8rem;font-style:normal;display:block;min-height:1em}
+.req{color:var(--red)}
+.check{display:flex;gap:.6rem;align-items:flex-start;margin:.5rem 0 .1rem;font-size:.9rem;
+  color:var(--ink-soft);line-height:1.5}
+.check input{width:18px;height:18px;margin-top:.15rem;flex:0 0 auto;accent-color:var(--brand)}
+.notice{background:#fffbeb;border-left:4px solid var(--amber);border-radius:8px;padding:.8rem 1rem;
+  font-size:.88rem;color:#78350f;margin:.4rem 0 1.1rem}
+.notice.demo{background:#eff6ff;border-left-color:var(--brand);color:#0b3b8c}
+.codepill{font-family:var(--font-mono);font-weight:700;background:#fff;border:1px solid var(--rule);
+  border-radius:7px;padding:.1rem .5rem;letter-spacing:.16em}
+.otpbox{font-family:var(--font-mono);font-size:1.7rem;letter-spacing:.55em;text-align:center;
+  padding:.65rem .5rem}
+.clockpill{font-family:var(--font-mono);font-weight:700;background:var(--surface-2);border-radius:7px;
+  padding:.12rem .55rem}
+.clockpill.warnpill{background:#fee2e2;color:var(--red)}
 
 /* masthead */
 .masthead{position:relative;overflow:hidden;background:#0d1b36;color:#fff;
@@ -292,9 +335,170 @@ footer.ft a{color:#b9c9e8}
 </header>
 
 <main id="app">
+<div class="wrap"><div class="acctbar" id="acctBar"></div></div>
+
+<!-- ================= HOME ================= -->
+<section class="section" id="home">
+  <div class="wrap">
+    <div class="card welcome">
+      <p class="kicker">Welcome</p>
+      <h2 class="wel-h">Maths that changes every single time you visit.</h2>
+      <p class="wel-lead">
+        Every question here is built fresh by the computer the moment you press start —
+        so you can practise the same topic a hundred times and never meet the same
+        question twice. It covers the whole Grade&nbsp;3 year, from first facts right up to
+        competition problems.
+      </p>
+
+      <div class="grid feat">
+        <div class="fcard"><span class="fico" aria-hidden="true">◑</span>
+          <b>Five levels</b>
+          <small>Beginner · Developing · Intermediate · Advanced · Supreme. Move up when you are ready.</small></div>
+        <div class="fcard"><span class="fico" aria-hidden="true">△</span>
+          <b>Every topic</b>
+          <small>Times tables, fractions, area, shapes, time, money, graphs and 3-D solids.</small></div>
+        <div class="fcard"><span class="fico" aria-hidden="true">★</span>
+          <b>Supreme challenges</b>
+          <small>Competition-style problems in the spirit of Math Kangaroo and MOEMS.</small></div>
+        <div class="fcard"><span class="fico" aria-hidden="true">◔</span>
+          <b>Helpful hints</b>
+          <small>Stuck in practice? Up to three hints appear, each one a little clearer.</small></div>
+      </div>
+
+      <div class="cta">
+        <button class="btn big" type="button" id="goPractice">Try a practice session</button>
+        <button class="btn sec big" type="button" id="goTest">Take a test</button>
+      </div>
+      <p class="help" id="guestNote"></p>
+
+      <p class="help signin-line">
+        Already have an account? <a href="#login" id="toLogin">Sign in</a> ·
+        New here? <a href="#register" id="toRegister">Create an account</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGISTER ================= -->
+<section class="section hide" id="register">
+  <div class="wrap">
+    <div class="card formcard">
+      <p class="kicker">Create an account</p>
+      <h2 class="wel-h sm">Register</h2>
+      <p class="help" id="regIntro">All fields marked <span class="req">*</span> are required.
+         A parent or guardian must give permission for a child to use this site.</p>
+
+      <div class="notice" id="modeNotice" hidden></div>
+
+      <form id="regForm" novalidate autocomplete="on">
+        <div class="fgrid">
+          <label class="field"><span>Student's full name <span class="req">*</span></span>
+            <input type="text" id="rName" name="student" autocomplete="name" maxlength="60" required>
+            <em class="err" id="eName"></em></label>
+
+          <label class="field"><span>Age <span class="req">*</span></span>
+            <input type="number" id="rAge" name="age" min="4" max="18" inputmode="numeric" required>
+            <em class="err" id="eAge"></em></label>
+
+          <label class="field"><span>Email address <span class="req">*</span></span>
+            <input type="email" id="rEmail" name="email" autocomplete="email" maxlength="120" required>
+            <em class="err" id="eEmail"></em></label>
+
+          <label class="field"><span>Phone number <span class="req">*</span></span>
+            <input type="tel" id="rPhone" name="phone" autocomplete="tel" maxlength="24" required>
+            <em class="err" id="ePhone"></em></label>
+
+          <label class="field"><span>Parent / guardian name <span class="req">*</span></span>
+            <input type="text" id="rGuardian" name="guardian" maxlength="60" required>
+            <em class="err" id="eGuardian"></em></label>
+
+          <label class="field"><span>Parent / guardian email <span class="req">*</span></span>
+            <input type="email" id="rGEmail" name="guardianEmail" maxlength="120" required>
+            <em class="err" id="eGEmail"></em></label>
+
+          <label class="field"><span>Password <span class="req">*</span></span>
+            <input type="password" id="rPass" name="password" autocomplete="new-password" required>
+            <em class="err" id="ePass"></em></label>
+
+          <label class="field"><span>Confirm password <span class="req">*</span></span>
+            <input type="password" id="rPass2" name="password2" autocomplete="new-password" required>
+            <em class="err" id="ePass2"></em></label>
+        </div>
+
+        <label class="check"><input type="checkbox" id="rConsent" required>
+          <span>I am the parent or legal guardian, and I give permission for this child to use
+                this site. <span class="req">*</span></span></label>
+        <em class="err" id="eConsent"></em>
+
+        <label class="check"><input type="checkbox" id="rTerms" required>
+          <span>I agree that the details above may be stored so progress can be saved.
+                <span class="req">*</span></span></label>
+        <em class="err" id="eTerms"></em>
+
+        <div class="btnrow" style="margin-top:1.3rem">
+          <button class="btn big" type="submit" id="regSubmit">Create account &amp; send code</button>
+          <button class="btn sec" type="button" data-go="home">Back</button>
+        </div>
+        <p class="help err" id="regError" role="alert"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OTP ================= -->
+<section class="section hide" id="verify">
+  <div class="wrap">
+    <div class="card formcard narrow">
+      <p class="kicker">Step 2 of 2</p>
+      <h2 class="wel-h sm">Check your email</h2>
+      <p class="help">We sent a 6-digit code to <b id="otpTo"></b>.
+         It is valid for <b>2 minutes</b>, then it is thrown away.</p>
+
+      <div class="notice demo" id="demoCode" hidden></div>
+
+      <label class="field" style="max-width:320px">
+        <span>Verification code <span class="req">*</span></span>
+        <input type="text" id="otpInput" inputmode="numeric" autocomplete="one-time-code"
+               maxlength="6" placeholder="000000" class="otpbox">
+      </label>
+      <p class="help"><span id="otpClock" class="clockpill">2:00</span> <span id="otpTries"></span></p>
+      <p class="help err" id="otpError" role="alert"></p>
+
+      <div class="btnrow" style="margin-top:1rem">
+        <button class="btn big" type="button" id="otpVerify">Verify</button>
+        <button class="btn sec" type="button" id="otpResend">Resend code</button>
+        <button class="btn sec" type="button" data-go="home">Cancel</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOGIN ================= -->
+<section class="section hide" id="login">
+  <div class="wrap">
+    <div class="card formcard narrow">
+      <p class="kicker">Welcome back</p>
+      <h2 class="wel-h sm">Sign in</h2>
+      <p class="help" id="loginWhy">Sign in to keep practising.</p>
+
+      <form id="loginForm" novalidate>
+        <label class="field"><span>Email address</span>
+          <input type="email" id="lEmail" autocomplete="email" required></label>
+        <label class="field"><span>Password</span>
+          <input type="password" id="lPass" autocomplete="current-password" required></label>
+        <p class="help err" id="loginError" role="alert"></p>
+        <div class="btnrow" style="margin-top:1rem">
+          <button class="btn big" type="submit">Sign in</button>
+          <button class="btn sec" type="button" data-go="register">Create an account</button>
+          <button class="btn sec" type="button" data-go="home">Back</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
 <!-- ================= SETUP ================= -->
-<section class="section" id="setup">
+<section class="section hide" id="setup">
   <div class="wrap">
     <div class="card">
       <h2 style="font-family:var(--font-display);font-weight:500;font-size:1.6rem">Set up your session</h2>
@@ -322,6 +526,7 @@ footer.ft a{color:#b9c9e8}
 
       <div class="btnrow" style="margin-top:1.7rem">
         <button class="btn big" id="startBtn" type="button">Start ▶</button>
+        <button class="btn sec" type="button" data-go="home">Back to home</button>
       </div>
       <p class="help" id="setupHelp" style="margin-top:.9rem"></p>
     </div>
@@ -1570,6 +1775,197 @@ function bankStats(){
           total:GEN.length+EXTRAGEN.length+GEOGEN.length+OLYGEN.length+MULTIGEN.length};
 }
 
+const AUTH_CFG = {
+  /* Paste a Supabase project here to switch on real accounts + real OTP email.
+     Leave blank to run in local demo mode.                                   */
+  supabaseUrl:  "",
+  supabaseKey:  "",
+  otpTtlSec:    120,     // hold the code for 2 minutes, then discard
+  otpMaxTries:  5,
+  resendWaitSec:30,
+  guestSessions:1        // free goes before registration is required
+};
+
+const AUTH_MODE = (AUTH_CFG.supabaseUrl && AUTH_CFG.supabaseKey) ? "supabase" : "demo";
+
+/* ---------- small crypto helpers (WebCrypto, no libraries) ---------- */
+async function sha256Hex(str){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function randomHex(bytes){
+  const a = new Uint8Array(bytes); crypto.getRandomValues(a);
+  return [...a].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+/* PBKDF2 so a stored password is never recoverable from the record */
+async function hashPassword(pw, saltHex){
+  const salt = saltHex || randomHex(16);
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw),
+                                            "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits(
+    {name:"PBKDF2", salt:new TextEncoder().encode(salt), iterations:150000, hash:"SHA-256"},
+    key, 256);
+  const hex = [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  return {salt:salt, hash:hex};
+}
+function timingSafeEqual(a,b){
+  if(typeof a!=="string"||typeof b!=="string"||a.length!==b.length) return false;
+  let diff=0; for(let i=0;i<a.length;i++) diff |= a.charCodeAt(i)^b.charCodeAt(i);
+  return diff===0;
+}
+
+/* ---------- storage ---------- */
+const STORE_KEY = "g3m.accounts.v1";
+const SESSION_KEY = "g3m.session.v1";
+const GUEST_KEY = "g3m.guest.v1";
+
+function readJSON(k, fallback){
+  try{ const v=localStorage.getItem(k); return v?JSON.parse(v):fallback; }catch(e){ return fallback; }
+}
+function writeJSON(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+const Accounts = {
+  all(){ return readJSON(STORE_KEY, {}); },
+  find(email){ return this.all()[String(email||"").toLowerCase().trim()] || null; },
+  save(rec){ const a=this.all(); a[rec.email]=rec; writeJSON(STORE_KEY,a); },
+};
+
+const Session = {
+  get(){ return readJSON(SESSION_KEY, null); },
+  start(email,name){ writeJSON(SESSION_KEY,{email:email,name:name,at:Date.now()}); },
+  end(){ try{ localStorage.removeItem(SESSION_KEY); }catch(e){} },
+  isSignedIn(){ const s=this.get(); return !!(s && s.email); }
+};
+
+const Guest = {
+  used(){ return readJSON(GUEST_KEY,{n:0}).n; },
+  consume(){ const g=readJSON(GUEST_KEY,{n:0}); g.n=(g.n||0)+1; writeJSON(GUEST_KEY,g); },
+  remaining(){ return Math.max(0, AUTH_CFG.guestSessions - this.used()); }
+};
+
+/* ---------- mail transport (the one piece that needs a server) ---------- */
+const MAIL = {
+  /* Returns {delivered:boolean, shownCode:string|null}.
+     demo      → nothing is sent; the code is displayed so the flow is testable
+     supabase  → Supabase Auth emails a one-time code for you                */
+  async send(email, code){
+    if(AUTH_MODE === "supabase"){
+      const r = await fetch(AUTH_CFG.supabaseUrl + "/auth/v1/otp", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json", "apikey":AUTH_CFG.supabaseKey },
+        body: JSON.stringify({ email: email, create_user: true })
+      });
+      if(!r.ok) throw new Error("Could not send the verification email.");
+      return { delivered:true, shownCode:null };
+    }
+    return { delivered:false, shownCode:code };   // demo: reveal on screen
+  }
+};
+
+/* ---------- OTP engine ---------- */
+const OTP = {
+  _state: null,          // {email, hash, expires, tries, sentAt}
+  _timer: null,
+
+  active(){ return !!(this._state && Date.now() < this._state.expires); },
+  secondsLeft(){ return this._state ? Math.max(0, Math.ceil((this._state.expires-Date.now())/1000)) : 0; },
+  canResend(){ return !this._state || (Date.now()-this._state.sentAt)/1000 >= AUTH_CFG.resendWaitSec; },
+  resendIn(){ return this._state ? Math.max(0, Math.ceil(AUTH_CFG.resendWaitSec-(Date.now()-this._state.sentAt)/1000)) : 0; },
+
+  /* generate → hash → hold for the TTL → hand the plain code to the mailer only */
+  async issue(email){
+    const n = new Uint32Array(1); crypto.getRandomValues(n);
+    const code = String(n[0] % 1000000).padStart(6,"0");
+    this._state = {
+      email: String(email).toLowerCase().trim(),
+      hash: await sha256Hex(code + "|" + email.toLowerCase().trim()),
+      expires: Date.now() + AUTH_CFG.otpTtlSec*1000,
+      tries: 0,
+      sentAt: Date.now()
+    };
+    this.scheduleDiscard();
+    let out;
+    try { out = await MAIL.send(this._state.email, code); }
+    catch(e){ this.discard(); throw e; }
+    return out;                       // plain code is not retained anywhere here
+  },
+
+  scheduleDiscard(){
+    clearTimeout(this._timer);
+    this._timer = setTimeout(()=>{ this.discard(); if(typeof onOtpExpired==="function") onOtpExpired(); },
+                             AUTH_CFG.otpTtlSec*1000 + 50);
+  },
+  discard(){ this._state = null; clearTimeout(this._timer); this._timer=null; },
+
+  /* → {ok:true} | {ok:false, reason:'expired'|'locked'|'mismatch', left:n} */
+  async verify(code){
+    if(!this.active()){ this.discard(); return {ok:false, reason:"expired"}; }
+    if(this._state.tries >= AUTH_CFG.otpMaxTries){ this.discard(); return {ok:false, reason:"locked"}; }
+    this._state.tries++;
+    const h = await sha256Hex(String(code).trim() + "|" + this._state.email);
+    if(timingSafeEqual(h, this._state.hash)){
+      const email = this._state.email;
+      this.discard();                                  // single use
+      return {ok:true, email:email};
+    }
+    const left = AUTH_CFG.otpMaxTries - this._state.tries;
+    if(left<=0){ this.discard(); return {ok:false, reason:"locked"}; }
+    return {ok:false, reason:"mismatch", left:left};
+  }
+};
+
+/* ---------- validation ---------- */
+const V = {
+  name(v){ v=String(v||"").trim();
+    return v.length>=2 && v.length<=60 && /^[\p{L}\p{M}'’.\- ]+$/u.test(v)
+      ? "" : "Please enter a name (letters, 2–60 characters)."; },
+  age(v){ const n=Number(v);
+    return Number.isInteger(n) && n>=4 && n<=18 ? "" : "Age must be a whole number between 4 and 18."; },
+  email(v){ v=String(v||"").trim();
+    return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v) && v.length<=120
+      ? "" : "Please enter a valid email address."; },
+  phone(v){ const d=String(v||"").replace(/[^\d]/g,"");
+    return d.length>=7 && d.length<=15 ? "" : "Please enter a valid phone number (7–15 digits)."; },
+  password(v){ v=String(v||"");
+    if(v.length<8) return "Password must be at least 8 characters.";
+    if(!/[A-Za-z]/.test(v)||!/\d/.test(v)) return "Password must include a letter and a number.";
+    if(v.length>128) return "Password is too long.";
+    return ""; },
+  match(a,b){ return a===b ? "" : "The two passwords do not match."; },
+  checked(v){ return v ? "" : "This is required to continue."; }
+};
+
+/* ---------- registration / login ---------- */
+async function registerAccount(d){
+  const email = d.email.toLowerCase().trim();
+  if(Accounts.find(email)) throw new Error("An account already exists for that email. Please sign in.");
+  const pw = await hashPassword(d.password);
+  Accounts.save({
+    email: email,
+    student: d.student, age: Number(d.age),
+    guardian: d.guardian, guardianEmail: (d.guardianEmail||"").toLowerCase().trim(),
+    phone: d.phone,
+    consent: !!d.consent, terms: !!d.terms,
+    salt: pw.salt, hash: pw.hash,
+    verified: false,
+    createdAt: new Date().toISOString()
+  });
+  return email;
+}
+async function markVerified(email){
+  const rec = Accounts.find(email);
+  if(rec){ rec.verified = true; Accounts.save(rec); }
+}
+async function signIn(email, password){
+  const rec = Accounts.find(email);
+  if(!rec) throw new Error("No account found for that email.");
+  if(!rec.verified) throw new Error("Please verify your email address first.");
+  const pw = await hashPassword(password, rec.salt);
+  if(!timingSafeEqual(pw.hash, rec.hash)) throw new Error("Incorrect email or password.");
+  Session.start(rec.email, rec.student);
+  return rec;
+}
+
 /* =======================================================================
    APP
    ======================================================================= */
@@ -1671,8 +2067,7 @@ $("startBtn").onclick=()=>{
   }
   resetArrays(QS.length);
   cur=0; nRight=0; nDone=0;
-  $("setup").classList.add("hide"); $("results").classList.add("hide");
-  $("runner").classList.remove("hide");
+  show("runner");
   $("rWho").textContent=name;
   startClock(); buildPalette(); render();
   window.scrollTo(0,0);
@@ -1946,7 +2341,7 @@ function finish(auto){
     '<table class="bd"><tr><th>Topic</th><th>Score</th><th>%</th></tr>'+rows+'</table>';
 
   h+='<div class="btnrow" style="margin-top:1.6rem">'+
-     '<button class="btn" type="button" onclick="location.reload()">New session 🔄</button>'+
+     '<button class="btn" type="button" data-go="home">New session 🔄</button>'+
      '<button class="btn sec" type="button" id="revBtn">Show / hide review</button>'+
      '<button class="btn sec" type="button" onclick="window.print()">Print</button></div>';
 
@@ -1971,9 +2366,218 @@ function finish(auto){
 
   $("resultCard").innerHTML=h;
   $("revBtn").onclick=()=>$("rev").classList.toggle("hide");
-  $("runner").classList.add("hide"); $("results").classList.remove("hide");
+  show("results");
+  if(!Session.isSignedIn()){          // a guest has now spent their free go
+    Guest.consume();
+    const gate=document.createElement("div");
+    gate.className="notice";
+    gate.innerHTML="<b>That was your free guest session.</b> Create a free account to keep "+
+                   "practising and to save your progress. "+
+                   "<button class='linkbtn' type='button' data-go='register'>Register</button> or "+
+                   "<button class='linkbtn' type='button' data-go='login'>sign in</button>.";
+    $("resultCard").prepend(gate);
+  }
   window.scrollTo(0,0);
 }
+
+/* =======================================================================
+   ROUTER · HOME · REGISTRATION · OTP · SIGN-IN · GUEST GATE
+   ======================================================================= */
+const VIEWS = ["home","register","verify","login","setup","runner","results"];
+let pendingMode = null;        // "practice" | "test" chosen before the gate
+
+function show(view){
+  VIEWS.forEach(v=>{ const el=$(v); if(el) el.classList.toggle("hide", v!==view); });
+  const bar=$("acctBar"); if(bar) bar.classList.toggle("hide", view==="runner");
+  window.scrollTo(0,0);
+  paintAccountBar();
+}
+function go(view){ location.hash = "#"+view; }
+
+window.addEventListener("hashchange", route);
+function route(){
+  const v=(location.hash||"#home").slice(1);
+  if(v==="setup"  && !canStartSession()) return go("login");
+  if(VIEWS.indexOf(v)===-1) return show("home");
+  if(v==="runner"||v==="results") return;       // driven by the app, not the URL
+  show(v);
+  if(v==="home") paintGuestNote();
+}
+
+/* ---------- account bar ---------- */
+function paintAccountBar(){
+  const bar=$("acctBar"); if(!bar) return;
+  const s=Session.get();
+  bar.innerHTML = s
+    ? '<span class="who">Signed in as <b>'+esc(s.name||s.email)+'</b></span>'+
+      '<button class="linkbtn" type="button" id="signOut">Sign out</button>'
+    : '<span class="who">Browsing as a guest</span>'+
+      '<button class="linkbtn" type="button" data-go="login">Sign in</button>'+
+      '<button class="linkbtn" type="button" data-go="register">Register</button>';
+  const so=$("signOut");
+  if(so) so.onclick=()=>{ Session.end(); paintAccountBar(); paintGuestNote(); go("home"); };
+}
+function paintGuestNote(){
+  const n=$("guestNote"); if(!n) return;
+  if(Session.isSignedIn()){ n.textContent="You are signed in — practise as much as you like."; return; }
+  const left=Guest.remaining();
+  n.textContent = left>0
+    ? "You can try "+left+" free session as a guest. After that, a free account keeps your progress."
+    : "You have used your free guest session. Please sign in or register to carry on.";
+}
+
+/* ---------- the gate ---------- */
+function canStartSession(){ return Session.isSignedIn() || Guest.remaining()>0; }
+function requestSession(kind){
+  pendingMode = kind;
+  if(!canStartSession()){
+    const w=$("loginWhy");
+    if(w) w.textContent="You have used your free guest session. Sign in, or create a free account, to keep going.";
+    return go("login");
+  }
+  mode = kind;
+  [...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k===kind)));
+  refreshSetup();
+  go("setup");
+}
+
+/* ---------- home ---------- */
+$("goPractice").onclick = ()=>requestSession("practice");
+$("goTest").onclick     = ()=>requestSession("test");
+
+document.addEventListener("click", e=>{
+  const b=e.target.closest("[data-go]"); if(!b) return;
+  e.preventDefault(); go(b.dataset.go);
+});
+
+/* ---------- registration ---------- */
+function setErr(id,msg){ const el=$(id); if(el) el.textContent=msg||""; return !msg; }
+
+function readRegForm(){
+  return {
+    student:$("rName").value, age:$("rAge").value, email:$("rEmail").value,
+    phone:$("rPhone").value, guardian:$("rGuardian").value, guardianEmail:$("rGEmail").value,
+    password:$("rPass").value, password2:$("rPass2").value,
+    consent:$("rConsent").checked, terms:$("rTerms").checked
+  };
+}
+function validateReg(d){
+  let ok=true;
+  ok &= setErr("eName",     V.name(d.student));
+  ok &= setErr("eAge",      V.age(d.age));
+  ok &= setErr("eEmail",    V.email(d.email));
+  ok &= setErr("ePhone",    V.phone(d.phone));
+  ok &= setErr("eGuardian", V.name(d.guardian));
+  ok &= setErr("eGEmail",   V.email(d.guardianEmail));
+  ok &= setErr("ePass",     V.password(d.password));
+  ok &= setErr("ePass2",    V.match(d.password, d.password2));
+  ok &= setErr("eConsent",  V.checked(d.consent));
+  ok &= setErr("eTerms",    V.checked(d.terms));
+  return !!ok;
+}
+
+$("regForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  $("regError").textContent="";
+  const d=readRegForm();
+  if(!validateReg(d)) return;
+  const btn=$("regSubmit"); btn.disabled=true; btn.textContent="Sending code…";
+  try{
+    await registerAccount(d);
+    await startOtp(d.email.toLowerCase().trim());
+    go("verify");
+  }catch(err){
+    $("regError").textContent = err && err.message ? err.message : "Something went wrong.";
+  }finally{
+    btn.disabled=false; btn.textContent="Create account & send code";
+  }
+});
+
+/* ---------- OTP screen ---------- */
+let otpTick=null;
+function onOtpExpired(){ paintOtpClock(); $("otpError").textContent="That code has expired. Please request a new one."; }
+
+async function startOtp(email){
+  $("otpTo").textContent = email;
+  $("otpError").textContent = "";
+  $("otpInput").value = "";
+  const res = await OTP.issue(email);
+  const box=$("demoCode");
+  if(res.shownCode){
+    box.hidden=false;
+    box.innerHTML = "<b>Demo mode — no email was sent.</b> Your code is "+
+                    "<span class='codepill'>"+esc(res.shownCode)+"</span>. "+
+                    "Connect a mail service to deliver this to a real inbox.";
+  } else { box.hidden=true; }
+  paintOtpClock();
+  clearInterval(otpTick);
+  otpTick=setInterval(paintOtpClock,500);
+}
+function paintOtpClock(){
+  const c=$("otpClock"), r=$("otpResend");
+  if(!c) return;
+  const s=OTP.secondsLeft();
+  c.textContent = Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+  c.classList.toggle("warnpill", s<=30);
+  if(!OTP.active()) c.textContent="expired";
+  if(r) { r.disabled = !OTP.canResend();
+          r.textContent = OTP.canResend() ? "Resend code" : "Resend in "+OTP.resendIn()+"s"; }
+}
+$("otpVerify").onclick = async ()=>{
+  const code=$("otpInput").value.replace(/\D/g,"");
+  $("otpError").textContent="";
+  if(code.length!==6){ $("otpError").textContent="Please enter all six digits."; return; }
+  const r = await OTP.verify(code);
+  if(r.ok){
+    clearInterval(otpTick);
+    await markVerified(r.email);
+    const rec=Accounts.find(r.email);
+    Session.start(r.email, rec?rec.student:"");
+    $("otpError").textContent="";
+    if(pendingMode) requestSession(pendingMode); else go("home");
+    return;
+  }
+  if(r.reason==="expired") $("otpError").textContent="That code has expired. Please request a new one.";
+  else if(r.reason==="locked") $("otpError").textContent="Too many attempts. Please request a new code.";
+  else $("otpError").textContent="That code is not right. "+r.left+" attempt"+(r.left===1?"":"s")+" left.";
+  paintOtpClock();
+};
+$("otpResend").onclick = async ()=>{
+  if(!OTP.canResend()) return;
+  const email=$("otpTo").textContent;
+  try{ await startOtp(email); $("otpError").textContent=""; }
+  catch(e){ $("otpError").textContent="Could not send the code. Please try again."; }
+};
+$("otpInput").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); $("otpVerify").click(); }});
+
+/* ---------- sign in ---------- */
+$("loginForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  $("loginError").textContent="";
+  try{
+    await signIn($("lEmail").value, $("lPass").value);
+    paintAccountBar();
+    if(pendingMode) requestSession(pendingMode); else go("home");
+  }catch(err){
+    $("loginError").textContent = err && err.message ? err.message : "Could not sign in.";
+  }
+});
+
+/* ---------- demo-mode banner ---------- */
+(function noticeMode(){
+  const n=$("modeNotice"); if(!n) return;
+  if(AUTH_MODE==="demo"){
+    n.hidden=false;
+    n.innerHTML = "<b>Demo mode.</b> Accounts are kept only in this browser and the "+
+                  "verification code is shown on screen instead of emailed. "+
+                  "See <code>README.md</code> to connect a real mail service and database.";
+  }
+})();
+
+/* ---------- boot ---------- */
+paintAccountBar();
+paintGuestNote();
+route();
 </script>
 </body>
 </html>
