@@ -22,18 +22,41 @@ Beginner → Developing → Intermediate → Advanced → **Supreme**
 | Geometry | All nine chapters: shapes, angles, quadrilaterals, symmetry, perimeter, area, partitioning, 3D solids, competition geometry |
 | Supreme only | Competition problems only (needs level 4 or 5) |
 
+**Three question types**
+
+| Type | How you answer |
+|------|----------------|
+| Typed | Enter a number |
+| Multiple choice | Pick one option |
+| **Select all that apply** | Tick every correct option — all of them, and nothing else |
+
+**Answer flow**
+
+Choose your answer, then press **Submit**. The next question appears automatically —
+no extra clicking.
+
 **Two modes, both timed**
 
-- **Practice** — count-up stopwatch, unlimited questions, instant feedback and a hint on
-  every Supreme problem. The question pool extends itself automatically, so it never runs out.
-- **Test** — countdown timer, fixed length, question palette for jumping around, auto-submits
-  at 0:00, then a score with a per-topic breakdown and a full answer review.
+- **Practice** — count-up stopwatch, unlimited questions. Get one wrong and a hint appears;
+  you can try again. Up to **three hints** per question, each more specific than the last.
+  After the third, the answer is shown and the app moves on. The question pool extends
+  itself automatically, so it never runs out.
+- **Test** — countdown timer, fixed length, question palette for jumping around (you can
+  revise earlier answers), auto-submits at 0:00, then a score with a per-topic breakdown
+  and a full answer review.
+
+**How the three hints work**
+
+1. **Hint 1** — a strategy for that topic ("Perimeter is the distance all the way around").
+2. **Hint 2** — the specific idea behind this question.
+3. **Hint 3** — narrows it down without giving it away ("Exactly 3 options are correct;
+   you can rule out 63 and 59", or "The answer is an even number with 2 digits").
 
 ---
 
 ## The question bank
 
-**151 generators** producing 69 distinct topics:
+**166 generators** producing 76 distinct topics:
 
 | Group | Generators |
 |-------|-----------|
@@ -41,6 +64,7 @@ Beginner → Developing → Intermediate → Advanced → **Supreme**
 | Curriculum gap-fillers (length, properties of operations, line plots) | 8 |
 | Geometry (9 chapters) | 69 |
 | Supreme / competition | 38 (25 arithmetic, 13 geometry) |
+| Select-all-that-apply | 15 |
 
 Every question is generated **fresh in the browser**, so no two attempts are ever the same.
 

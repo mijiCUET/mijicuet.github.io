@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OW7jFKIUJRuX6MgISve54ZQt1v1e5Ikg4lYRWH3rY08='; style-src 'sha256-RP4Us+yk7o0eue+DdXt78uougXo5ym3Jt6J9i5QckzY='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-4P6042BtP3TMXMaEeIivPXVA70ZC+gkll8YreFIVmiw='; style-src 'sha256-XipC+PRePVfuvxKogBgOdn//yseKd1EAsccrIV2XoYk='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -130,6 +130,12 @@ select:focus,input:focus{outline:none;border-color:var(--brand)}
 .choice .k{width:27px;height:27px;flex:0 0 auto;border-radius:7px;background:var(--surface-2);
            display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
 .choice[aria-pressed="true"] .k{background:var(--brand);color:#fff}
+.choice:disabled{cursor:default;opacity:1}
+.choice.multi .k{border-radius:6px;font-size:1rem}
+.choice.ok .k{background:var(--green);color:#fff}
+.choice.no .k{background:var(--red);color:#fff}
+.hintbox+.hintbox{margin-top:.5rem}
+#submitBtn{min-width:200px;justify-content:center}
 .fb{margin-top:.9rem;padding:.8rem 1rem;border-radius:10px;font-weight:600}
 .fb.ok{background:#dcfce7;color:#166534}
 .fb.no{background:#fee2e2;color:#991b1b}
@@ -1156,6 +1162,226 @@ const EXTRAGEN = [
 ];
 
 
+
+
+/* helper: build a multi question from correct + wrong pools */
+function multiQ(domain, prompt, correctPool, wrongPool, nCorrect, nTotal, extra){
+  const cor = shuffle(correctPool).slice(0, nCorrect).map(String);
+  if(cor.length < 1) return null;
+  const wrong = shuffle(wrongPool.filter(w => cor.indexOf(String(w)) === -1))
+                  .slice(0, Math.max(0, nTotal - cor.length)).map(String);
+  if(cor.length + wrong.length < 4) return null;
+  const q = {
+    domain: domain, type: 'multi',
+    prompt: prompt,
+    choices: shuffle(cor.concat(wrong)),
+    answers: cor
+  };
+  if(extra) for(const k in extra) q[k] = extra[k];
+  return q;
+}
+function rangeArr(lo,hi){ const a=[]; for(let i=lo;i<=hi;i++) a.push(i); return a; }
+
+const MULTIGEN = [
+
+/* ---------------- Arithmetic ---------------- */
+{area:'arith',minL:1,f:L=>{
+  const k=pick([2,5,10]); const hi=L<=2?30:60;
+  const mult=rangeArr(1,hi).filter(n=>n%k===0);
+  const non =rangeArr(1,hi).filter(n=>n%k!==0);
+  return multiQ('Multiples','Select ALL the numbers that are multiples of '+k+'.',
+    mult,non,rand(2,3),6,
+    {hint:'A multiple of '+k+' is what you get when you count up in '+k+'s.'});}},
+
+{area:'arith',minL:2,f:L=>{
+  const evens=rangeArr(1,L<=2?40:99).filter(n=>n%2===0);
+  const odds =rangeArr(1,L<=2?40:99).filter(n=>n%2===1);
+  const wantEven=Math.random()<0.5;
+  return multiQ('Even and odd','Select ALL the '+(wantEven?'EVEN':'ODD')+' numbers.',
+    wantEven?evens:odds, wantEven?odds:evens, rand(2,3),6,
+    {hint:'Look at the last digit only — that decides even or odd.'});}},
+
+{area:'arith',minL:2,f:L=>{
+  const t=rand(L<=2?10:20, L<=2?40:90);
+  const big=rangeArr(t+1,t+40), small=rangeArr(Math.max(1,t-40),t-1);
+  return multiQ('Comparing','Select ALL the numbers that are GREATER than '+t+'.',
+    big,small,rand(2,3),6,
+    {hint:'Compare the tens digit first, then the ones digit.'});}},
+
+{area:'arith',minL:3,f:L=>{
+  const a=rand(2,9); let b=rand(2,9); if(b===a) b=(a%9)+1;
+  const target=a*b;
+  const same=[a+' × '+b, b+' × '+a];
+  if(target%2===0) same.push((target/2)+' + '+(target/2));
+  same.push((target+3)+' − 3');
+  const diff=[(a+1)+' × '+b, a+' × '+(b+1), (target+2)+' − 1', (target-1)+' + 2', (a*b+5)+' − 2'];
+  return multiQ('Equal expressions','Select ALL the expressions that equal '+target+'.',
+    same,diff,rand(2,Math.min(3,same.length)),6,
+    {hint:'Work out each expression one at a time and compare it with '+target+'.'});}},
+
+{area:'arith',minL:3,f:L=>{
+  const half=['2/4','3/6','4/8','5/10','6/12'];
+  const notHalf=['1/3','2/5','3/8','1/4','5/6','2/3','3/5'];
+  return multiQ('Equivalent fractions','Select ALL the fractions that are equal to 1/2.',
+    half,notHalf,rand(2,3),6,
+    {hint:'A fraction equals one half when the bottom number is exactly double the top.'});}},
+
+{area:'arith',minL:4,f:L=>{
+  const k1=pick([2,3]), k2=pick([4,5,6]);
+  const both=rangeArr(1,120).filter(n=>n%k1===0&&n%k2===0);
+  const one =rangeArr(1,120).filter(n=>(n%k1===0)!==(n%k2===0));
+  if(both.length<2) return null;
+  return multiQ('Number theory','Select ALL the numbers that can be divided exactly by BOTH '+k1+' and '+k2+'.',
+    both,one,rand(2,3),6,
+    {hint:'A number must pass both tests — check '+k1+' first, then '+k2+'.'});}},
+
+/* ---------------- Geometry ---------------- */
+{area:'geo',minL:1,f:L=>{
+  const four=['square','rectangle','rhombus','trapezoid','parallelogram','kite'];
+  const notFour=['triangle','pentagon','hexagon','octagon','circle'];
+  return multiQ('Shapes','Select ALL the shapes that have exactly 4 sides.',
+    four,notFour,rand(2,3),6,
+    {hint:'Count the straight sides of each shape one by one.'});}},
+
+{area:'geo',minL:2,f:L=>{
+  const withRight=['square','rectangle','right triangle'];
+  const without=['circle','rhombus','equilateral triangle','pentagon','hexagon','parallelogram'];
+  return multiQ('Angles','Select ALL the shapes that have at least one RIGHT angle (90°).',
+    withRight,without,rand(2,3),6,
+    {hint:'A right angle is a perfect square corner, like the corner of a book.'});}},
+
+{area:'geo',minL:3,f:L=>{
+  const allEqual=['square','rhombus'];
+  const not=['rectangle','trapezoid','kite','parallelogram','triangle','pentagon'];
+  return multiQ('Quadrilaterals','Select ALL the shapes that always have 4 EQUAL sides.',
+    allEqual,not,2,6,
+    {hint:'Equal angles are not the same thing as equal sides — check the sides only.'});}},
+
+{area:'geo',minL:3,f:L=>{
+  const six=['cube','rectangular prism'];
+  const not=['triangular prism','square pyramid','sphere','cone','cylinder','triangular pyramid'];
+  return multiQ('3D solids','Select ALL the solids that have exactly 6 flat faces.',
+    six,not,2,6,
+    {hint:'Picture each solid and count its flat surfaces — curved surfaces do not count.'});}},
+
+{area:'geo',minL:4,f:L=>{
+  const many=['square','equilateral triangle','regular hexagon','regular pentagon','circle'];
+  const few =['rectangle','isosceles triangle','parallelogram','scalene triangle','kite','trapezoid'];
+  return multiQ('Symmetry','Select ALL the shapes with MORE than 2 lines of symmetry.',
+    many,few,rand(2,3),6,
+    {hint:'A regular shape with n sides has exactly n lines of symmetry.'});}},
+
+{area:'geo',minL:4,f:L=>{
+  const P=pick([12,16,20,24]);
+  const good=[],bad=[];
+  for(let w=1;w<=P;w++){ const h=P/2-w; if(h>=1&&Number.isInteger(h)) good.push(w+' by '+h); }
+  for(let w=1;w<=12;w++){ for(const d of [1,2,3]){ const h=w+d;
+      if(2*(w+h)!==P) bad.push(w+' by '+h); } }
+  if(good.length<2) return null;
+  return multiQ('Perimeter','Select ALL the rectangles with a perimeter of '+P+' cm.',
+    good,bad,rand(2,3),6,
+    {hint:'Perimeter = 2 × (length + width). The two sides must add to '+(P/2)+'.'});}},
+
+/* ---------------- Supreme (competition) ---------------- */
+{area:'geo',minL:5,sup:true,f:L=>{
+  const A=pick([12,16,18,24,36]);
+  const good=[],bad=[];
+  for(let w=1;w<=A;w++) if(A%w===0) good.push(w+' by '+(A/w));
+  for(let w=1;w<=12;w++) for(let h=1;h<=12;h++) if(w*h!==A) bad.push(w+' by '+h);
+  return multiQ('Supreme · Area','Select ALL the rectangles with an area of '+A+' square cm.',
+    good,bad,rand(2,3),6,
+    {hint:'Multiply the two numbers together — you need pairs that give '+A+'.'});}},
+
+{area:'arith',minL:5,sup:true,f:L=>{
+  const sq=[1,4,9,16,25,36,49,64,81,100];
+  const not=rangeArr(2,100).filter(n=>sq.indexOf(n)===-1);
+  return multiQ('Supreme · Number theory','Select ALL the SQUARE numbers (a number times itself).',
+    sq,not,rand(2,3),6,
+    {hint:'Try 1×1, 2×2, 3×3, 4×4 … and see which numbers appear.'});}},
+
+{area:'arith',minL:5,sup:true,f:L=>{
+  // numbers expressible as a sum of two consecutive whole numbers = all odd numbers > 1
+  const good=rangeArr(3,60).filter(n=>n%2===1);
+  const bad =rangeArr(4,60).filter(n=>n%2===0);
+  return multiQ('Supreme · Number theory',
+    'Select ALL the numbers that can be made by adding TWO numbers in a row (like 3 + 4 = 7).',
+    good,bad,rand(2,3),6,
+    {hint:'Two numbers in a row are always one even and one odd, so their total is always odd.'});}}
+];
+
+/* =======================================================================
+   PROGRESSIVE HINTS — up to three, revealed one per wrong attempt
+   ======================================================================= */
+const HINT_STRATEGY = [
+  [/Multiplication|Multiply|Equal expressions/i, 'Multiplication is repeated addition — try skip-counting if you get stuck.'],
+  [/Division/i,            'Division asks "how many equal groups?" Try the matching multiplication fact.'],
+  [/Addition/i,            'Line the numbers up by place value: ones under ones, tens under tens.'],
+  [/Subtraction/i,         'Start from the ones column and regroup from the tens if you need to.'],
+  [/Fraction|Partitioning/i,'The bottom number tells you how many equal parts the whole is cut into.'],
+  [/Area/i,                'Area is the space inside: length × width for a rectangle.'],
+  [/Perimeter/i,           'Perimeter is the distance all the way around — add every side.'],
+  [/Angle/i,               'A right angle is a square corner; smaller is acute, wider is obtuse.'],
+  [/Symmetry/i,            'A line of symmetry folds the shape so both halves match exactly.'],
+  [/3D solids|Nets|Cross/i,'Picture the solid in your hands and count faces, edges or corners carefully.'],
+  [/Shapes|Quadrilateral|Geometry/i,'Count the sides and corners, and look for equal sides or square corners.'],
+  [/time/i,                'The short hand gives the hour; the long hand counts minutes in fives.'],
+  [/graph/i,               'Read the scale up the side first, then compare the bars.'],
+  [/Measurement|Length/i,  'Check the units before you calculate — 1 m = 100 cm.'],
+  [/Rounding/i,            'Look at the digit to the RIGHT of the place you are rounding to.'],
+  [/Place value/i,         'Each digit is worth its face value times its place: ones, tens, hundreds.'],
+  [/pattern|series|Patterns/i,'Find what changes from one term to the next, then repeat it.'],
+  [/Counting/i,            'Count in an organised order so you never miss or double-count.'],
+  [/Word problem|step/i,   'Underline the numbers, decide the operation, then solve one step at a time.'],
+  [/Multiples|Number theory/i,'Test each option separately against the rule.'],
+  [/Even/i,                'The last digit alone decides whether a number is even or odd.'],
+  [/Comparing/i,           'Compare the biggest place value first.'],
+  [/Money/i,               'Convert everything to cents before you add or subtract.'],
+  [/Properties/i,          'The order of a multiplication does not change the answer.']
+];
+
+function strategyHint(domain){
+  for(const pair of HINT_STRATEGY) if(pair[0].test(domain)) return pair[1];
+  return 'Read the question again slowly and write down what you already know.';
+}
+
+/* Final, strongest hint — narrows the answer without simply giving it. */
+function narrowHint(q){
+  if(q.type === 'multi'){
+    const n = q.answers.length;
+    const wrong = q.choices.filter(c => q.answers.indexOf(c) === -1).slice(0,2);
+    return 'Exactly ' + n + ' option' + (n>1?'s are':' is') + ' correct.' +
+           (wrong.length ? ' You can rule out ' + wrong.join(' and ') + '.' : '');
+  }
+  if(q.type === 'mc'){
+    const wrong = q.choices.filter(c => String(c) !== String(q.answer)).slice(0,2);
+    return wrong.length ? 'You can rule out ' + wrong.join(' and ') + '.'
+                        : 'Check each option against the question one more time.';
+  }
+  const v = Number(q.answer);
+  if(!isFinite(v)) return 'Re-read the question and check what it is asking for.';
+  const digits = String(Math.abs(Math.round(v))).length;
+  const parity = (Math.abs(Math.round(v)) % 2 === 0) ? 'an even' : 'an odd';
+  return 'The answer is ' + parity + ' number with ' + digits + ' digit' + (digits>1?'s':'') + '.';
+}
+
+/* Middle tier when a generator carries no hint of its own. */
+function methodHint(q){
+  if(q.type === 'multi') return 'Test every option separately against the rule — some fit, some do not.';
+  if(q.type === 'mc')    return 'Try each option in turn and keep the one that fits the question.';
+  return 'Estimate roughly what the answer should be, then work it out exactly and compare.';
+}
+
+/* Returns up to 3 hints, ordered from gentle to strong. */
+function buildHints(q){
+  const out = [];
+  const push = h => { if(h && out.indexOf(h) === -1) out.push(h); };
+  push(strategyHint(q.domain || ''));
+  push(q.hint || methodHint(q));
+  push(narrowHint(q));
+  push(methodHint(q));                 // fallback so three tiers are almost always available
+  return out.slice(0,3);
+}
+
 /* =======================================================================
    UNIFIED BUILDER — arithmetic + geometry + olympiad
    ======================================================================= */
@@ -1178,7 +1404,9 @@ function drawPool(pool,n,L){
   while(out.length<n && guard<n*60){
     const g=p[i%p.length]; i++; guard++;
     let q; try{ q=g.f(L); }catch(e){ continue; }
-    if(!q||q.answer===undefined||q.answer===null||q.answer==='') continue;
+    if(!q) continue;
+    if(q.type==='multi'){ if(!Array.isArray(q.answers)||q.answers.length===0) continue; }
+    else if(q.answer===undefined||q.answer===null||q.answer==='') continue;
     if(g.ch) q.ch=g.ch;
     if(q.type==='mc'){
       q.choices=[...new Set(q.choices.map(String))];
@@ -1186,6 +1414,14 @@ function drawPool(pool,n,L){
       q.choices=q.choices.slice(0,4);
       if(!q.choices.includes(String(q.answer))) q.choices[rand(0,3)]=String(q.answer);
       q.answer=String(q.answer);
+    } else if(q.type==='multi'){
+      q.answers=[...new Set(q.answers.map(String))];
+      q.choices=[...new Set(q.choices.map(String))];
+      for(const a of q.answers) if(!q.choices.includes(a)) q.choices.push(a);
+      if(q.choices.length<4||q.answers.length<1||q.answers.length>=q.choices.length) continue;
+      q.choices=shuffle(q.choices).slice(0,6);
+      for(const a of q.answers) if(!q.choices.includes(a)) q.choices.push(a);
+      q.choices=shuffle(q.choices);
     }
     out.push(q);
   }
@@ -1194,9 +1430,11 @@ function drawPool(pool,n,L){
 
 function buildSession(n,L,subject){
   if(subject==='supreme') L=Math.max(L,4);    // supreme content starts at level 4
-  const arith=GEN.filter(g=>g.minL<=L).concat(EXTRAGEN.filter(g=>g.minL<=L));
-  const geo=GEOGEN.filter(g=>g.minL<=L);
-  const oly=OLYGEN.filter(g=>g.minL<=L);
+  const mAll=MULTIGEN.filter(g=>g.minL<=L);
+  const mA=mAll.filter(g=>g.area==='arith'), mG=mAll.filter(g=>g.area==='geo');
+  const arith=GEN.filter(g=>g.minL<=L).concat(EXTRAGEN.filter(g=>g.minL<=L)).concat(mA);
+  const geo=GEOGEN.filter(g=>g.minL<=L).concat(mG);
+  const oly=OLYGEN.filter(g=>g.minL<=L).concat(mAll.filter(g=>g.sup));
   const olyA=oly.filter(g=>g.area==='arith'), olyG=oly.filter(g=>g.area==='geo');
 
   if(subject==='arithmetic') return drawPool(arith.concat(L>=4?olyA:[]),n,L);
@@ -1217,7 +1455,8 @@ function buildSession(n,L,subject){
 
 function bankStats(){
   return {arith:GEN.length+EXTRAGEN.length, geo:GEOGEN.length, oly:OLYGEN.length,
-          total:GEN.length+EXTRAGEN.length+GEOGEN.length+OLYGEN.length};
+          multi:MULTIGEN.length,
+          total:GEN.length+EXTRAGEN.length+GEOGEN.length+OLYGEN.length+MULTIGEN.length};
 }
 
 /* =======================================================================
@@ -1238,11 +1477,15 @@ function cleanNum(v){
 }
 /* names are display-only: strip control chars and cap the length */
 function cleanName(v){
-  return String(v||"").replace(/[\u0000-\u001F\u007F<>]/g,"").trim().slice(0,60) || "Student";
+  return String(v||"").replace(/[ -<>]/g,"").trim().slice(0,60) || "Student";
 }
+
 let mode="practice", subject="all", level=3;
 let QS=[],ANS=[],cur=0,answered=[],tick=null,elapsed=0,remaining=0,limitMin=30,name="Student";
-let nRight=0,nDone=0,startedAt=0;
+let nRight=0,nDone=0;
+let tries=[];           // wrong attempts per question (drives hint reveal)
+let hintsShown=[];      // hints revealed so far per question
+let advanceTimer=null;  // auto-advance handle
 
 /* ---- setup UI ---- */
 (function initPills(){
@@ -1252,14 +1495,15 @@ let nRight=0,nDone=0,startedAt=0;
     '<span class="pill">'+s.arith+' arithmetic</span>'+
     '<span class="pill">'+s.geo+' geometry</span>'+
     '<span class="pill">'+s.oly+' supreme</span>'+
+    '<span class="pill">'+s.multi+' select-all</span>'+
     '<span class="pill">5 levels</span><span class="pill">Timed</span>';
 })();
 
 function tiles(host,items,get,set,cls){
   $(host).innerHTML=items.map(it=>
-    '<button type="button" class="tile '+(cls&&it.oly?'oly':'')+'" data-k="'+it.k+'" aria-pressed="'+(get()===it.k)+'">'+
-    '<b>'+it.name+'</b>'+(it.stars?'<span class="stars">'+it.stars+'</span>':'')+
-    '<small>'+it.desc+'</small></button>').join('');
+    '<button type="button" class="tile '+(cls&&it.oly?'oly':'')+'" data-k="'+esc(it.k)+'" aria-pressed="'+(get()===it.k)+'">'+
+    '<b>'+esc(it.name)+'</b>'+(it.stars?'<span class="stars">'+esc(it.stars)+'</span>':'')+
+    '<small>'+esc(it.desc)+'</small></button>').join('');
   $(host).onclick=e=>{
     const b=e.target.closest(".tile"); if(!b) return;
     set(b.dataset.k);
@@ -1268,7 +1512,7 @@ function tiles(host,items,get,set,cls){
   };
 }
 tiles("modeGrid",[
-  {k:"practice",name:"Practice",desc:"Unlimited questions, instant feedback and hints. A stopwatch tracks your time."},
+  {k:"practice",name:"Practice",desc:"Unlimited questions with up to three hints when you slip. A stopwatch counts your time."},
   {k:"test",name:"Test",desc:"Fixed number of questions with a countdown. Scored at the end, like a real exam."}
 ],()=>mode,v=>mode=v);
 tiles("subjGrid",SUBJECTS.map(s=>({k:s.k,name:s.name,desc:s.desc,oly:s.oly})),()=>subject,v=>subject=v,true);
@@ -1287,8 +1531,8 @@ function refreshSetup(){
   }
   $("lvlNote").textContent=note;
   $("setupHelp").textContent = mode==="practice"
-    ? "Practice: answer as many as you like. The stopwatch counts up; press Finish when you are done."
-    : "Test: the timer counts down and submits automatically at 0:00.";
+    ? "Practice: choose your answer, press Submit, and the next question follows automatically. Get it wrong and a hint appears — up to three."
+    : "Test: choose your answer and press Submit. The next question follows automatically and the timer submits the paper at 0:00.";
 }
 refreshSetup();
 
@@ -1310,6 +1554,10 @@ function startClock(){
 }
 
 /* ---- start ---- */
+function resetArrays(n){
+  ANS=new Array(n).fill(null); answered=new Array(n).fill(false);
+  tries=new Array(n).fill(0);  hintsShown=new Array(n).fill(0);
+}
 $("startBtn").onclick=()=>{
   name=cleanName($("who").value);
   const L = (subject==="supreme") ? Math.max(level,4) : level;
@@ -1318,10 +1566,10 @@ $("startBtn").onclick=()=>{
     const n=+$("qcount").value; limitMin=+$("tmin").value;
     QS=buildSession(n,L,subject);
   } else {
-    QS=buildSession(12,L,subject);       // practice: first batch, extended on demand
+    QS=buildSession(12,L,subject);
   }
-  ANS=new Array(QS.length).fill(null); answered=new Array(QS.length).fill(false);
-  cur=0; nRight=0; nDone=0; startedAt=Date.now();
+  resetArrays(QS.length);
+  cur=0; nRight=0; nDone=0;
   $("setup").classList.add("hide"); $("results").classList.add("hide");
   $("runner").classList.remove("hide");
   $("rWho").textContent=name;
@@ -1333,68 +1581,116 @@ function subjLabel(){return (SUBJECTS.find(s=>s.k===subject)||{}).name;}
 function buildPalette(){
   if(mode==="practice"){$("palette").innerHTML="";return;}
   $("palette").innerHTML=QS.map((q,i)=>'<button type="button" class="dot" data-i="'+i+'">'+(i+1)+'</button>').join('');
-  $("palette").onclick=e=>{const b=e.target.closest(".dot");if(!b)return;cur=+b.dataset.i;render();};
+  $("palette").onclick=e=>{const b=e.target.closest(".dot");if(!b)return;
+    clearTimeout(advanceTimer); cur=+b.dataset.i; render();};
 }
 function syncPalette(){
   [...$("palette").children].forEach((b,i)=>{
-    b.classList.toggle("done",ANS[i]!==null&&ANS[i]!=="");
+    b.classList.toggle("done",answered[i]);
     b.classList.toggle("cur",i===cur);
   });
 }
 
-/* ---- render a question ---- */
+/* ---- selection state helpers ---- */
+function selected(i){                       // always an array
+  const v=ANS[i];
+  if(v===null||v===undefined) return [];
+  return Array.isArray(v)?v:[v];
+}
+function toggleChoice(i){
+  const q=QS[cur];
+  if(answered[cur]&&mode==="practice") return;   // test mode: revision allowed
+  if(q.type==='multi'){
+    let s=selected(cur).slice();
+    const c=q.choices[i];
+    const at=s.indexOf(c);
+    if(at===-1) s.push(c); else s.splice(at,1);
+    ANS[cur]=s;
+  } else {
+    ANS[cur]=q.choices[i];
+  }
+  render();
+}
+
+/* ---- render ---- */
 function render(){
+  clearTimeout(advanceTimer);
   const q=QS[cur];
   const isOly=/Supreme · /.test(q.domain);
+  const locked = answered[cur];               // feedback state (practice)
   $("rMeta").textContent = (mode==="test")
     ? subjLabel()+" · "+APP_LEVELS[level-1].name+" · Question "+(cur+1)+" of "+QS.length
     : subjLabel()+" · "+APP_LEVELS[level-1].name+" · Answered "+nDone+" · Correct "+nRight;
   const pct = mode==="test"
-    ? Math.round(ANS.filter(a=>a!==null&&a!=="").length/QS.length*100)
+    ? Math.round(answered.filter(Boolean).length/QS.length*100)
     : (nDone? Math.round(nRight/nDone*100):0);
   $("prog").style.width=pct+"%";
 
   let h='<span class="tag'+(isOly?' oly':'')+'">'+esc(q.domain)+'</span>';
-  h+='<div class="qtext">'+q.prompt+'</div>';   /* generator-authored, not user input */
+  h+='<div class="qtext">'+q.prompt+'</div>';
   if(q.fig) h+='<div class="figwrap">'+q.fig+'</div>';
-  if(q.type==='mc'){
-    h+='<div class="choices" id="chs">';
+
+  if(q.type==='multi'){
+    h+='<p class="help" style="margin-bottom:.6rem"><strong>Select all that apply.</strong></p>';
+  }
+
+  if(q.type==='mc'||q.type==='multi'){
+    const sel=selected(cur);
+    h+='<div class="choices" id="chs" role="group">';
     q.choices.forEach((c,i)=>{
-      h+='<button type="button" class="choice" data-i="'+i+'" aria-pressed="'+(ANS[cur]===c)+'">'+
-         '<span class="k">'+String.fromCharCode(65+i)+'</span><span>'+esc(c)+'</span></button>';
+      const on = sel.indexOf(c)!==-1;
+      let extra='';
+      if(locked&&mode==="practice"){
+        const isRight = q.type==='multi' ? q.answers.indexOf(c)!==-1 : String(c)===String(q.answer);
+        if(isRight) extra=' ok'; else if(on) extra=' no';
+      }
+      h+='<button type="button" class="choice'+(q.type==='multi'?' multi':'')+extra+'" data-i="'+i+'" aria-pressed="'+on+'"'+
+         (locked&&mode==="practice"?' disabled':'')+'>'+
+         '<span class="k">'+(q.type==='multi'?(on?'✓':'')||'&nbsp;':String.fromCharCode(65+i))+'</span>'+
+         '<span>'+esc(c)+'</span></button>';
     });
     h+='</div>';
   } else {
+    const v=selected(cur)[0];
     h+='<label class="lbl" for="ta" style="margin-top:0">Your answer</label>'+
        '<input type="number" id="ta" inputmode="numeric" placeholder="Type a number" '+
-       'value="'+esc(cleanNum(ANS[cur]))+'" style="max-width:230px">';
-    if(mode==="practice") h+=' <button class="btn" id="checkBtn" type="button" style="margin-left:.5rem">Check</button>';
+       'value="'+esc(cleanNum(v))+'" style="max-width:230px"'+(locked&&mode==="practice"?' disabled':'')+'>';
   }
+
   h+='<div id="fbHost"></div>';
+  h+='<div class="btnrow" style="margin-top:1.2rem"><button class="btn big" id="submitBtn" type="button">'+
+     (locked&&mode==="practice"?'Next question ▶':'Submit answer')+'</button>'+
+     '<span class="help" id="subHelp" style="align-self:center"></span></div>';
   $("qbox").innerHTML=h;
 
   const chs=$("chs");
-  if(chs) chs.onclick=e=>{const b=e.target.closest(".choice");if(!b)return;choose(+b.dataset.i);};
+  if(chs) chs.onclick=e=>{const b=e.target.closest(".choice");if(!b||b.disabled)return;toggleChoice(+b.dataset.i);};
   const ta=$("ta");
-  if(ta){
-    ta.oninput=()=>{ANS[cur]=cleanNum(ta.value); if(mode==="test")syncPalette();};
-    ta.onkeydown=e=>{ if(e.key==="Enter"){ mode==="practice"?checkNum():next(); } };
+  if(ta&&!ta.disabled){
+    ta.oninput=()=>{ANS[cur]=cleanNum(ta.value);};
+    ta.onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); onSubmit(); } };
     ta.focus();
   }
-  const cb=$("checkBtn"); if(cb) cb.onclick=checkNum;
+  $("submitBtn").onclick=onSubmit;
 
   $("prevBtn").classList.toggle("hide",mode==="practice");
-  $("nextBtn").textContent = mode==="practice" ? "Next question ▶"
-                            : (cur===QS.length-1?"Review ▶":"Next ▶");
+  $("nextBtn").classList.toggle("hide",mode==="practice");
   $("prevBtn").disabled = cur===0;
+  $("nextBtn").textContent = cur===QS.length-1?"Review ▶":"Skip ▶";
   if(mode==="test") syncPalette();
-  if(mode==="practice"&&answered[cur]) showFeedback();
+  if(locked&&mode==="practice") showFeedback();
 }
 
+/* ---- answer checking ---- */
+function sameSet(a,b){
+  if(!Array.isArray(a)||!Array.isArray(b)) return false;
+  if(a.length!==b.length) return false;
+  const x=a.map(String).slice().sort(), y=b.map(String).slice().sort();
+  return x.every((v,i)=>v===y[i]);
+}
 function correct(q,a){
-  /* strict: reject non-primitives, blanks and partially-numeric strings so a
-     wrong answer can never score as correct through type juggling */
   if(a===null||a===undefined) return false;
+  if(q.type==='multi') return sameSet(Array.isArray(a)?a:[a], q.answers);
   if(typeof a!=="string" && typeof a!=="number") return false;
   const v=String(a).trim();
   if(v==="") return false;
@@ -1402,59 +1698,110 @@ function correct(q,a){
   if(!/^-?\d+(\.\d+)?$/.test(v)) return false;
   return Number(v)===Number(q.answer);
 }
-function choose(i){
+function hasSelection(){
+  const q=QS[cur], s=selected(cur);
+  if(q.type==='multi') return s.length>0;
+  if(q.type==='mc')    return s.length>0;
+  return cleanNum(s[0])!=="";
+}
+
+/* ---- submit ---- */
+function onSubmit(){
   const q=QS[cur];
-  if(mode==="practice"&&answered[cur]) return;
-  ANS[cur]=q.choices[i];
-  if(mode==="practice"){ markPractice(); }
-  render();
-}
-function checkNum(){
-  if(answered[cur]) return;
-  const v=cleanNum($("ta").value); if(v==="") return;
-  ANS[cur]=v; markPractice(); render();
-}
-function markPractice(){
+
+  /* already marked in practice → the button is "Next question" */
+  if(answered[cur]&&mode==="practice"){ clearTimeout(advanceTimer); goNext(); return; }
+
+  if(!hasSelection()){
+    $("subHelp").textContent = q.type==='multi'
+      ? "Choose at least one option first." : "Enter or choose an answer first.";
+    return;
+  }
+  const right=correct(q,ANS[cur]);
+
+  if(mode==="test"){
+    answered[cur]=true;
+    syncPalette();
+    if(cur===QS.length-1) return finishConfirm();
+    cur++; render();
+    return;
+  }
+
+  /* ---------- practice ---------- */
+  if(right){
+    answered[cur]=true; nDone++; nRight++;
+    render();                              // shows green feedback
+    advanceTimer=setTimeout(goNext,1100);
+    return;
+  }
+
+  /* wrong: reveal the next hint, allow another try (max 3 hints) */
+  tries[cur]++;
+  const hints=buildHints(q);
+  if(hintsShown[cur] < Math.min(3,hints.length)){
+    hintsShown[cur]++;
+    showHints(false);
+    return;
+  }
+  /* hints exhausted → mark wrong, reveal the answer, then move on */
   answered[cur]=true; nDone++;
-  if(correct(QS[cur],ANS[cur])) nRight++;
+  render();
+  advanceTimer=setTimeout(goNext,3200);
 }
-function showFeedback(){
-  const q=QS[cur],ok=correct(q,ANS[cur]);
-  const chs=$("chs");
-  if(chs) [...chs.children].forEach((b,i)=>{
-    const v=q.choices[i];
-    if(String(v)===String(q.answer)) b.classList.add("ok");
-    else if(String(v)===String(ANS[cur])) b.classList.add("no");
-  });
-  let h='<div class="fb '+(ok?'ok':'no')+'">'+(ok?'✅ Correct!':'❌ Not quite — the answer is <b>'+esc(q.answer)+'</b>')+'</div>';
-  if(q.hint) h+='<div class="hintbox"><b>How to think about it:</b> '+q.hint+'</div>';
+
+function showHints(includeAnswer){
+  const q=QS[cur], hints=buildHints(q);
+  let h='<div class="fb no">❌ Not quite — have another go.</div>';
+  for(let i=0;i<hintsShown[cur];i++){
+    h+='<div class="hintbox"><b>Hint '+(i+1)+' of '+Math.min(3,hints.length)+':</b> '+esc(hints[i])+'</div>';
+  }
+  const left=Math.min(3,hints.length)-hintsShown[cur];
+  h+='<p class="help" style="margin-top:.5rem">'+
+     (left>0?('Try again — '+left+' more hint'+(left>1?'s':'')+' available if you need '+(left>1?'them':'it')+'.')
+            :'That was the last hint. One more try, then I will show you the answer.')+'</p>';
   $("fbHost").innerHTML=h;
-  const ta=$("ta"); if(ta) ta.disabled=true;
+  $("subHelp").textContent="";
+}
+
+function showFeedback(){
+  const q=QS[cur], ok=correct(q,ANS[cur]);
+  let h='<div class="fb '+(ok?'ok':'no')+'">'+
+        (ok?'✅ Correct!':'❌ The answer is <b>'+esc(q.type==='multi'?q.answers.join(", "):q.answer)+'</b>')+
+        '</div>';
+  if(!ok){
+    const hints=buildHints(q);
+    for(let i=0;i<hints.length;i++)
+      h+='<div class="hintbox"><b>Hint '+(i+1)+':</b> '+esc(hints[i])+'</div>';
+  }
+  h+='<p class="help" style="margin-top:.6rem">Moving to the next question…</p>';
+  $("fbHost").innerHTML=h;
 }
 
 /* ---- navigation ---- */
-function next(){
-  if(mode==="practice"){
-    if(!answered[cur]){ // require an attempt before moving on
-      if(QS[cur].type==='num') { checkNum(); if(!answered[cur]) return; }
-      else return;
-    }
-    cur++;
-    if(cur>=QS.length){ QS=QS.concat(buildSession(12,level,subject));
-      ANS=ANS.concat(new Array(12).fill(null)); answered=answered.concat(new Array(12).fill(false)); }
-    render();
-  } else {
-    if(cur===QS.length-1) return finishConfirm();
-    cur++; render();
+function goNext(){
+  clearTimeout(advanceTimer);
+  cur++;
+  if(cur>=QS.length){
+    if(mode==="practice"){
+      const extra=buildSession(12,level,subject);
+      QS=QS.concat(extra);
+      ANS=ANS.concat(new Array(extra.length).fill(null));
+      answered=answered.concat(new Array(extra.length).fill(false));
+      tries=tries.concat(new Array(extra.length).fill(0));
+      hintsShown=hintsShown.concat(new Array(extra.length).fill(0));
+    } else { cur=QS.length-1; return finishConfirm(); }
   }
+  render();
 }
-$("nextBtn").onclick=next;
-$("prevBtn").onclick=()=>{ if(cur>0){cur--;render();} };
-$("endBtn").onclick=()=>finishConfirm();
+$("nextBtn").onclick=()=>{ clearTimeout(advanceTimer);
+  if(mode==="test"&&cur===QS.length-1) return finishConfirm();
+  goNext(); };
+$("prevBtn").onclick=()=>{ clearTimeout(advanceTimer); if(cur>0){cur--;render();} };
+$("endBtn").onclick=()=>{ clearTimeout(advanceTimer); finishConfirm(); };
 
 function finishConfirm(){
   if(mode==="test"){
-    const blank=ANS.filter(a=>a===null||a==="").length;
+    const blank=answered.filter(a=>!a).length;
     if(blank>0&&!confirm("You have "+blank+" unanswered question(s). Submit anyway?")) return;
   }
   finish(false);
@@ -1462,7 +1809,7 @@ function finishConfirm(){
 
 /* ---- results ---- */
 function finish(auto){
-  clearInterval(tick);
+  clearInterval(tick); clearTimeout(advanceTimer);
   const used = mode==="test" ? (limitMin*60-remaining) : elapsed;
   let score,total;
   if(mode==="test"){ total=QS.length; score=QS.reduce((s,q,i)=>s+(correct(q,ANS[i])?1:0),0); }
@@ -1470,7 +1817,6 @@ function finish(auto){
   const pct = total? Math.round(score/total*100) : 0;
   const grade = pct>=90?"Excellent! ⭐⭐⭐":pct>=75?"Great work! ⭐⭐":pct>=60?"Good effort! ⭐":"Keep practising 💪";
 
-  // per-topic breakdown
   const byTopic={};
   QS.forEach((q,i)=>{
     if(mode==="practice"&&!answered[i]) return;
@@ -1481,6 +1827,8 @@ function finish(auto){
   const rows=Object.entries(byTopic).sort((a,b)=>a[0].localeCompare(b[0]))
     .map(([t,v])=>'<tr><td>'+esc(t)+'</td><td>'+v.c+' / '+v.n+'</td><td>'+Math.round(v.c/v.n*100)+'%</td></tr>').join('');
 
+  let hintsUsed=0; hintsShown.forEach(v=>hintsUsed+=v);
+
   let h='<h2 style="font-family:var(--font-display);font-weight:500;font-size:1.9rem">'+esc(name)+"'s results</h2>";
   h+='<p class="help">'+esc(subjLabel())+' · '+esc(APP_LEVELS[level-1].name)+' · '+
      (mode==="test"?"Test":"Practice")+' · time '+fmt(used)+(auto?" (time expired)":"")+'</p>';
@@ -1488,8 +1836,10 @@ function finish(auto){
      '<div class="score">'+score+' / '+total+'</div>'+
      '<div><span class="badge '+(pct>=60?'ok':'no')+'">'+pct+'%</span>'+
      '<div class="help" style="margin-top:.35rem">'+grade+'</div></div></div>';
-  if(pct>=90&&level<5) h+='<p class="badge ok">Ready to try '+APP_LEVELS[level].name+'! 🚀</p>';
-  else if(pct<60&&level>1) h+='<p class="badge no">Try '+APP_LEVELS[level-2].name+' to build confidence.</p>';
+  if(mode==="practice"&&hintsUsed>0)
+    h+='<p class="help">Hints used: '+hintsUsed+'</p>';
+  if(pct>=90&&level<5) h+='<p class="badge ok">Ready to try '+esc(APP_LEVELS[level].name)+'! 🚀</p>';
+  else if(pct<60&&level>1) h+='<p class="badge no">Try '+esc(APP_LEVELS[level-2].name)+' to build confidence.</p>';
 
   if(rows) h+='<h3 style="margin-top:1.6rem;font-size:1.05rem">By topic</h3>'+
     '<table class="bd"><tr><th>Topic</th><th>Score</th><th>%</th></tr>'+rows+'</table>';
@@ -1503,14 +1853,18 @@ function finish(auto){
   QS.forEach((q,i)=>{
     if(mode==="practice"&&!answered[i]) return;
     const ok=correct(q,ANS[i]);
-    const ua=(ANS[i]===null||ANS[i]==="")?"<em>(blank)</em>":esc(ANS[i]);
+    const sel=selected(i);
+    const ua=sel.length?esc(sel.join(", ")):"<em>(blank)</em>";
+    const right=q.type==='multi'?q.answers.join(", "):q.answer;
     h+='<div class="rev '+(ok?'y':'n')+'"><div><b>'+(i+1)+'.</b> <span class="tag'+
        (/Supreme · /.test(q.domain)?' oly':'')+'">'+esc(q.domain)+'</span></div>'+
        '<div class="qtext" style="font-size:1.02rem">'+q.prompt+'</div>'+
        (q.fig?'<div class="figwrap">'+q.fig+'</div>':'')+
        '<div>Your answer: <b>'+ua+'</b> '+(ok?'<span class="badge ok">Correct</span>'
-         :'<span class="badge no">Answer: '+esc(q.answer)+'</span>')+'</div>'+
-       (q.hint&&!ok?'<div class="hintbox">'+q.hint+'</div>':'')+'</div>';
+         :'<span class="badge no">Answer: '+esc(right)+'</span>')+'</div>';
+    if(!ok){ const hs=buildHints(q);
+      h+='<div class="hintbox"><b>How to solve it:</b> '+esc(hs[hs.length-1])+'</div>'; }
+    h+='</div>';
   });
   h+='</div>';
 
