@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-4P6042BtP3TMXMaEeIivPXVA70ZC+gkll8YreFIVmiw='; style-src 'sha256-XipC+PRePVfuvxKogBgOdn//yseKd1EAsccrIV2XoYk='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-EPm39IWe1J37QRTs8gdeJ2xX6mtn17eYWSoFT/UYYOE='; style-src 'sha256-owz0DuS86pd23T0xO7SU6NU3fCsIQOzRLbKUS6YdjDU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -37,6 +37,7 @@
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--font-sans);background:var(--surface);color:var(--ink);line-height:1.6;
      -webkit-font-smoothing:antialiased}
+main,footer.ft{position:relative;z-index:1}
 img,svg{display:block;max-width:100%}
 .wrap{width:min(100% - 2rem,980px);margin-inline:auto}
 @media(max-width:600px){.wrap{width:min(100% - 1.25rem,980px)}}
@@ -45,25 +46,28 @@ h1,h2,h3{line-height:1.18;font-weight:650;text-wrap:balance}
 .skip-link{position:absolute;left:-9999px;background:var(--ink);color:#fff;padding:.7rem 1.1rem;z-index:99}
 .skip-link:focus{left:0}
 
-/* header */
-.topbar{background:var(--night);color:#fff;padding:.9rem 0;position:sticky;top:0;z-index:50;
-        border-bottom:1px solid var(--night-rule)}
-.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.05rem;color:#fff;text-decoration:none}
-.logo span small{display:block;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;
-                 text-transform:uppercase;color:var(--night-muted);font-weight:500}
-.topbar a.home{color:#8ee6f6;text-decoration:none;font-size:.88rem}
-.topbar a.home:hover{text-decoration:underline}
+/* masthead */
+.masthead{position:relative;overflow:hidden;background:#0d1b36;color:#fff;
+  border-bottom:1px solid var(--night-rule);z-index:1}
+.mast-art{position:absolute;inset:0;pointer-events:none}
+.mast-art svg{width:100%;height:100%;display:block}
+.mast-inner{position:relative;z-index:1;
+  padding:clamp(2.3rem,1.9rem+3vw,3.9rem) 0 clamp(1.9rem,1.5rem+2.4vw,3rem)}
+.masthead h1{font-family:var(--font-display);font-weight:500;letter-spacing:-.022em;
+  font-size:clamp(2rem,1.45rem+2.7vw,3.35rem);color:#fff;line-height:1.06;
+  text-shadow:0 2px 18px rgba(4,12,28,.55)}
+.mast-sub{margin-top:.65rem;color:#c2d6f5;letter-spacing:.01em;
+  font-size:clamp(.94rem,.88rem+.35vw,1.1rem);text-shadow:0 1px 10px rgba(4,12,28,.5)}
 
-/* hero */
-.hero{background:linear-gradient(160deg,#060b18,#0d1a33);color:#fff;padding:2.4rem 0 2.6rem;
-      border-bottom:1px solid var(--night-rule)}
-.hero h1{font-family:var(--font-display);font-size:clamp(1.9rem,1.4rem+2.2vw,2.9rem);font-weight:500;
-         letter-spacing:-.02em}
-.hero p{color:#c3d2ee;margin-top:.7rem;max-width:60ch}
-.pillrow{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
-.pill{background:rgba(255,255,255,.09);border:1px solid var(--night-rule);border-radius:99px;
-      padding:.3rem .8rem;font-size:.78rem;font-weight:600;color:#dbe6ff}
+/* soft mathematical objects in the empty side margins */
+body::before,body::after{content:"";position:fixed;top:0;bottom:0;width:190px;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%201500%22%20width%3D%22200%22%20height%3D%221500%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22mtl%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffffff%22%2F%3E%3Cstop%20offset%3D%2235%25%22%20stop-color%3D%22%23e9eef6%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ccd8e8%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22mtl2%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23eef2f8%22%2F%3E%3Cstop%20offset%3D%2260%25%22%20stop-color%3D%22%23dce4ef%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23c4d1e2%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22orb%22%20cx%3D%2234%25%22%20cy%3D%2228%25%22%20r%3D%2278%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffffff%22%2F%3E%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%23dee6f2%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23b6c6dc%22%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22faceL%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23eaf0f8%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ccd8e8%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22faceR%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23c4d2e5%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23aec0d7%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3Cfilter%20id%3D%22soft%22%20x%3D%22-45%25%22%20y%3D%22-45%25%22%20width%3D%22190%25%22%20height%3D%22190%25%22%3E%0A%20%20%20%20%20%20%3CfeDropShadow%20dx%3D%220%22%20dy%3D%224%22%20stdDeviation%3D%225%22%20flood-color%3D%22%2363799b%22%20flood-opacity%3D%22.20%22%2F%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3Cg%20filter%3D%22url%28%23soft%29%22%20stroke%3D%22%23a9b8cd%22%20stroke-width%3D%221.1%22%3E%0A%0A%20%20%20%20%3C%21--%201%20%C2%B7%20PROTRACTOR%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C80%29%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-60%200%20A60%2060%200%200%201%2060%200%20Z%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-39%200%20A39%2039%200%200%201%2039%200%22%20fill%3D%22none%22%20stroke-opacity%3D%22.5%22%2F%3E%0A%20%20%20%20%20%20%3Cg%20stroke-opacity%3D%22.42%22%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M-52%20-30%20l-6%20-3.5%20M-30%20-52%20l-3.5%20-6%20M0%20-60%20v-7%20M30%20-52%20l3.5%20-6%20M52%20-30%20l6%20-3.5%22%2F%3E%0A%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%3Ccircle%20r%3D%223.4%22%20fill%3D%22%23fff%22%20stroke-opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%202%20%C2%B7%20RULER%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C230%29%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22-25%22%20y%3D%22-68%22%20width%3D%2250%22%20height%3D%22140%22%20rx%3D%227%22%20fill%3D%22url%28%23mtl2%29%22%2F%3E%0A%20%20%20%20%20%20%3Cg%20stroke-opacity%3D%22.48%22%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M-25%20-52%20h17%20M-25%20-36%20h10%20M-25%20-20%20h10%20M-25%20-4%20h10%20M-25%2012%20h17%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20M-25%2028%20h10%20M-25%2044%20h10%20M-25%2060%20h10%22%2F%3E%0A%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M13%20-68%20v140%22%20stroke-opacity%3D%22.22%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%203%20%C2%B7%20SET%20SQUARE%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C380%29%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-56%2044%20L56%2044%20L-56%20-42%20Z%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-56%2044%20L32%2044%20L-56%20-25%20Z%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.5%22%20stroke%3D%22none%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-56%2029%20h15%20v15%22%20fill%3D%22none%22%20stroke-opacity%3D%22.6%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%204%20%C2%B7%20COMPASS%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C530%29%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20-58%20L-29%2050%22%20stroke%3D%22%239fb0c8%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20-58%20L31%2050%22%20stroke%3D%22%23bacadd%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cy%3D%22-58%22%20r%3D%228%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-37%2058%20l8%20-14%20l6%205%20Z%22%20fill%3D%22url%28%23mtl2%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-29%2058%20A60%2038%200%200%200%2033%2058%22%20fill%3D%22none%22%20stroke-opacity%3D%22.28%22%20stroke-dasharray%3D%224%206%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%205%20%C2%B7%20BALANCE%20SCALE%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C680%29%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20-52%20v78%22%20stroke%3D%22%239fb0c8%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-56%20-46%20H56%22%20stroke%3D%22%239fb0c8%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-56%20-46%20v14%20M56%20-46%20v14%22%20stroke-opacity%3D%22.45%22%20fill%3D%22none%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-78%20-32%20A22%2016%200%200%200%20-34%20-32%20Z%22%20fill%3D%22url%28%23mtl2%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M34%20-32%20A22%2016%200%200%200%2078%20-32%20Z%22%20fill%3D%22url%28%23mtl2%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-30%2030%20H30%20l10%2022%20H-40%20Z%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cy%3D%22-52%22%20r%3D%226%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%206%20%C2%B7%20SPHERE%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C835%29%22%3E%0A%20%20%20%20%20%20%3Ccircle%20r%3D%2248%22%20fill%3D%22url%28%23orb%29%22%2F%3E%0A%20%20%20%20%20%20%3Cellipse%20rx%3D%2248%22%20ry%3D%2215%22%20fill%3D%22none%22%20stroke-opacity%3D%22.36%22%2F%3E%0A%20%20%20%20%20%20%3Cellipse%20rx%3D%2215%22%20ry%3D%2248%22%20fill%3D%22none%22%20stroke-opacity%3D%22.26%22%2F%3E%0A%20%20%20%20%20%20%3Cellipse%20cx%3D%22-16%22%20cy%3D%22-16%22%20rx%3D%2215%22%20ry%3D%2210%22%20fill%3D%22%23fff%22%20fill-opacity%3D%22.55%22%20stroke%3D%22none%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20transform%3D%22rotate%28-28%20-16%20-16%29%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%207%20%C2%B7%20PYRAMID%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C985%29%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20-62%20L52%2032%20L-52%2032%20Z%22%20fill%3D%22url%28%23faceL%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20-62%20L52%2032%20L15%2044%20Z%22%20fill%3D%22url%28%23faceR%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-52%2032%20L15%2044%22%20fill%3D%22none%22%20stroke-opacity%3D%22.38%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%208%20%C2%B7%20CUBE%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C1135%29%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-36%20-16%20L-15%20-38%20L37%20-38%20L16%20-16%20Z%22%20fill%3D%22url%28%23faceR%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M16%20-16%20L37%20-38%20L37%2020%20L16%2042%20Z%22%20fill%3D%22url%28%23faceL%29%22%2F%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22-36%22%20y%3D%22-16%22%20width%3D%2252%22%20height%3D%2258%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%209%20%C2%B7%20PI%20%20%28drawn%20as%20paths%20so%20no%20font%20is%20needed%29%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C1285%29%22%20fill%3D%22url%28%23mtl%29%22%20stroke-opacity%3D%22.55%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-42%20-28%20H42%20v14%20H-42%20Z%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-24%20-14%20h16%20v54%20q0%208%20-9%208%20h-9%20q9%20-4%209%20-12%20Z%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M12%20-14%20h16%20v46%20q0%2012%2012%2014%20h-16%20q-12%20-4%20-12%20-16%20Z%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%20%20%3C%21--%2010%20%C2%B7%20SQUARE%20with%20diagonal%20%2B%20EULER%27S%20e%20--%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate%28100%2C1425%29%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22-52%22%20y%3D%22-34%22%20width%3D%2266%22%20height%3D%2266%22%20rx%3D%224%22%20fill%3D%22url%28%23mtl%29%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-52%2032%20L14%20-34%22%20fill%3D%22none%22%20stroke-opacity%3D%22.4%22%2F%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M-52%2018%20h14%20v14%22%20fill%3D%22none%22%20stroke-opacity%3D%22.45%22%2F%3E%0A%20%20%20%20%20%20%3C%21--%20Euler%27s%20e%2C%20drawn%20as%20strokes%20so%20it%20is%20always%20legible%20--%3E%0A%20%20%20%20%20%20%3Cg%20transform%3D%22translate%2844%2C2%29%22%20fill%3D%22none%22%20stroke%3D%22%23b3c2d6%22%20stroke-width%3D%228%22%0A%20%20%20%20%20%20%20%20%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-opacity%3D%22.95%22%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M-17%202%20H15%20A17%2017%200%201%200%207%2019%22%2F%3E%0A%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3C%2Fg%3E%0A%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E");background-repeat:repeat-y;
+  background-position:center top;background-size:190px auto;
+  pointer-events:none;z-index:0;opacity:.85}
+body::before{left:0}
+body::after{right:0;transform:scaleX(-1);background-position:center -170px}
+@media (max-width:1400px){body::before,body::after{display:none}}
+@media (prefers-reduced-motion:no-preference){}
 
 /* cards / layout */
 .card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:1.5rem;
@@ -156,29 +160,136 @@ footer.ft{background:var(--night);color:var(--night-muted);padding:1.6rem 0;marg
           font-size:.85rem}
 footer.ft a{color:#b9c9e8}
 .hide{display:none !important}
-@media print{.topbar,.hero,.btnrow,footer.ft{display:none}}
+@media print{.masthead,.btnrow,footer.ft{display:none}}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#app">Skip to the app</a>
 
-<header class="topbar">
-  <div class="wrap">
-    <span class="logo">
-      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwYjE0MjgiLz48Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDZiNmQ0IiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMjAgMzJoMjRNMzIgMjB2MjQiIHN0cm9rZT0iI2E1ZjNmYyIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSI2IiBmaWxsPSIjN2MzYWVkIi8+PC9zdmc+" alt="" width="26" height="26">
-      <span>Md Kausar Hamid Miji<small>Math Project · PreK–12</small></span>
-    </span>
+
+
+<header class="masthead">
+  <div class="mast-art" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 280" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%"  stop-color="#0d1b36"/>
+          <stop offset="45%" stop-color="#14315f"/>
+          <stop offset="100%" stop-color="#0a1730"/>
+        </linearGradient>
+        <radialGradient id="glowA" cx="20%" cy="15%" r="60%">
+          <stop offset="0%" stop-color="#3b82f6" stop-opacity=".30"/>
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glowB" cx="82%" cy="80%" r="55%">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity=".26"/>
+          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="ballR" cx="35%" cy="30%" r="75%">
+          <stop offset="0%"  stop-color="#a5c8ff" stop-opacity=".55"/>
+          <stop offset="60%" stop-color="#4f80c8" stop-opacity=".30"/>
+          <stop offset="100%" stop-color="#0f2444" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="pyrL" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#93b4e8" stop-opacity=".40"/>
+          <stop offset="100%" stop-color="#93b4e8" stop-opacity=".14"/>
+        </linearGradient>
+        <linearGradient id="pyrR" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#5b81bd" stop-opacity=".30"/>
+          <stop offset="100%" stop-color="#5b81bd" stop-opacity=".10"/>
+        </linearGradient>
+        <linearGradient id="vig" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#08132a" stop-opacity="0"/>
+          <stop offset="55%" stop-color="#08132a" stop-opacity=".10"/>
+          <stop offset="100%" stop-color="#08132a" stop-opacity=".34"/>
+        </linearGradient>
+        <pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse">
+          <path d="M46 0H0V46" fill="none" stroke="#9ec2ff" stroke-opacity=".085" stroke-width="1"/>
+        </pattern>
+      </defs>
+    
+      <!-- base -->
+      <rect fill="url(#sky)"/>
+      <rect fill="url(#grid)"/>
+      <rect fill="url(#glowA)"/>
+      <rect fill="url(#glowB)"/>
+    
+      <!-- ================= LEFT: compass construction ================= -->
+      <g stroke="#a9c9ff" fill="none" stroke-opacity=".30" transform="translate(-42,0) scale(0.92) translate(0,10)">
+        <circle cx="150" cy="140" r="74" stroke-width="1.4"/>
+        <circle cx="150" cy="140" r="52" stroke-width="1" stroke-dasharray="4 5" stroke-opacity=".26"/>
+        <path d="M150 66 L150 214 M76 140 L224 140" stroke-width="1" stroke-opacity=".2"/>
+        <!-- inscribed triangle -->
+        <path d="M150 66 L214 177 L86 177 Z" stroke-width="1.5" stroke-opacity=".42"/>
+      </g>
+      <!-- compass legs -->
+      <g stroke="#cfe0ff" stroke-opacity=".40" stroke-linecap="round" fill="none" transform="translate(-42,0) scale(0.92) translate(0,10)">
+        <path d="M150 52 L118 150" stroke-width="3"/>
+        <path d="M150 52 L186 150" stroke-width="3"/>
+        <path d="M150 44 L150 54" stroke-width="5"/>
+      </g>
+      <g transform="translate(-42,0) scale(0.92) translate(0,10)"><circle cx="150" cy="44" r="6" fill="#dbeafe" fill-opacity=".45"/><circle cx="118" cy="152" r="3.4" fill="#dbeafe" fill-opacity=".4"/></g>
+    
+      <!-- ================= RIGHT: solids ================= -->
+      <!-- sphere with soft shading -->
+      <g transform="translate(1210,96)">
+        <circle r="46" fill="url(#ballR)"/>
+        <circle r="46" fill="none" stroke="#bcd6ff" stroke-opacity=".38" stroke-width="1.3"/>
+        <ellipse rx="46" ry="15" fill="none" stroke="#bcd6ff" stroke-opacity=".22" stroke-width="1"/>
+        <ellipse rx="15" ry="46" fill="none" stroke="#bcd6ff" stroke-opacity=".16" stroke-width="1"/>
+      </g>
+      <!-- pyramid -->
+      <g transform="translate(1088,214)">
+        <path d="M0 -78 L58 0 L-58 0 Z" fill="url(#pyrL)" stroke="#bcd6ff" stroke-opacity=".34" stroke-width="1.3"/>
+        <path d="M0 -78 L58 0 L18 14 Z" fill="url(#pyrR)" stroke="#bcd6ff" stroke-opacity=".22" stroke-width="1"/>
+        <path d="M-58 0 L18 14" stroke="#bcd6ff" stroke-opacity=".18" stroke-width="1" fill="none"/>
+      </g>
+      <!-- cube -->
+      <g transform="translate(1300,206)" stroke="#bcd6ff" stroke-opacity=".32" fill="none" stroke-width="1.3">
+        <rect x="-34" y="-34" width="52" height="52" fill="#93b4e8" fill-opacity=".10"/>
+        <path d="M-34 -34 L-16 -52 L36 -52 L18 -34 M18 -34 L18 18 L36 0 L36 -52"/>
+      </g>
+    
+      <!-- ================= scattered glyphs ================= -->
+      <g fill="#c8dcff" font-family="Georgia,'Times New Roman',serif" font-style="italic">
+        <text x="330" y="72"  font-size="46" fill-opacity=".11">π</text>
+        <text x="1010" y="70" font-size="40" fill-opacity=".14">e</text>
+        <text x="268" y="232" font-size="34" fill-opacity=".09">√</text>
+        <text x="960" y="238" font-size="34" fill-opacity=".12">Σ</text>
+        <text x="430" y="248" font-size="30" fill-opacity=".07">∞</text>
+      </g>
+    
+      <!-- angle mark -->
+      <g transform="translate(232,214) scale(.85)" stroke="#a9c9ff" fill="none" stroke-opacity=".22">
+        <path d="M0 0 L92 0 M0 0 L66 -58" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M30 0 A30 30 0 0 0 21 -21" stroke-width="1.2"/>
+      </g>
+    
+      <!-- ruler strip along the bottom -->
+      <g stroke="#a9c9ff" stroke-opacity=".22">
+        <path d="M0 268 H1400" stroke-width="1"/>
+        <g stroke-width="1">
+          <path d="M40 268 v-12 M80 268 v-7 M120 268 v-7 M160 268 v-7 M200 268 v-12
+                   M240 268 v-7 M280 268 v-7 M320 268 v-7 M360 268 v-12
+                   M400 268 v-7 M440 268 v-7 M480 268 v-7 M520 268 v-12
+                   M560 268 v-7 M600 268 v-7 M640 268 v-7 M680 268 v-12
+                   M720 268 v-7 M760 268 v-7 M800 268 v-7 M840 268 v-12
+                   M880 268 v-7 M920 268 v-7 M960 268 v-7 M1000 268 v-12
+                   M1040 268 v-7 M1080 268 v-7 M1120 268 v-7 M1160 268 v-12
+                   M1200 268 v-7 M1240 268 v-7 M1280 268 v-7 M1320 268 v-12
+                   M1360 268 v-7"/>
+        </g>
+      </g>
+    
+      <!-- smooth vignette so text stays readable (no hard seam) -->
+      <rect fill="url(#vig)"/>
+    </svg>
+  </div>
+  <div class="wrap mast-inner">
+    <h1>Grade&nbsp;3 Mathematics</h1>
+    <p class="mast-sub">Practice &amp; Test &nbsp;·&nbsp; Arithmetic &nbsp;·&nbsp; Geometry &nbsp;·&nbsp; Supreme</p>
   </div>
 </header>
-
-<section class="hero">
-  <div class="wrap">
-    <h1>Grade 3 Math — Practice &amp; Test</h1>
-    <p>Arithmetic, geometry and Supreme (competition) problems across five levels. Every question is
-       built fresh each time, so no two attempts are ever the same.</p>
-    <div class="pillrow" id="statPills"></div>
-  </div>
-</section>
 
 <main id="app">
 
@@ -1488,16 +1599,6 @@ let hintsShown=[];      // hints revealed so far per question
 let advanceTimer=null;  // auto-advance handle
 
 /* ---- setup UI ---- */
-(function initPills(){
-  const s=bankStats();
-  $("statPills").innerHTML=
-    '<span class="pill">'+s.total+' question generators</span>'+
-    '<span class="pill">'+s.arith+' arithmetic</span>'+
-    '<span class="pill">'+s.geo+' geometry</span>'+
-    '<span class="pill">'+s.oly+' supreme</span>'+
-    '<span class="pill">'+s.multi+' select-all</span>'+
-    '<span class="pill">5 levels</span><span class="pill">Timed</span>';
-})();
 
 function tiles(host,items,get,set,cls){
   $(host).innerHTML=items.map(it=>
