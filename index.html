@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-1u+qn1QJdMBP/fFC5QzyfvdZRfuLsr2Sq7mrBg/UTBI='; style-src 'sha256-y44tMwoJ5vzhiN+ce1w2q/8ZzzzFNAaqt+NHMsq1bGg='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-v9T3ADzq4iQov9Vs26YZSCTlL9ZPwIPClqqfyokTNyA='; style-src 'sha256-XGy1nKNJWk/uv7OKyWQFieGorW6nYNR4t+CYmJ03mJU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -185,6 +185,83 @@ footer.ft{background:var(--night);color:var(--night-muted);padding:1.6rem 0;marg
 footer.ft a{color:#b9c9e8}
 .hide{display:none !important}
 @media print{.masthead,.btnrow,footer.ft{display:none}}
+
+
+/* ---------- colorful refresh ---------- */
+body{
+  background:
+    radial-gradient(circle at 8% 12%,rgba(14,165,233,.12),transparent 26rem),
+    radial-gradient(circle at 92% 20%,rgba(168,85,247,.12),transparent 25rem),
+    radial-gradient(circle at 18% 82%,rgba(34,197,94,.10),transparent 23rem),
+    linear-gradient(180deg,#f7fbff 0%,#fff8fb 48%,#f8fff9 100%);
+}
+.masthead{
+  background:linear-gradient(120deg,#14265a 0%,#3b1b7a 45%,#075985 100%);
+}
+.card{
+  border-color:#dbeafe;
+  box-shadow:0 12px 30px rgba(37,99,235,.08),0 3px 8px rgba(124,58,237,.06);
+}
+.welcome{
+  background:linear-gradient(135deg,rgba(239,246,255,.96),rgba(250,245,255,.96) 48%,rgba(240,253,244,.96));
+  border-color:#c7d2fe;
+}
+.quotecard{
+  background:linear-gradient(135deg,#fff7ed 0%,#fff 48%,#f5f3ff 100%);
+  border-color:#fed7aa;
+}
+.card:nth-of-type(3){background:linear-gradient(135deg,#f0fdf4,#ffffff 55%,#ecfeff)}
+.card:nth-of-type(4){background:linear-gradient(135deg,#eff6ff,#ffffff 52%,#faf5ff)}
+.kicker{color:#7c3aed}
+.bigquote{border-left-color:#f59e0b}
+.q-by{color:#7c3aed}
+.fcard{
+  background:linear-gradient(145deg,#ffffff,#f8fbff);
+  border-color:#dbeafe;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),border-color .2s var(--ease);
+}
+.fcard:nth-child(4n+1){border-top:4px solid #0ea5e9}
+.fcard:nth-child(4n+2){border-top:4px solid #22c55e}
+.fcard:nth-child(4n+3){border-top:4px solid #f59e0b}
+.fcard:nth-child(4n){border-top:4px solid #a855f7}
+.fcard:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(15,23,42,.10)}
+.fico{color:#7c3aed}
+.btn{
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  box-shadow:0 7px 18px rgba(79,70,229,.20);
+}
+.btn:hover{background:linear-gradient(135deg,#1d4ed8,#6d28d9);transform:translateY(-1px)}
+.btn.sec{
+  background:linear-gradient(135deg,#ecfeff,#f5f3ff);
+  color:#312e81;
+  border:1px solid #c4b5fd;
+  box-shadow:none;
+}
+.btn.sec:hover{background:linear-gradient(135deg,#cffafe,#ede9fe)}
+.tile{
+  background:linear-gradient(145deg,#fff,#f8fafc);
+  border-color:#dbeafe;
+}
+.tile:hover{border-color:#60a5fa;box-shadow:0 8px 20px rgba(37,99,235,.10);transform:translateY(-2px)}
+.tile[aria-pressed="true"]{
+  border-color:#2563eb;
+  background:linear-gradient(135deg,#dbeafe,#ede9fe);
+  box-shadow:0 0 0 2px #bfdbfe,0 8px 22px rgba(79,70,229,.13);
+}
+.tile.oly[aria-pressed="true"]{
+  border-color:#9333ea;
+  background:linear-gradient(135deg,#fae8ff,#ede9fe);
+  box-shadow:0 0 0 2px #e9d5ff,0 8px 22px rgba(147,51,234,.13);
+}
+.timer{background:linear-gradient(135deg,#ffffff,#eff6ff);border-color:#bfdbfe;color:#1d4ed8}
+.bar{background:#e0e7ff}.bar>div{background:linear-gradient(90deg,#22c55e,#06b6d4,#3b82f6)}
+.choice:hover{border-color:#60a5fa;background:#f8fbff}
+.choice[aria-pressed="true"]{border-color:#7c3aed;background:linear-gradient(135deg,#eff6ff,#f5f3ff)}
+.tag{background:linear-gradient(135deg,#dbeafe,#cffafe);color:#075985}
+.tag.oly{background:linear-gradient(135deg,#fae8ff,#ede9fe);color:#7e22ce}
+.score{background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
+
 </style>
 </head>
 <body>
@@ -1707,7 +1784,7 @@ function cleanNum(v){
 }
 /* names are display-only: strip control chars and cap the length */
 function cleanName(v){
-  return String(v||"").replace(/[ -<>]/g,"").trim().slice(0,60) || "Student";
+  return String(v||"").replace(/[\x00-\x1F\x7F<>]/g,"").trim().slice(0,60) || "Student";
 }
 
 let mode="practice", subject="all", level=3;
@@ -2066,7 +2143,7 @@ function finish(auto){
   h+='<div class="btnrow" style="margin-top:1.6rem">'+
      '<button class="btn" type="button" data-go="home">New session 🔄</button>'+
      '<button class="btn sec" type="button" id="revBtn">Show / hide review</button>'+
-     '<button class="btn sec" type="button" onclick="window.print()">Print</button></div>';
+     '<button class="btn sec" type="button" id="printBtn">Print</button></div>';
 
   h+='<div id="rev" class="hide" style="margin-top:1.2rem">';
   QS.forEach((q,i)=>{
@@ -2089,6 +2166,7 @@ function finish(auto){
 
   $("resultCard").innerHTML=h;
   $("revBtn").onclick=()=>$("rev").classList.toggle("hide");
+  const printBtn=$("printBtn"); if(printBtn) printBtn.onclick=()=>window.print();
   show("results");
   window.scrollTo(0,0);
 }
