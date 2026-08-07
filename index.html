@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lHszBobZ6iKREIjnxWHDEq2e4DyYlrPqKHKpPXBTC2A='; style-src 'sha256-acYyTBLBsgXTpefx9OSEw7oBtTe7oP0uvfNEe1NkgD4='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-2kPas5sYwaDeH6C6J4K/1UbagJm9EpklsKofrpnXWkw='; style-src 'sha256-PLFgoCUJwk16p8nJEstruTZPvJ2MdYvYCIB8NZpje5g='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -80,6 +80,8 @@ h1,h2,h3{line-height:1.18;font-weight:650;text-wrap:balance}
 .check input{width:18px;height:18px;margin-top:.15rem;flex:0 0 auto;accent-color:var(--brand)}
 .notice{background:#fffbeb;border-left:4px solid var(--amber);border-radius:8px;padding:.8rem 1rem;
   font-size:.88rem;color:#78350f;margin:.4rem 0 1.1rem}
+.notice.minimal{background:#f0fdf4;border-left-color:var(--green);color:#166534}
+.hintline{display:block;color:var(--muted);font-size:.78rem;margin-top:-.55rem}
 .notice.demo{background:#eff6ff;border-left-color:var(--brand);color:#0b3b8c}
 .codepill{font-family:var(--font-mono);font-weight:700;background:#fff;border:1px solid var(--rule);
   border-radius:7px;padding:.1rem .5rem;letter-spacing:.16em}
@@ -386,35 +388,28 @@ footer.ft a{color:#b9c9e8}
       <p class="kicker">Create an account</p>
       <h2 class="wel-h sm">Register</h2>
       <p class="help" id="regIntro">All fields marked <span class="req">*</span> are required.
-         A parent or guardian must give permission for a child to use this site.</p>
+         A parent or guardian must set up the account and give permission.</p>
 
       <div class="notice" id="modeNotice" hidden></div>
 
       <form id="regForm" novalidate autocomplete="on">
+        <p class="notice minimal"><b>We ask for as little as possible.</b> The account belongs to
+          the parent or guardian. We do not collect a surname, a phone number, or an email
+          address for the child.</p>
+
         <div class="fgrid">
-          <label class="field"><span>Student's full name <span class="req">*</span></span>
-            <input type="text" id="rName" name="student" autocomplete="name" maxlength="60" required>
+          <label class="field"><span>Child's first name <span class="req">*</span></span>
+            <input type="text" id="rName" name="childName" autocomplete="off" maxlength="30" required>
             <em class="err" id="eName"></em></label>
 
-          <label class="field"><span>Age <span class="req">*</span></span>
+          <label class="field"><span>Child's age <span class="req">*</span></span>
             <input type="number" id="rAge" name="age" min="4" max="18" inputmode="numeric" required>
             <em class="err" id="eAge"></em></label>
 
-          <label class="field"><span>Email address <span class="req">*</span></span>
-            <input type="email" id="rEmail" name="email" autocomplete="email" maxlength="120" required>
-            <em class="err" id="eEmail"></em></label>
-
-          <label class="field"><span>Phone number <span class="req">*</span></span>
-            <input type="tel" id="rPhone" name="phone" autocomplete="tel" maxlength="24" required>
-            <em class="err" id="ePhone"></em></label>
-
-          <label class="field"><span>Parent / guardian name <span class="req">*</span></span>
-            <input type="text" id="rGuardian" name="guardian" maxlength="60" required>
-            <em class="err" id="eGuardian"></em></label>
-
           <label class="field"><span>Parent / guardian email <span class="req">*</span></span>
-            <input type="email" id="rGEmail" name="guardianEmail" maxlength="120" required>
-            <em class="err" id="eGEmail"></em></label>
+            <input type="email" id="rEmail" name="email" autocomplete="email" maxlength="120" required>
+            <em class="err" id="eEmail"></em>
+            <small class="hintline">The verification code and all account emails go here.</small></label>
 
           <label class="field"><span>Password <span class="req">*</span></span>
             <input type="password" id="rPass" name="password" autocomplete="new-password" required>
@@ -426,13 +421,13 @@ footer.ft a{color:#b9c9e8}
         </div>
 
         <label class="check"><input type="checkbox" id="rConsent" required>
-          <span>I am the parent or legal guardian, and I give permission for this child to use
-                this site. <span class="req">*</span></span></label>
+          <span>I am this child's parent or legal guardian and I give permission for them to
+                use this site. <span class="req">*</span></span></label>
         <em class="err" id="eConsent"></em>
 
         <label class="check"><input type="checkbox" id="rTerms" required>
-          <span>I agree that the details above may be stored so progress can be saved.
-                <span class="req">*</span></span></label>
+          <span>I agree that the first name, age and email above may be stored so progress can
+                be saved. <span class="req">*</span></span></label>
         <em class="err" id="eTerms"></em>
 
         <div class="btnrow" style="margin-top:1.3rem">
@@ -451,7 +446,7 @@ footer.ft a{color:#b9c9e8}
     <div class="card formcard narrow">
       <p class="kicker">Step 2 of 2</p>
       <h2 class="wel-h sm">Check your email</h2>
-      <p class="help">We sent a 6-digit code to <b id="otpTo"></b>.
+      <p class="help">We sent a 6-digit code to the parent email <b id="otpTo"></b>.
          It is valid for <b>2 minutes</b>, then it is thrown away.</p>
 
       <div class="notice demo" id="demoCode" hidden></div>
@@ -1776,11 +1771,13 @@ function bankStats(){
 }
 
 const AUTH_CFG = {
-  /* Paste a Supabase project here to switch on real accounts + real OTP email.
-     Leave blank to run in local demo mode.                                   */
+  /* ---- paste a Supabase project here to switch on real accounts + email ----
+     Both values are safe to publish: row-level security protects the data,
+     not secrecy. See BACKEND.md for the 5-minute setup.                     */
   supabaseUrl:  "",
   supabaseKey:  "",
-  otpTtlSec:    120,     // hold the code for 2 minutes, then discard
+
+  otpTtlSec:    120,     // hold the code for 2 minutes, then discard it
   otpMaxTries:  5,
   resendWaitSec:30,
   guestSessions:1        // free goes before registration is required
@@ -1788,16 +1785,15 @@ const AUTH_CFG = {
 
 const AUTH_MODE = (AUTH_CFG.supabaseUrl && AUTH_CFG.supabaseKey) ? "supabase" : "demo";
 
-/* ---------- small crypto helpers (WebCrypto, no libraries) ---------- */
+/* ---------- crypto helpers (WebCrypto, no libraries) ---------- */
 async function sha256Hex(str){
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 function randomHex(bytes){
-  const a = new Uint8Array(bytes); crypto.getRandomValues(a);
+  const a=new Uint8Array(bytes); crypto.getRandomValues(a);
   return [...a].map(b=>b.toString(16).padStart(2,"0")).join("");
 }
-/* PBKDF2 so a stored password is never recoverable from the record */
 async function hashPassword(pw, saltHex){
   const salt = saltHex || randomHex(16);
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw),
@@ -1805,127 +1801,182 @@ async function hashPassword(pw, saltHex){
   const bits = await crypto.subtle.deriveBits(
     {name:"PBKDF2", salt:new TextEncoder().encode(salt), iterations:150000, hash:"SHA-256"},
     key, 256);
-  const hex = [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,"0")).join("");
-  return {salt:salt, hash:hex};
+  return {salt:salt, hash:[...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,"0")).join("")};
 }
 function timingSafeEqual(a,b){
   if(typeof a!=="string"||typeof b!=="string"||a.length!==b.length) return false;
-  let diff=0; for(let i=0;i<a.length;i++) diff |= a.charCodeAt(i)^b.charCodeAt(i);
-  return diff===0;
+  let d=0; for(let i=0;i<a.length;i++) d|=a.charCodeAt(i)^b.charCodeAt(i);
+  return d===0;
 }
 
-/* ---------- storage ---------- */
-const STORE_KEY = "g3m.accounts.v1";
-const SESSION_KEY = "g3m.session.v1";
-const GUEST_KEY = "g3m.guest.v1";
-
-function readJSON(k, fallback){
-  try{ const v=localStorage.getItem(k); return v?JSON.parse(v):fallback; }catch(e){ return fallback; }
-}
-function writeJSON(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+/* ---------- local storage ---------- */
+const STORE_KEY="g3m.accounts.v2", SESSION_KEY="g3m.session.v2", GUEST_KEY="g3m.guest.v1";
+function readJSON(k,fb){ try{const v=localStorage.getItem(k); return v?JSON.parse(v):fb;}catch(e){return fb;} }
+function writeJSON(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
 
 const Accounts = {
-  all(){ return readJSON(STORE_KEY, {}); },
-  find(email){ return this.all()[String(email||"").toLowerCase().trim()] || null; },
-  save(rec){ const a=this.all(); a[rec.email]=rec; writeJSON(STORE_KEY,a); },
+  all(){ return readJSON(STORE_KEY,{}); },
+  find(email){ return this.all()[String(email||"").toLowerCase().trim()]||null; },
+  save(rec){ const a=this.all(); a[rec.email]=rec; writeJSON(STORE_KEY,a); }
 };
-
 const Session = {
-  get(){ return readJSON(SESSION_KEY, null); },
-  start(email,name){ writeJSON(SESSION_KEY,{email:email,name:name,at:Date.now()}); },
+  get(){ return readJSON(SESSION_KEY,null); },
+  start(email,name,token){ writeJSON(SESSION_KEY,{email:email,name:name,token:token||null,at:Date.now()}); },
   end(){ try{ localStorage.removeItem(SESSION_KEY); }catch(e){} },
-  isSignedIn(){ const s=this.get(); return !!(s && s.email); }
+  isSignedIn(){ const s=this.get(); return !!(s&&s.email); }
 };
-
 const Guest = {
-  used(){ return readJSON(GUEST_KEY,{n:0}).n; },
+  used(){ return readJSON(GUEST_KEY,{n:0}).n||0; },
   consume(){ const g=readJSON(GUEST_KEY,{n:0}); g.n=(g.n||0)+1; writeJSON(GUEST_KEY,g); },
-  remaining(){ return Math.max(0, AUTH_CFG.guestSessions - this.used()); }
+  remaining(){ return Math.max(0, AUTH_CFG.guestSessions-this.used()); }
 };
 
-/* ---------- mail transport (the one piece that needs a server) ---------- */
-const MAIL = {
-  /* Returns {delivered:boolean, shownCode:string|null}.
-     demo      → nothing is sent; the code is displayed so the flow is testable
-     supabase  → Supabase Auth emails a one-time code for you                */
-  async send(email, code){
-    if(AUTH_MODE === "supabase"){
-      const r = await fetch(AUTH_CFG.supabaseUrl + "/auth/v1/otp", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json", "apikey":AUTH_CFG.supabaseKey },
-        body: JSON.stringify({ email: email, create_user: true })
-      });
-      if(!r.ok) throw new Error("Could not send the verification email.");
-      return { delivered:true, shownCode:null };
-    }
-    return { delivered:false, shownCode:code };   // demo: reveal on screen
-  }
-};
-
-/* ---------- OTP engine ---------- */
+/* ---------- local OTP engine (demo mode) ---------- */
 const OTP = {
-  _state: null,          // {email, hash, expires, tries, sentAt}
-  _timer: null,
-
-  active(){ return !!(this._state && Date.now() < this._state.expires); },
-  secondsLeft(){ return this._state ? Math.max(0, Math.ceil((this._state.expires-Date.now())/1000)) : 0; },
+  _state:null, _timer:null,
+  active(){ return !!(this._state && Date.now()<this._state.expires); },
+  secondsLeft(){ return this._state?Math.max(0,Math.ceil((this._state.expires-Date.now())/1000)):0; },
   canResend(){ return !this._state || (Date.now()-this._state.sentAt)/1000 >= AUTH_CFG.resendWaitSec; },
-  resendIn(){ return this._state ? Math.max(0, Math.ceil(AUTH_CFG.resendWaitSec-(Date.now()-this._state.sentAt)/1000)) : 0; },
+  resendIn(){ return this._state?Math.max(0,Math.ceil(AUTH_CFG.resendWaitSec-(Date.now()-this._state.sentAt)/1000)):0; },
 
-  /* generate → hash → hold for the TTL → hand the plain code to the mailer only */
   async issue(email){
-    const n = new Uint32Array(1); crypto.getRandomValues(n);
-    const code = String(n[0] % 1000000).padStart(6,"0");
-    this._state = {
-      email: String(email).toLowerCase().trim(),
-      hash: await sha256Hex(code + "|" + email.toLowerCase().trim()),
-      expires: Date.now() + AUTH_CFG.otpTtlSec*1000,
-      tries: 0,
-      sentAt: Date.now()
-    };
-    this.scheduleDiscard();
-    let out;
-    try { out = await MAIL.send(this._state.email, code); }
-    catch(e){ this.discard(); throw e; }
-    return out;                       // plain code is not retained anywhere here
-  },
-
-  scheduleDiscard(){
+    const n=new Uint32Array(1); crypto.getRandomValues(n);
+    const code=String(n[0]%1000000).padStart(6,"0");
+    this._state={ email:String(email).toLowerCase().trim(),
+      hash: await sha256Hex(code+"|"+String(email).toLowerCase().trim()),
+      expires: Date.now()+AUTH_CFG.otpTtlSec*1000, tries:0, sentAt:Date.now() };
     clearTimeout(this._timer);
-    this._timer = setTimeout(()=>{ this.discard(); if(typeof onOtpExpired==="function") onOtpExpired(); },
-                             AUTH_CFG.otpTtlSec*1000 + 50);
+    this._timer=setTimeout(()=>{ this.discard(); if(typeof onOtpExpired==="function") onOtpExpired(); },
+                           AUTH_CFG.otpTtlSec*1000+50);
+    return code;                       // handed straight to the transport, never kept
   },
-  discard(){ this._state = null; clearTimeout(this._timer); this._timer=null; },
-
-  /* → {ok:true} | {ok:false, reason:'expired'|'locked'|'mismatch', left:n} */
+  discard(){ this._state=null; clearTimeout(this._timer); this._timer=null; },
   async verify(code){
-    if(!this.active()){ this.discard(); return {ok:false, reason:"expired"}; }
-    if(this._state.tries >= AUTH_CFG.otpMaxTries){ this.discard(); return {ok:false, reason:"locked"}; }
+    if(!this.active()){ this.discard(); return {ok:false,reason:"expired"}; }
+    if(this._state.tries>=AUTH_CFG.otpMaxTries){ this.discard(); return {ok:false,reason:"locked"}; }
     this._state.tries++;
-    const h = await sha256Hex(String(code).trim() + "|" + this._state.email);
-    if(timingSafeEqual(h, this._state.hash)){
-      const email = this._state.email;
-      this.discard();                                  // single use
-      return {ok:true, email:email};
+    const h=await sha256Hex(String(code).trim()+"|"+this._state.email);
+    if(timingSafeEqual(h,this._state.hash)){
+      const email=this._state.email; this.discard(); return {ok:true,email:email};
     }
-    const left = AUTH_CFG.otpMaxTries - this._state.tries;
-    if(left<=0){ this.discard(); return {ok:false, reason:"locked"}; }
-    return {ok:false, reason:"mismatch", left:left};
+    const left=AUTH_CFG.otpMaxTries-this._state.tries;
+    if(left<=0){ this.discard(); return {ok:false,reason:"locked"}; }
+    return {ok:false,reason:"mismatch",left:left};
   }
 };
 
-/* ---------- validation ---------- */
+/* =========================================================================
+   BACKEND — one object, two implementations.
+   Everything the UI calls goes through here, so switching is config-only.
+   ========================================================================= */
+async function sbFetch(path, opts){
+  const r = await fetch(AUTH_CFG.supabaseUrl+path, Object.assign({
+    headers:{ "Content-Type":"application/json", "apikey":AUTH_CFG.supabaseKey }
+  }, opts||{}));
+  let body=null; try{ body=await r.json(); }catch(e){}
+  if(!r.ok){
+    const msg=(body&&(body.msg||body.error_description||body.message))||"Request failed.";
+    throw new Error(msg);
+  }
+  return body;
+}
+
+const DemoBackend = {
+  mode:"demo",
+  async register(d){
+    const email=d.parentEmail.toLowerCase().trim();
+    if(Accounts.find(email)) throw new Error("An account already exists for that email. Please sign in.");
+    const pw=await hashPassword(d.password);
+    Accounts.save({ email:email, child:d.child, age:Number(d.age),
+      salt:pw.salt, hash:pw.hash, verified:false,
+      consent:{given:!!d.consent, at:new Date().toISOString(), by:email, method:"parent checkbox at registration"},
+      terms:!!d.terms, createdAt:new Date().toISOString() });
+    return {email:email};
+  },
+  async sendOtp(email){ const code=await OTP.issue(email); return {shownCode:code}; },
+  async verifyOtp(email, code){
+    const r=await OTP.verify(code);
+    if(!r.ok) return r;
+    const rec=Accounts.find(email);
+    if(rec){ rec.verified=true; Accounts.save(rec); }
+    return {ok:true, email:email, name:rec?rec.child:""};
+  },
+  async signIn(email,password){
+    const rec=Accounts.find(email);
+    if(!rec) throw new Error("No account found for that email.");
+    if(!rec.verified) throw new Error("Please verify the email address first.");
+    const pw=await hashPassword(password, rec.salt);
+    if(!timingSafeEqual(pw.hash, rec.hash)) throw new Error("Incorrect email or password.");
+    return {email:rec.email, name:rec.child, token:null};
+  }
+};
+
+const SupabaseBackend = {
+  mode:"supabase",
+  /* Creates the auth user and asks Supabase to email a 6-digit code.
+     The child's name/age go in user_metadata, then into a profiles row. */
+  async register(d){
+    const email=d.parentEmail.toLowerCase().trim();
+    await sbFetch("/auth/v1/signup", { method:"POST", body: JSON.stringify({
+      email: email, password: d.password,
+      data: { child_name:d.child, child_age:Number(d.age),
+              consent_given:!!d.consent, consent_at:new Date().toISOString(),
+              consent_method:"parent checkbox at registration" }
+    })});
+    return {email:email};
+  },
+  /* Supabase generates, stores and expires the code itself. */
+  async sendOtp(email){
+    await sbFetch("/auth/v1/otp", { method:"POST",
+      body: JSON.stringify({ email:email, create_user:false }) });
+    return {shownCode:null};
+  },
+  async verifyOtp(email, code){
+    try{
+      const out=await sbFetch("/auth/v1/verify", { method:"POST",
+        body: JSON.stringify({ type:"email", email:email, token:String(code).trim() }) });
+      const name=(out&&out.user&&out.user.user_metadata&&out.user.user_metadata.child_name)||"";
+      if(out && out.access_token) await this._saveProfile(out);
+      return {ok:true, email:email, name:name, token:out?out.access_token:null};
+    }catch(e){
+      const m=String(e.message||"").toLowerCase();
+      if(m.indexOf("expired")!==-1) return {ok:false, reason:"expired"};
+      return {ok:false, reason:"mismatch", left:"—"};
+    }
+  },
+  async _saveProfile(auth){
+    const u=auth.user||{}, md=u.user_metadata||{};
+    try{
+      await fetch(AUTH_CFG.supabaseUrl+"/rest/v1/profiles", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json", "apikey":AUTH_CFG.supabaseKey,
+                  "Authorization":"Bearer "+auth.access_token, "Prefer":"resolution=merge-duplicates" },
+        body: JSON.stringify({ id:u.id, child_name:md.child_name, child_age:md.child_age,
+                               consent_given:md.consent_given, consent_at:md.consent_at,
+                               consent_method:md.consent_method })
+      });
+    }catch(e){ /* profile row is optional — auth already succeeded */ }
+  },
+  async signIn(email,password){
+    const out=await sbFetch("/auth/v1/token?grant_type=password", { method:"POST",
+      body: JSON.stringify({ email:email.toLowerCase().trim(), password:password }) });
+    const md=(out&&out.user&&out.user.user_metadata)||{};
+    return {email:email.toLowerCase().trim(), name:md.child_name||"", token:out.access_token};
+  }
+};
+
+const Backend = (AUTH_MODE==="supabase") ? SupabaseBackend : DemoBackend;
+
+/* ---------- validation (minimal field set) ---------- */
 const V = {
   name(v){ v=String(v||"").trim();
-    return v.length>=2 && v.length<=60 && /^[\p{L}\p{M}'’.\- ]+$/u.test(v)
-      ? "" : "Please enter a name (letters, 2–60 characters)."; },
+    return v.length>=2 && v.length<=30 && /^[\p{L}\p{M}'’\- ]+$/u.test(v)
+      ? "" : "Please enter a first name (letters, 2–30 characters)."; },
   age(v){ const n=Number(v);
-    return Number.isInteger(n) && n>=4 && n<=18 ? "" : "Age must be a whole number between 4 and 18."; },
+    return Number.isInteger(n)&&n>=4&&n<=18 ? "" : "Age must be a whole number between 4 and 18."; },
   email(v){ v=String(v||"").trim();
-    return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v) && v.length<=120
+    return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v)&&v.length<=120
       ? "" : "Please enter a valid email address."; },
-  phone(v){ const d=String(v||"").replace(/[^\d]/g,"");
-    return d.length>=7 && d.length<=15 ? "" : "Please enter a valid phone number (7–15 digits)."; },
   password(v){ v=String(v||"");
     if(v.length<8) return "Password must be at least 8 characters.";
     if(!/[A-Za-z]/.test(v)||!/\d/.test(v)) return "Password must include a letter and a number.";
@@ -1935,35 +1986,12 @@ const V = {
   checked(v){ return v ? "" : "This is required to continue."; }
 };
 
-/* ---------- registration / login ---------- */
-async function registerAccount(d){
-  const email = d.email.toLowerCase().trim();
-  if(Accounts.find(email)) throw new Error("An account already exists for that email. Please sign in.");
-  const pw = await hashPassword(d.password);
-  Accounts.save({
-    email: email,
-    student: d.student, age: Number(d.age),
-    guardian: d.guardian, guardianEmail: (d.guardianEmail||"").toLowerCase().trim(),
-    phone: d.phone,
-    consent: !!d.consent, terms: !!d.terms,
-    salt: pw.salt, hash: pw.hash,
-    verified: false,
-    createdAt: new Date().toISOString()
-  });
-  return email;
-}
-async function markVerified(email){
-  const rec = Accounts.find(email);
-  if(rec){ rec.verified = true; Accounts.save(rec); }
-}
-async function signIn(email, password){
-  const rec = Accounts.find(email);
-  if(!rec) throw new Error("No account found for that email.");
-  if(!rec.verified) throw new Error("Please verify your email address first.");
-  const pw = await hashPassword(password, rec.salt);
-  if(!timingSafeEqual(pw.hash, rec.hash)) throw new Error("Incorrect email or password.");
-  Session.start(rec.email, rec.student);
-  return rec;
+/* ---------- thin wrappers used by the UI ---------- */
+async function registerAccount(d){ return (await Backend.register(d)).email; }
+async function signIn(email,password){
+  const r=await Backend.signIn(email,password);
+  Session.start(r.email, r.name, r.token);
+  return r;
 }
 
 /* =======================================================================
@@ -2455,24 +2483,20 @@ function setErr(id,msg){ const el=$(id); if(el) el.textContent=msg||""; return !
 
 function readRegForm(){
   return {
-    student:$("rName").value, age:$("rAge").value, email:$("rEmail").value,
-    phone:$("rPhone").value, guardian:$("rGuardian").value, guardianEmail:$("rGEmail").value,
+    child:$("rName").value, age:$("rAge").value, parentEmail:$("rEmail").value,
     password:$("rPass").value, password2:$("rPass2").value,
     consent:$("rConsent").checked, terms:$("rTerms").checked
   };
 }
 function validateReg(d){
   let ok=true;
-  ok &= setErr("eName",     V.name(d.student));
-  ok &= setErr("eAge",      V.age(d.age));
-  ok &= setErr("eEmail",    V.email(d.email));
-  ok &= setErr("ePhone",    V.phone(d.phone));
-  ok &= setErr("eGuardian", V.name(d.guardian));
-  ok &= setErr("eGEmail",   V.email(d.guardianEmail));
-  ok &= setErr("ePass",     V.password(d.password));
-  ok &= setErr("ePass2",    V.match(d.password, d.password2));
-  ok &= setErr("eConsent",  V.checked(d.consent));
-  ok &= setErr("eTerms",    V.checked(d.terms));
+  ok &= setErr("eName",    V.name(d.child));
+  ok &= setErr("eAge",     V.age(d.age));
+  ok &= setErr("eEmail",   V.email(d.parentEmail));
+  ok &= setErr("ePass",    V.password(d.password));
+  ok &= setErr("ePass2",   V.match(d.password, d.password2));
+  ok &= setErr("eConsent", V.checked(d.consent));
+  ok &= setErr("eTerms",   V.checked(d.terms));
   return !!ok;
 }
 
@@ -2484,7 +2508,7 @@ $("regForm").addEventListener("submit", async e=>{
   const btn=$("regSubmit"); btn.disabled=true; btn.textContent="Sending code…";
   try{
     await registerAccount(d);
-    await startOtp(d.email.toLowerCase().trim());
+    await startOtp(d.parentEmail.toLowerCase().trim());
     go("verify");
   }catch(err){
     $("regError").textContent = err && err.message ? err.message : "Something went wrong.";
@@ -2501,7 +2525,7 @@ async function startOtp(email){
   $("otpTo").textContent = email;
   $("otpError").textContent = "";
   $("otpInput").value = "";
-  const res = await OTP.issue(email);
+  const res = await Backend.sendOtp(email);
   const box=$("demoCode");
   if(res.shownCode){
     box.hidden=false;
@@ -2517,6 +2541,7 @@ function paintOtpClock(){
   const c=$("otpClock"), r=$("otpResend");
   if(!c) return;
   const s=OTP.secondsLeft();
+  if(AUTH_MODE==="supabase"){ c.textContent="check your inbox"; if(r) r.disabled=false; return; }
   c.textContent = Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
   c.classList.toggle("warnpill", s<=30);
   if(!OTP.active()) c.textContent="expired";
@@ -2527,19 +2552,17 @@ $("otpVerify").onclick = async ()=>{
   const code=$("otpInput").value.replace(/\D/g,"");
   $("otpError").textContent="";
   if(code.length!==6){ $("otpError").textContent="Please enter all six digits."; return; }
-  const r = await OTP.verify(code);
+  const r = await Backend.verifyOtp($("otpTo").textContent, code);
   if(r.ok){
     clearInterval(otpTick);
-    await markVerified(r.email);
-    const rec=Accounts.find(r.email);
-    Session.start(r.email, rec?rec.student:"");
+    Session.start(r.email, r.name||"", r.token);
     $("otpError").textContent="";
     if(pendingMode) requestSession(pendingMode); else go("home");
     return;
   }
   if(r.reason==="expired") $("otpError").textContent="That code has expired. Please request a new one.";
   else if(r.reason==="locked") $("otpError").textContent="Too many attempts. Please request a new code.";
-  else $("otpError").textContent="That code is not right. "+r.left+" attempt"+(r.left===1?"":"s")+" left.";
+  else $("otpError").textContent="That code is not right."+(typeof r.left==="number"?" "+r.left+" attempt"+(r.left===1?"":"s")+" left.":"");
   paintOtpClock();
 };
 $("otpResend").onclick = async ()=>{

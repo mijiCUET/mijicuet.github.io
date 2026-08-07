@@ -3,7 +3,8 @@
 Live at **<https://mijicuet.github.io>**
 
 A single self-contained web page for Grade 3 mathematics practice and timed testing.
-One HTML file, no dependencies, no build step, no backend.
+One HTML file, no dependencies, no build step. Runs standalone; an optional
+backend can be switched on for real accounts and OTP email.
 
 ---
 
@@ -60,22 +61,36 @@ Visitors land on a **welcome page** explaining what the site does, with two call
 *Try a practice session* and *Take a test*.
 
 A guest may complete **one free session**. After that, Practice and Test route to sign-in or
-registration. Registration collects student name, age, email, phone, parent/guardian name and
-email, parental consent and a password, then verifies the email with a **6-digit code that is
-valid for 2 minutes**.
+registration.
 
-The OTP is generated with `crypto.getRandomValues`, stored only as a SHA-256 hash, discarded
-on expiry or first use, locked after 5 wrong attempts, with a 30-second resend cool-down.
-Passwords are hashed with PBKDF2 (150 000 iterations, per-user salt).
+**Registration asks for five things and nothing more:**
 
-> ### ⚠️ It runs in demo mode until you connect a backend
-> GitHub Pages cannot send email, so the code is currently **shown on screen** rather than
-> emailed, accounts live only in the visitor's browser, and the guest gate can be reset by
-> clearing site data or opening a private window.
+| Field | Why |
+|-------|-----|
+| Child's **first name** | To greet them — no surname |
+| Child's age (4–18) | Difficulty, and to know whether COPPA applies |
+| **Parent/guardian email** | Login identity, consent contact, OTP delivery |
+| Password + confirmation | Login |
+| Parental consent ✓ + terms ✓ | Recorded with a timestamp and method |
+
+No phone number, no child's own email address, no surname, no school. Every field dropped is
+one that cannot be lost in a breach.
+
+The email is then verified with a **6-digit code valid for 2 minutes**. The OTP is generated
+with `crypto.getRandomValues`, stored only as a SHA-256 hash, discarded on expiry or first
+use, locked after 5 wrong attempts, with a 30-second resend cool-down. Passwords are hashed
+with PBKDF2 (150 000 iterations, per-user salt).
+
+> ### ⚠️ It runs in demo mode until you paste in two keys
+> GitHub Pages cannot send email, so right now the code is **shown on screen** rather than
+> emailed, accounts live only in the visitor's browser, and the guest gate resets if you
+> clear site data or open a private window.
 >
-> **[BACKEND.md](BACKEND.md)** explains how to switch on real accounts and real OTP email
-> (Supabase, free tier, about fifteen minutes) — and covers the **COPPA / GDPR-K obligations**
-> that apply the moment you collect a child's details. Please read it before going live.
+> The Supabase integration is **already written and tested** — connecting it is two config
+> values plus one CSP line, no code changes. **[BACKEND.md](BACKEND.md)** has the step-by-step
+> (including the email-template edit that is easy to miss) and covers the
+> **COPPA / GDPR-K obligations** that apply the moment you collect a child's details.
+> Please read it before going live.
 
 ---
 
@@ -121,10 +136,15 @@ generated questions** across every subject × level, all well-formed and answera
 The app was security-tested; findings and fixes are documented in **[SECURITY.md](SECURITY.md)**.
 
 Headlines: two XSS vulnerabilities and two answer-integrity flaws were found and fixed; there
-are no dependencies, no network calls, no cookies and no stored data; the page ships a
-hash-pinned Content-Security-Policy with no `unsafe-inline` or `unsafe-eval`.
+are no dependencies and no cookies; the page ships a hash-pinned Content-Security-Policy with
+no `unsafe-inline` or `unsafe-eval`, and `connect-src 'none'` until you deliberately open it
+up to a backend.
 
-**Nothing a student types ever leaves their browser.**
+**In demo mode, nothing a student types ever leaves their browser.**
+
+The suites are re-run on every change — currently **180 assertions** across four files:
+feature behaviour (40), XSS payloads (52), resource-abuse resilience, auth and OTP lifecycle
+(50), and the Supabase path verified against a mock server (19).
 
 > ⚠️ If you edit `index.html`, the CSP script/style hashes must be recomputed or the browser
 > will refuse to run the page. The one-shot snippet is in SECURITY.md.
@@ -135,7 +155,7 @@ hash-pinned Content-Security-Policy with no `unsafe-inline` or `unsafe-eval`.
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The entire application (~100 KB, self-contained) |
+| `index.html` | The entire application (~164 KB, self-contained) |
 | `SECURITY.md` | Security assessment and maintenance notes |
 | `BACKEND.md` | Connecting real accounts + OTP email, and child-data obligations |
 | `robots.txt`, `sitemap.xml` | Search-engine metadata |
