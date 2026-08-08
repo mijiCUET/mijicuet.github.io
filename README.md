@@ -74,7 +74,7 @@ Then two buttons, and nothing else:
 
 **Practice** · **Take a Test**
 
-**Practice uses a device-local learning profile.** Registration is staged behind a privacy acknowledgement and a simple local CAPTCHA; the username/password/security-question/authenticator fields open progressively as each previous step is completed.  The site asks for a made-up six-character username, a new password, a non-personal security answer, and a TOTP authenticator code. These values are processed and stored only in the current browser; no email, real name, school ID, phone number, address, or legal-document information is requested or transmitted. Take a Test remains separate from the guided Practice path.
+**Practice and Take a Test both require the device-local login gate.** Clicking either home button opens Login first. Username and password are verified before the authenticator-code field is revealed; successful TOTP verification then returns the learner to the originally requested destination. A visible Login/Logout control is also available in the masthead. New users choose **Create account** from Login, which opens the staged registration flow behind a privacy acknowledgement and local CAPTCHA. The site asks for a made-up six-character username, a new password, a non-personal security answer, and a TOTP authenticator code. These values are processed and stored only in the current browser; no email, real name, school ID, phone number, address, or legal-document information is requested or transmitted.
 
 ---
 

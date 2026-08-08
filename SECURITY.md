@@ -119,6 +119,7 @@ history — scanning only the current tree would have been insufficient.
 - The username must match `^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$` (example: `Ab12cd`).
 - Passwords and security answers are not stored in plaintext; salted PBKDF2-HMAC-SHA-256 derived values are stored locally (120,000 iterations).
 - A TOTP secret is stored locally so an authenticator app can be required. This is a **device-local profile lock, not server-backed MFA**: anyone who can inspect or modify this browser's storage can recover/bypass the local gate.
+- Practice and Test entry both use a staged login: username/password are checked first; the TOTP field is revealed only after those credentials match. A masthead Logout control clears the session unlock flag. Registration remains available only through **Create account** on the Login page.
 - `localStorage` contains the local profile, TOTP secret and per-profile learning-path progress. `sessionStorage` contains only the current-tab/session unlock flag.
 - No cookies, analytics, tracking pixels, fingerprinting, backend requests, or profile transmission are performed.
 - Because the app has no backend, account recovery across devices, centralized revocation, remote password reset and strong second-factor separation are not possible. A future real account system would require a backend and a fresh privacy/security review.
