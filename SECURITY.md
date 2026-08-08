@@ -17,7 +17,7 @@ authentication, no accounts, no third-party code, no network calls.
 | Secrets in repo or git history | None found (217 files, 79 commits, 91 blobs scanned) |
 | Third-party dependencies | None — zero supply-chain exposure |
 | Outbound network / trackers / cookies | None |
-| Data storage | None — nothing persisted or transmitted |
+| Data storage | Local learning-path unlock state only (`localStorage`); nothing transmitted |
 | Denial of service / resource abuse | Resistant (bounded generator loops) |
 | Transport hardening | Applied as far as static hosting allows |
 
@@ -114,7 +114,7 @@ history — scanning only the current tree would have been insufficient.
 
 - The student name is used **only** for on-screen display. It is never stored, never
   transmitted, and disappears on refresh.
-- No cookies, no `localStorage`, no analytics, no tracking pixels, no fingerprinting.
+- No cookies, analytics, tracking pixels or fingerprinting. `localStorage` is used only for the highest unlocked practice level and never leaves the device.
 - `referrer` is set to `no-referrer`.
 - Relevant for a tool aimed at children: **nothing about a child leaves their browser**,
   which keeps the page clear of COPPA/GDPR data-collection concerns by design.

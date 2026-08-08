@@ -127,7 +127,7 @@ are no dependencies, no cookies, no `localStorage`, no analytics and no network 
 kind. The page ships a hash-pinned Content-Security-Policy with `default-src 'none'`,
 `connect-src 'none'` and no `unsafe-inline` or `unsafe-eval`.
 
-**Nothing a child types ever leaves their browser** — which is also why the site sits outside
+**Nothing a child types or the local learning-path progress ever leaves their browser** — which is also why the site sits outside
 COPPA and GDPR-K data-collection obligations entirely. It collects nothing, so there is
 nothing to consent to, nothing to breach and nothing to delete.
 

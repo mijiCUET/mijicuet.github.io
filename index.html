@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-v9T3ADzq4iQov9Vs26YZSCTlL9ZPwIPClqqfyokTNyA='; style-src 'sha256-XGy1nKNJWk/uv7OKyWQFieGorW6nYNR4t+CYmJ03mJU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lyU19c+CKsrGSLsTSv8c8bcsnv4gw4TmC4s4Yfj8F4g='; style-src 'sha256-+VX6ZSA5tIleD1AwQIN6aYfuX6do9D6CrRzUhopzqDI='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -262,6 +262,41 @@ body{
 .score{background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
 footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 
+
+
+/* ---------- guided practice learning path ---------- */
+.path-hero{background:linear-gradient(135deg,#eff6ff 0%,#f5f3ff 46%,#ecfdf5 100%);border:1px solid #dbeafe}
+.path-title{font-family:var(--font-display);font-size:clamp(1.8rem,1.5rem+1.5vw,2.5rem);font-weight:550}
+.path-lead{max-width:68ch;color:var(--ink-soft);margin-top:.65rem}
+.level-road{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.85rem;margin-top:1.5rem}
+.level-card{position:relative;border:2px solid #dbe4f0;border-radius:18px;padding:1.2rem 1rem;background:#fff;min-height:165px;text-align:left;font:inherit;transition:.25s var(--ease);overflow:hidden}
+.level-card:not(:disabled){cursor:pointer;box-shadow:0 10px 30px rgba(59,130,246,.10)}
+.level-card:not(:disabled):hover{transform:translateY(-4px);border-color:#60a5fa;box-shadow:0 18px 38px rgba(59,130,246,.18)}
+.level-card.locked{background:linear-gradient(180deg,#f8fafc,#eef2f7);color:#7a879a;filter:saturate(.55)}
+.level-card .level-num{font-family:var(--font-mono);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.level-card .level-name{display:block;font-size:1.16rem;font-weight:800;margin-top:.45rem}
+.level-card .level-stars{display:block;color:#f59e0b;letter-spacing:1px;margin:.3rem 0}
+.level-card .level-state{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-size:.78rem;font-weight:800;padding:.25rem .58rem;border-radius:99px;background:#dcfce7;color:#166534}
+.level-card.locked .level-state{background:#e2e8f0;color:#64748b}
+.level-card:nth-child(1){border-top-color:#22c55e}.level-card:nth-child(2){border-top-color:#06b6d4}.level-card:nth-child(3){border-top-color:#3b82f6}.level-card:nth-child(4){border-top-color:#8b5cf6}.level-card:nth-child(5){border-top-color:#f59e0b}
+.path-note{margin-top:1rem;padding:.85rem 1rem;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:.9rem}
+.topic-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.topic-card{border:0;border-radius:20px;padding:1.15rem;background:#fff;text-align:left;font:inherit;cursor:pointer;box-shadow:0 9px 26px rgba(15,23,42,.08);transition:.24s var(--ease);position:relative;overflow:hidden}
+.topic-card::after{content:"";position:absolute;width:95px;height:95px;border-radius:50%;right:-30px;bottom:-38px;background:var(--topic-soft,#dbeafe);opacity:.8}
+.topic-card:hover{transform:translateY(-5px);box-shadow:0 18px 38px rgba(15,23,42,.14)}
+.topic-icon{width:72px;height:72px;border-radius:18px;display:grid;place-items:center;background:var(--topic-bg,#eff6ff);margin-bottom:.9rem;overflow:hidden}
+.topic-icon svg{width:58px;height:58px}
+.topic-card b{display:block;font-size:1.02rem}.topic-card small{display:block;color:var(--muted);margin-top:.28rem;line-height:1.4}
+.topic-card:nth-child(6n+1){--topic-bg:#eff6ff;--topic-soft:#bfdbfe}.topic-card:nth-child(6n+2){--topic-bg:#ecfeff;--topic-soft:#a5f3fc}.topic-card:nth-child(6n+3){--topic-bg:#f5f3ff;--topic-soft:#ddd6fe}.topic-card:nth-child(6n+4){--topic-bg:#fff7ed;--topic-soft:#fed7aa}.topic-card:nth-child(6n+5){--topic-bg:#ecfdf5;--topic-soft:#bbf7d0}.topic-card:nth-child(6n){--topic-bg:#fdf2f8;--topic-soft:#fbcfe8}
+.assessment-card{margin-top:1.3rem;background:linear-gradient(125deg,#172554,#312e81 55%,#581c87);color:#fff;border:0;position:relative;overflow:hidden}
+.assessment-card::after{content:"★";position:absolute;right:24px;top:-30px;font-size:9rem;color:#fff;opacity:.06;transform:rotate(12deg)}
+.assessment-card p{color:#dbeafe;max-width:65ch;margin:.55rem 0 1rem}.assessment-card .btn{background:#fff;color:#1e3a8a}.assessment-card .btn:hover{background:#eff6ff}
+.unlock-banner{margin-top:1.1rem;padding:1rem 1.1rem;border-radius:14px;background:#ecfdf5;border:1px solid #86efac;color:#166534;font-weight:700}
+.progress-local{font-size:.78rem;color:var(--muted);margin-top:.7rem}
+@media(max-width:800px){.level-road{grid-template-columns:1fr 1fr}.topic-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.level-road,.topic-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -412,7 +447,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
         <button class="btn big" type="button" id="goPractice">Practice</button>
         <button class="btn sec big" type="button" id="goTest">Take a Test</button>
       </div>
-      <p class="help">No sign-up, no account, nothing to fill in. Just choose and begin.</p>
+      <p class="help">Practice progress stays on this device. No account information is collected by this prototype.</p>
     </div>
 
     <!-- ---------- voices ---------- -->
@@ -484,6 +519,42 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       </div>
     </div>
 
+  </div>
+</section>
+
+
+<!-- ================= GUIDED PRACTICE PATH ================= -->
+<section class="section hide" id="practicePath">
+  <div class="wrap">
+    <div class="card path-hero">
+      <p class="kicker">Your learning path</p>
+      <h2 class="path-title">Practice one level at a time.</h2>
+      <p class="path-lead">Begin with the foundations. Practice any topic in your unlocked level, then earn 100% on the level assessment to open the next challenge.</p>
+      <div class="level-road" id="levelRoad"></div>
+      <div class="path-note"><strong>How unlocking works:</strong> Beginner starts open. Every later level stays locked until you score 100% on the previous level assessment.</div>
+      <p class="progress-local">Prototype progress is saved only in this browser on this device. No account information is collected by this version.</p>
+      <div class="btnrow" style="margin-top:1.2rem"><button class="btn sec" type="button" data-go="home">← Back to home</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TOPICS FOR ONE LEVEL ================= -->
+<section class="section hide" id="topicHub">
+  <div class="wrap">
+    <div class="card">
+      <div class="topic-head">
+        <div><p class="kicker" id="topicKicker">Level 1</p><h2 class="path-title" id="topicTitle">Beginner practice</h2><p class="path-lead" id="topicLead">Choose a topic and start practising.</p></div>
+        <button class="btn sec" type="button" data-go="practicePath">← All levels</button>
+      </div>
+      <div class="topic-grid" id="topicGrid"></div>
+      <div class="card assessment-card">
+        <p class="kicker" style="color:#bfdbfe">Level checkpoint</p>
+        <h3 style="font-family:var(--font-display);font-size:1.55rem" id="assessmentTitle">Take Beginner Assessment</h3>
+        <p id="assessmentCopy">Complete a mixed assessment from this level. A perfect score unlocks the next level.</p>
+        <button class="btn big" type="button" id="assessmentBtn">Take Beginner Assessment →</button>
+        <div id="nextLevelHost"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1790,6 +1861,7 @@ function cleanName(v){
 let mode="practice", subject="all", level=3;
 let QS=[],ANS=[],cur=0,answered=[],tick=null,elapsed=0,remaining=0,limitMin=30,name="Student";
 let nRight=0,nDone=0;
+let sessionKind="standard", activeTopic=null, pathLevel=1, assessmentLevel=null;
 let tries=[];           // wrong attempts per question (drives hint reveal)
 let hintsShown=[];      // hints revealed so far per question
 let advanceTimer=null;  // auto-advance handle
@@ -1833,6 +1905,81 @@ function refreshSetup(){
 }
 refreshSetup();
 
+
+/* ---- guided practice path ---- */
+const PATH_STORE="grade3MathProgress.v1";
+const PATH_TOPICS=[
+  {k:"geometry",name:"Geometry",domains:["Geometry","Shapes","Lines","Angles","Triangles","Quadrilaterals"],desc:"Explore shapes, lines and visual reasoning.",icon:"geometry"},
+  {k:"length",name:"Measurement · Length",domains:["Measurement · Length","Measurement","Measurement · Units"],desc:"Measure, compare and reason about length.",icon:"ruler"},
+  {k:"factor",name:"Missing factor",domains:["Missing factor","Unknown number","Multiplication","Division"],desc:"Find the number that makes the equation true.",icon:"factor"},
+  {k:"patterns",name:"Number patterns",domains:["Number patterns","Geometric patterns","Properties of operations"],desc:"Spot the rule and predict what comes next.",icon:"pattern"},
+  {k:"perimeter",name:"Perimeter",domains:["Perimeter","Area & perimeter","Area vs perimeter"],desc:"Walk around shapes and calculate their boundaries.",icon:"perimeter"},
+  {k:"counting",name:"Counting",domains:["Place value","Addition","Subtraction","Multiplication","Supreme · Counting","Counting figures"],desc:"Build number sense by grouping, counting and combining.",icon:"counting"}
+];
+function getPathProgress(){
+  try{const v=JSON.parse(localStorage.getItem(PATH_STORE)||"{}");return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
+  catch(e){return {highestUnlocked:1};}
+}
+function savePathProgress(v){try{localStorage.setItem(PATH_STORE,JSON.stringify(v));}catch(e){}}
+function unlockThrough(n){const p=getPathProgress(); if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);} return p;}
+function topicIcon(kind){
+  const common='viewBox="0 0 64 64" aria-hidden="true"';
+  if(kind==="geometry") return '<svg '+common+'><path d="M8 49 25 15l18 34Z" fill="#60a5fa" opacity=".28"/><circle cx="43" cy="22" r="11" fill="#a78bfa" opacity=".45"/><rect x="31" y="34" width="20" height="20" rx="3" fill="#22c55e" opacity=".35"/><path d="M8 49 25 15l18 34Z" fill="none" stroke="#2563eb" stroke-width="3"/></svg>';
+  if(kind==="ruler") return '<svg '+common+'><g transform="rotate(-18 32 32)"><rect x="8" y="22" width="48" height="20" rx="5" fill="#fde68a" stroke="#d97706" stroke-width="2"/><path d="M16 22v9m8-9v6m8-6v9m8-9v6m8-6v9" stroke="#92400e" stroke-width="2"/></g></svg>';
+  if(kind==="factor") return '<svg '+common+'><rect x="8" y="12" width="18" height="18" rx="5" fill="#c4b5fd"/><rect x="38" y="34" width="18" height="18" rx="5" fill="#93c5fd"/><path d="M27 21h10M32 16v10M18 43h14" stroke="#4338ca" stroke-width="4" stroke-linecap="round"/><text x="39" y="29" font-size="20" font-weight="800" fill="#7c3aed">?</text></svg>';
+  if(kind==="pattern") return '<svg '+common+'><circle cx="11" cy="34" r="6" fill="#22c55e"/><rect x="22" y="27" width="14" height="14" rx="3" fill="#60a5fa"/><path d="M47 24 57 43H37Z" fill="#a78bfa"/><path d="M8 18h48" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4 5"/></svg>';
+  if(kind==="perimeter") return '<svg '+common+'><rect x="12" y="14" width="40" height="34" rx="3" fill="#bbf7d0"/><rect x="12" y="14" width="40" height="34" rx="3" fill="none" stroke="#16a34a" stroke-width="4" stroke-dasharray="7 4"/><path d="m47 8 8 6-8 6" fill="none" stroke="#16a34a" stroke-width="3"/></svg>';
+  return '<svg '+common+'><g fill="#f472b6"><circle cx="17" cy="20" r="6"/><circle cx="32" cy="20" r="6"/><circle cx="47" cy="20" r="6"/></g><g fill="#60a5fa"><circle cx="17" cy="39" r="6"/><circle cx="32" cy="39" r="6"/><circle cx="47" cy="39" r="6"/></g><path d="M13 53h38" stroke="#7c3aed" stroke-width="3" stroke-linecap="round"/></svg>';
+}
+function renderLearningPath(){
+  const p=getPathProgress();
+  $("levelRoad").innerHTML=APP_LEVELS.map(l=>{const open=l.n<=p.highestUnlocked;return '<button type="button" class="level-card'+(open?'':' locked')+'" data-level="'+l.n+'" '+(open?'':'disabled aria-disabled="true"')+'><span class="level-num">Level '+l.n+'</span><span class="level-name">'+esc(l.name)+'</span><span class="level-stars">'+esc(l.stars)+'</span><small>'+esc(l.desc)+'</small><span class="level-state">'+(open?'✓ Unlocked':'🔒 Locked')+'</span></button>';}).join('');
+  $("levelRoad").onclick=e=>{const b=e.target.closest('.level-card');if(!b||b.disabled)return;openLevel(+b.dataset.level);};
+}
+function openLevel(n){
+  const p=getPathProgress(); if(n>p.highestUnlocked)return;
+  pathLevel=n; level=n;
+  $("topicKicker").textContent='Level '+n+' · '+APP_LEVELS[n-1].stars;
+  $("topicTitle").textContent=APP_LEVELS[n-1].name+' practice';
+  $("topicLead").textContent='Choose a topic. Questions are generated fresh for '+APP_LEVELS[n-1].name+' level.';
+  $("topicGrid").innerHTML=PATH_TOPICS.map(t=>'<button type="button" class="topic-card" data-topic="'+esc(t.k)+'"><span class="topic-icon">'+topicIcon(t.icon)+'</span><b>'+esc(t.name)+'</b><small>'+esc(t.desc)+'</small></button>').join('');
+  $("assessmentTitle").textContent='Take '+APP_LEVELS[n-1].name+' Assessment';
+  $("assessmentCopy").textContent=n<5?'Score 100% to unlock the next level: '+APP_LEVELS[n].name+'.':'This is the final level. Aim for a perfect score and finish the path!';
+  $("assessmentBtn").textContent='Take '+APP_LEVELS[n-1].name+' Assessment →';
+  const nh=$("nextLevelHost");
+  if(n<5&&p.highestUnlocked>n) nh.innerHTML='<div class="unlock-banner">✓ '+esc(APP_LEVELS[n].name)+' is unlocked.<div style="margin-top:.7rem"><button class="btn sm" type="button" id="nextUnlockedBtn">Take me to Next Level: '+esc(APP_LEVELS[n].name)+' →</button></div></div>';
+  else nh.innerHTML='';
+  const nub=$("nextUnlockedBtn");if(nub)nub.onclick=()=>openLevel(n+1);
+  $("topicGrid").onclick=e=>{const b=e.target.closest('.topic-card');if(!b)return;startTopicPractice(b.dataset.topic);};
+  $("assessmentBtn").onclick=()=>startLevelAssessment(n);
+  show('topicHub');
+}
+function allLevelGenerators(L){
+  return GEN.filter(g=>g.minL<=L).concat(EXTRAGEN.filter(g=>g.minL<=L),GEOGEN.filter(g=>g.minL<=L),MULTIGEN.filter(g=>g.minL<=L),OLYGEN.filter(g=>g.minL<=L));
+}
+function normalizeQuestion(q){
+  if(!q)return null;
+  if(q.type==='multi'){if(!Array.isArray(q.answers)||!q.answers.length)return null;q.answers=[...new Set(q.answers.map(String))];q.choices=[...new Set((q.choices||[]).map(String))];for(const a of q.answers)if(!q.choices.includes(a))q.choices.push(a);if(q.choices.length<4||q.answers.length>=q.choices.length)return null;q.choices=shuffle(q.choices).slice(0,6);for(const a of q.answers)if(!q.choices.includes(a))q.choices.push(a);q.choices=shuffle(q.choices);}
+  else if(q.answer===undefined||q.answer===null||q.answer==='')return null;
+  if(q.type==='mc'){q.choices=[...new Set((q.choices||[]).map(String))];while(q.choices.length<4)q.choices.push(String(rand(1,99)));q.choices=q.choices.slice(0,4);if(!q.choices.includes(String(q.answer)))q.choices[rand(0,3)]=String(q.answer);q.answer=String(q.answer);}
+  return q;
+}
+function buildTopicSession(n,L,topic){
+  const want=new Set(topic.domains), pool=shuffle(allLevelGenerators(L)),out=[];let i=0,guard=0;
+  while(out.length<n&&guard<n*500){const g=pool[i%pool.length];i++;guard++;let q;try{q=normalizeQuestion(g.f(L));}catch(e){continue;}if(!q||!want.has(q.domain))continue;if(g.ch)q.ch=g.ch;out.push(q);}
+  if(out.length<n){const fallback=buildSession(n-out.length,L,'all');out.push(...fallback);}
+  return shuffle(out).slice(0,n);
+}
+function launchQuestions(qs,kind){
+  sessionKind=kind;QS=qs;resetArrays(QS.length);cur=0;nRight=0;nDone=0;show('runner');$("rWho").textContent=name;startClock();buildPalette();render();window.scrollTo(0,0);
+}
+function startTopicPractice(k){
+  const t=PATH_TOPICS.find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name='Learner';launchQuestions(buildTopicSession(12,level,t),'topic');
+}
+function startLevelAssessment(n){
+  mode='test';sessionKind='assessment';assessmentLevel=n;activeTopic=null;subject='all';level=n;name='Learner';limitMin=20;launchQuestions(buildSession(10,n,'all'),'assessment');
+}
+
 /* ---- timers ---- */
 function fmt(s){const m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
 function startClock(){
@@ -1873,7 +2020,7 @@ $("startBtn").onclick=()=>{
   window.scrollTo(0,0);
 };
 
-function subjLabel(){return (SUBJECTS.find(s=>s.k===subject)||{}).name;}
+function subjLabel(){ if(sessionKind==="topic"&&activeTopic)return activeTopic.name; if(sessionKind==="assessment")return APP_LEVELS[level-1].name+" Assessment"; return (SUBJECTS.find(s=>s.k===subject)||{}).name; }
 function buildPalette(){
   if(mode==="practice"){$("palette").innerHTML="";return;}
   $("palette").innerHTML=QS.map((q,i)=>'<button type="button" class="dot" data-i="'+i+'">'+(i+1)+'</button>').join('');
@@ -2134,14 +2281,19 @@ function finish(auto){
      '<div class="help" style="margin-top:.35rem">'+grade+'</div></div></div>';
   if(mode==="practice"&&hintsUsed>0)
     h+='<p class="help">Hints used: '+hintsUsed+'</p>';
-  if(pct>=90&&level<5) h+='<p class="badge ok">Ready to try '+esc(APP_LEVELS[level].name)+'! 🚀</p>';
+  if(sessionKind==="assessment"){
+    if(pct===100){
+      if(level<5){unlockThrough(level+1);h+='<div class="unlock-banner">🎉 Perfect score! You unlocked <strong>'+esc(APP_LEVELS[level].name)+'</strong>.<div style="margin-top:.75rem"><button class="btn sm" type="button" id="resultNextLevel">Take me to Next Level: '+esc(APP_LEVELS[level].name)+' →</button></div></div>';}
+      else h+='<div class="unlock-banner">🏆 Perfect score! You completed the Supreme assessment.</div>';
+    } else h+='<p class="badge no">You need 100% to unlock the next level. Review the answers, practise, and try again.</p>';
+  } else if(pct>=90&&level<5) h+='<p class="badge ok">Strong work — keep practising toward the level assessment. 🚀</p>';
   else if(pct<60&&level>1) h+='<p class="badge no">Try '+esc(APP_LEVELS[level-2].name)+' to build confidence.</p>';
 
   if(rows) h+='<h3 style="margin-top:1.6rem;font-size:1.05rem">By topic</h3>'+
     '<table class="bd"><tr><th>Topic</th><th>Score</th><th>%</th></tr>'+rows+'</table>';
 
   h+='<div class="btnrow" style="margin-top:1.6rem">'+
-     '<button class="btn" type="button" data-go="home">New session 🔄</button>'+
+     '<button class="btn" type="button" data-go="'+(sessionKind==="topic"||sessionKind==="assessment"?"topicHub":"home")+'">'+(sessionKind==="topic"||sessionKind==="assessment"?"Back to level":"New session 🔄")+'</button>'+
      '<button class="btn sec" type="button" id="revBtn">Show / hide review</button>'+
      '<button class="btn sec" type="button" id="printBtn">Print</button></div>';
 
@@ -2166,6 +2318,8 @@ function finish(auto){
 
   $("resultCard").innerHTML=h;
   $("revBtn").onclick=()=>$("rev").classList.toggle("hide");
+  {const nb=$("resultNextLevel");if(nb)nb.onclick=()=>{renderLearningPath();openLevel(level+1);};}
+  {const pb=$("printBtn");if(pb)pb.onclick=()=>window.print();}
   const printBtn=$("printBtn"); if(printBtn) printBtn.onclick=()=>window.print();
   show("results");
   window.scrollTo(0,0);
@@ -2174,7 +2328,7 @@ function finish(auto){
 /* =======================================================================
    ROUTER · HOME · QUOTES
    ======================================================================= */
-const VIEWS = ["home","setup","runner","results"];
+const VIEWS = ["home","practicePath","topicHub","setup","runner","results"];
 
 function show(view){
   VIEWS.forEach(v=>{ const el=$(v); if(el) el.classList.toggle("hide", v!==view); });
@@ -2187,12 +2341,15 @@ function route(){
   const v=(location.hash||"#home").slice(1);
   if(VIEWS.indexOf(v)===-1) return show("home");
   if(v==="runner"||v==="results") return;       // driven by the app, not the URL
-  show(v);
+  if(v==="practicePath") renderLearningPath();
+  else if(v==="topicHub") openLevel(pathLevel);
+  else show(v);
 }
 
 /* ---------- start a session ---------- */
 function requestSession(kind){
-  mode = kind;
+  mode = kind; sessionKind="standard"; activeTopic=null; assessmentLevel=null;
+  if(kind==="practice"){renderLearningPath();go("practicePath");return;}
   [...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k===kind)));
   refreshSetup();
   go("setup");
