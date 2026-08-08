@@ -3,7 +3,7 @@
 Live at **<https://mijicuet.github.io>**
 
 A single self-contained web page for Grade 3 mathematics practice and timed testing.
-One HTML file, no dependencies, no build step, no backend and no tracking. Practice uses an optional device-local learning profile; nothing is transmitted.
+One HTML file, no dependencies, no build step, no backend and no tracking. Practice uses an optional device-local learning profile; nothing is transmitted. The guided Practice page now builds each level's topic dashboard directly from the generators eligible at that level, so newly added generator domains appear automatically.
 
 ---
 
@@ -74,7 +74,7 @@ Then two buttons, and nothing else:
 
 **Practice** · **Take a Test**
 
-**Practice uses a device-local learning profile.** The site asks for a made-up six-character username, a new password, a non-personal security answer, and a TOTP authenticator code. These values are processed and stored only in the current browser; no email, real name, school ID, phone number, address, or legal-document information is requested or transmitted. Take a Test remains separate from the guided Practice path.
+**Practice uses a device-local learning profile.** Registration is staged behind a privacy acknowledgement and a simple local CAPTCHA; the username/password/security-question/authenticator fields open progressively as each previous step is completed.  The site asks for a made-up six-character username, a new password, a non-personal security answer, and a TOTP authenticator code. These values are processed and stored only in the current browser; no email, real name, school ID, phone number, address, or legal-document information is requested or transmitted. Take a Test remains separate from the guided Practice path.
 
 ---
 

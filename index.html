@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-yYE0O34z58blkPtxK0UmAIJbiZAjVMqcNms1QXjS6/E='; style-src 'sha256-9zrquLBt4eGo1OqilZxE7OMQUpC7Uko6ha6ICIYwS2g='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Gz4TFqmyHhHKTQtqfrXIUqApVJS/cQm36d1NCdQT5tI='; style-src 'sha256-UzjE/xCcoH1Ux1PpSF/PmNKdfeIX3ZUkxKq8bCwLLY4='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -312,6 +312,12 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 .mfa-key{font-family:var(--font-mono);font-size:1rem;letter-spacing:.12em;word-break:break-all;background:#fff;border:1px dashed #8b5cf6;border-radius:10px;padding:.75rem;margin:.65rem 0}
 .auth-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.25rem}
 
+
+/* staged privacy-preserving registration */
+.privacy-banner-large{padding:1.25rem 1.35rem}.privacy-banner-large strong{display:block;font-size:clamp(1.35rem,1.05rem + 1.3vw,2.05rem);line-height:1.12;letter-spacing:.01em}.privacy-banner-large p{font-size:1rem;margin-top:.65rem;line-height:1.55}
+.reg-card{overflow:visible}.reg-step{display:flex;gap:1rem;margin-top:1.15rem;padding:1.15rem;border:1px solid var(--rule);border-radius:18px;background:linear-gradient(135deg,#fff,#f8fbff)}.reg-step h3{font-size:1.08rem}.step-badge{flex:0 0 38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-weight:850;box-shadow:0 5px 15px rgba(37,99,235,.2)}.step-body{min-width:0;flex:1}.consent-row{display:flex;align-items:flex-start;gap:.8rem;margin-top:.9rem;padding:.9rem;border:2px solid #c7d2fe;border-radius:14px;background:#eef2ff;cursor:pointer}.consent-row input{width:22px;height:22px;flex:0 0 auto;margin-top:.1rem}.captcha-box{margin-top:1rem;padding:1rem;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0}.captcha-line{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.55rem}.captcha-question{font-family:var(--font-mono);font-size:1.25rem;font-weight:800;padding:.55rem .85rem;border-radius:10px;background:#fff;border:1px solid #86efac}.captcha-line input{width:105px!important;font-size:1.15rem;text-align:center}.big-auth-input{max-width:520px!important;padding:.9rem 1rem!important;font-size:1.2rem!important;font-weight:650;letter-spacing:.035em}.pattern-guide{display:flex;gap:.45rem;flex-wrap:wrap;margin:.65rem 0}.pattern-guide span{padding:.35rem .55rem;border-radius:9px;background:#f1f5f9;font-size:.8rem}.field-status{margin-top:.6rem;padding:.65rem .8rem;border-radius:10px;font-size:.88rem;font-weight:650}.field-status.neutral{background:#f1f5f9;color:#475569}.field-status.good{background:#dcfce7;color:#166534}.field-status.bad{background:#fee2e2;color:#991b1b}.password-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem .8rem;margin-top:.75rem;max-width:650px}.password-rules span{font-size:.84rem;padding:.35rem .5rem;border-radius:8px;background:#f8fafc;color:#64748b}.password-rules span.ok{background:#ecfdf5;color:#166534;font-weight:700}.mfa-setup-stack{margin-top:1rem;display:flex;flex-direction:column;align-items:flex-start;gap:.65rem}.qr-wrap{background:#fff;border:2px solid #e2e8f0;border-radius:16px;padding:12px;box-shadow:0 8px 24px rgba(15,23,42,.08)}.qr-wrap svg{width:min(300px,75vw);height:auto}.manual-key-label{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:.2rem}.mfa-key{font-family:var(--font-mono);font-size:1rem;letter-spacing:.08em;word-break:break-all;max-width:520px}.otp-input{max-width:210px!important;text-align:center;letter-spacing:.22em!important}.locked-step.hide{display:none!important}
+@media(max-width:650px){.reg-step{padding:.9rem;gap:.7rem}.password-rules{grid-template-columns:1fr}.step-badge{width:32px;height:32px;flex-basis:32px}}
+
 </style>
 </head>
 <body>
@@ -542,50 +548,83 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 <!-- ================= LOCAL PROFILE REGISTRATION ================= -->
 <section class="section hide" id="registerView">
   <div class="wrap auth-shell">
-    <div class="privacy-banner">
-      <strong>WE DO NOT ASK FOR OR TRANSMIT PERSONAL INFORMATION.</strong>
-      <p>Do not use your real name, legal name, school ID, government ID, address, phone number, email address, or any information from legal documents. Create a made-up username and a password used only for this learning site.</p>
+    <div class="privacy-banner privacy-banner-large">
+      <strong>PLEASE DO NOT SHARE PERSONAL OR LEGAL INFORMATION.</strong>
+      <p>This learning profile does <b>not</b> need your real name, legal name, email address, phone number, home address, school ID, government ID, passport information, birth certificate information, or anything from a legal document. Use only made-up information for this site.</p>
     </div>
-    <div class="card">
-      <p class="kicker">Create a local learning profile</p>
-      <h2 class="path-title">Register on this device</h2>
-      <p class="path-lead">Your profile is stored only in this browser so your level progress can be remembered. Nothing is sent to a server.</p>
-      <div class="auth-grid">
-        <div>
-          <label class="lbl" for="regUser">Username</label>
-          <input id="regUser" type="text" maxlength="6" autocomplete="off" placeholder="Example: Ab12cd">
-          <p class="auth-note">Exactly 6 characters: Capital letter, small letter, two numbers, two letters. Example: <b>Ab12cd</b>.</p>
+    <div class="card reg-card">
+      <p class="kicker">Private-by-design local profile</p>
+      <h2 class="path-title">Create your learning profile</h2>
+      <p class="path-lead">Complete each step in order. The next box opens only after the current step is completed correctly.</p>
+
+      <section class="reg-step" id="consentStage">
+        <span class="step-badge">1</span>
+        <div class="step-body">
+          <h3>Privacy acknowledgement</h3>
+          <label class="consent-row"><input type="checkbox" id="privacyAgree"> <span><b>I agree</b> to use only made-up information and not enter a real name, email address, government/document number, address, phone number, school identifier, or other personal/legal information.</span></label>
+          <div class="captcha-box">
+            <div><b>Quick human check</b><p class="auth-note">Solve this simple question on this device.</p></div>
+            <div class="captcha-line"><span class="captcha-question" id="captchaQuestion"></span><input id="captchaAnswer" type="text" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="CAPTCHA answer"><button class="btn sec sm" id="captchaBtn" type="button">Verify</button></div>
+            <div id="captchaMsg" class="field-status neutral">Complete the acknowledgement and human check to continue.</div>
+          </div>
         </div>
-        <div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="usernameStage">
+        <span class="step-badge">2</span>
+        <div class="step-body">
+          <h3>Choose a made-up username</h3>
+          <label class="lbl" for="regUser">Six-character username</label>
+          <input class="big-auth-input" id="regUser" type="text" maxlength="6" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ab12cd">
+          <div class="pattern-guide"><span>1 <b>A</b> capital</span><span>2 <b>b</b> lowercase</span><span>3–4 <b>12</b> numbers</span><span>5–6 <b>cd</b> letters</span></div>
+          <div id="userStatus" class="field-status neutral">Example format: <b>Ab12cd</b>. Do not use initials or anything based on your real identity.</div>
+        </div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="passwordStage">
+        <span class="step-badge">3</span>
+        <div class="step-body">
+          <h3>Create a password</h3>
           <label class="lbl" for="regPass">Password</label>
-          <input id="regPass" type="password" autocomplete="new-password" placeholder="At least 8 characters">
-          <p class="auth-note">Use a new password for this site. Do not reuse a school, email, banking, or other real account password.</p>
+          <input class="big-auth-input" id="regPass" type="password" autocomplete="new-password" placeholder="Example format: Math7!Rocket">
+          <p class="auth-note"><b>Example format only:</b> Math7!Rocket — do not use this exact password and do not reuse a password from email, school, banking, gaming, or another account.</p>
+          <div class="password-rules" id="passwordRules">
+            <span data-rule="len">○ 10 or more characters</span><span data-rule="upper">○ one uppercase letter</span><span data-rule="lower">○ one lowercase letter</span><span data-rule="digit">○ one number</span><span data-rule="symbol">○ one symbol (! @ # $ % etc.)</span><span data-rule="space">○ no spaces</span>
+          </div>
+          <div id="passStatus" class="field-status neutral">Meet every password rule to continue.</div>
         </div>
-      </div>
-      <label class="lbl" for="secQuestion">Security question</label>
-      <select id="secQuestion">
-        <option value="shape">What imaginary shape is your secret favorite?</option>
-        <option value="planet">What made-up planet name will you remember?</option>
-        <option value="word">What secret nonsense word will you remember?</option>
-      </select>
-      <label class="lbl" for="secAnswer">Security answer</label>
-      <input id="secAnswer" type="password" autocomplete="off" placeholder="Use a made-up answer, not a real-life fact">
-      <div class="mfa-box">
-        <h3>Required authenticator step</h3>
-        <p class="auth-note">Press “Generate setup key”, add the key to Google Authenticator (or another compatible TOTP authenticator) as a <b>time-based</b> key, then enter the current 6-digit code. Registration cannot finish until the code is verified.</p>
-        <button class="btn sec sm" id="genMfaBtn" type="button">Generate setup key</button>
-        <div id="mfaSetup" class="hide">
-          <div class="mfa-key" id="mfaKey"></div>
-          <label class="lbl" for="mfaCode">6-digit authenticator code</label>
-          <input id="mfaCode" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456">
+      </section>
+
+      <section class="reg-step locked-step hide" id="securityStage">
+        <span class="step-badge">4</span>
+        <div class="step-body">
+          <h3>Choose a made-up security answer</h3>
+          <label class="lbl" for="secQuestion">Security question</label>
+          <select id="secQuestion"><option value="shape">What imaginary shape is your secret favorite?</option><option value="planet">What made-up planet name will you remember?</option><option value="word">What secret nonsense word will you remember?</option></select>
+          <label class="lbl" for="secAnswer">Made-up answer</label>
+          <input class="big-auth-input" id="secAnswer" type="password" autocomplete="off" placeholder="Use an invented answer, not a real-life fact">
+          <div id="secStatus" class="field-status neutral">Use at least 4 characters. Do not use a birthday, school, family name, pet name, hometown, or other real-life fact.</div>
         </div>
-      </div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="mfaStage">
+        <span class="step-badge">5</span>
+        <div class="step-body">
+          <h3>Set up required authenticator verification</h3>
+          <p class="auth-note">Use Google Authenticator or another compatible TOTP authenticator. The QR code is generated entirely in this browser; the setup secret is not sent to a QR-code website.</p>
+          <button class="btn sec" id="genMfaBtn" type="button">Generate authenticator QR code</button>
+          <div id="mfaSetup" class="hide mfa-setup-stack">
+            <div class="qr-wrap" id="mfaQr" aria-label="Authenticator QR code"></div>
+            <div class="manual-key-label">Manual setup key</div>
+            <div class="mfa-key" id="mfaKey"></div>
+            <label class="lbl" for="mfaCode">Current 6-digit authenticator code</label>
+            <input class="big-auth-input otp-input" id="mfaCode" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456">
+          </div>
+        </div>
+      </section>
+
       <div id="regMsg"></div>
-      <div class="auth-actions">
-        <button class="btn big" id="finishRegBtn" type="button">Create local profile</button>
-        <button class="btn sec" id="haveProfileBtn" type="button">I already have a profile</button>
-        <button class="btn sec" type="button" data-go="home">Back to home</button>
-      </div>
+      <div class="auth-actions"><button class="btn big" id="finishRegBtn" type="button" disabled>Create local profile</button><button class="btn sec" id="haveProfileBtn" type="button">I already have a profile</button><button class="btn sec" type="button" data-go="home">Back to home</button></div>
     </div>
   </div>
 </section>
@@ -2020,35 +2059,53 @@ function openPracticeEntry(){
   if(!isLocallyAuthenticated()){if($("loginUser"))$("loginUser").value=p.username||"";go("loginView");return;}
   renderLearningPath();go("practicePath");
 }
+
+function passwordChecks(pw){return {len:pw.length>=10,upper:/[A-Z]/.test(pw),lower:/[a-z]/.test(pw),digit:/\d/.test(pw),symbol:/[^A-Za-z0-9\s]/.test(pw),space:!/\s/.test(pw)};}
+function passwordValid(pw){const x=passwordChecks(pw);return Object.values(x).every(Boolean);}
+let captchaExpected=null,captchaVerified=false;
+function makeCaptcha(){const a=rand(2,9),b=rand(1,9);captchaExpected=a+b;captchaVerified=false;if($("captchaQuestion"))$("captchaQuestion").textContent=a+" + "+b+" = ?";if($("captchaAnswer"))$("captchaAnswer").value="";}
+function revealStage(id,on=true){const e=$(id);if(e)e.classList.toggle("hide",!on);}
+function setStatus(id,text,state="neutral"){const e=$(id);if(!e)return;e.className="field-status "+state;e.textContent=text;}
+function otpauthUri(user,secret){return "otpauth://totp/G3:"+encodeURIComponent(user)+"?secret="+secret+"&issuer=G3Math";}
+/* Local QR encoder: QR version 5-L, byte mode. No network request and no external QR service. */
+function qrSvg(text){
+  const N=37,DATA=108,ECC=26,bytes=Array.from(new TextEncoder().encode(text));
+  if(bytes.length>106)throw new Error("Authenticator QR payload is too long.");
+  const bits=[],put=(v,n)=>{for(let i=n-1;i>=0;i--)bits.push((v>>>i)&1);};put(4,4);put(bytes.length,8);bytes.forEach(b=>put(b,8));
+  for(let i=0;i<Math.min(4,DATA*8-bits.length);i++)bits.push(0);while(bits.length%8)bits.push(0);
+  const data=[];for(let i=0;i<bits.length;i+=8){let b=0;for(let j=0;j<8;j++)b=(b<<1)|bits[i+j];data.push(b);}for(let p=0;data.length<DATA;p++)data.push(p%2?0x11:0xEC);
+  const mul=(x,y)=>{let z=0;for(let i=7;i>=0;i--){z=(z<<1)^((z>>>7)*0x11D);z^=((y>>>i)&1)*x;}return z;};
+  let gen=new Array(ECC).fill(0);gen[ECC-1]=1;let root=1;for(let i=0;i<ECC;i++){for(let j=0;j<ECC;j++){gen[j]=mul(gen[j],root);if(j+1<ECC)gen[j]^=gen[j+1];}root=mul(root,2);}
+  const rem=new Array(ECC).fill(0);for(const b of data){const f=b^rem.shift();rem.push(0);for(let i=0;i<ECC;i++)rem[i]^=mul(gen[i],f);}const code=data.concat(rem),db=[];code.forEach(b=>{for(let i=7;i>=0;i--)db.push((b>>>i)&1);});
+  const m=Array.from({length:N},()=>Array(N).fill(false)),fn=Array.from({length:N},()=>Array(N).fill(false));const set=(r,c,v)=>{if(r>=0&&r<N&&c>=0&&c<N){m[r][c]=!!v;fn[r][c]=true;}};
+  const finder=(r,c)=>{for(let dr=-4;dr<=4;dr++)for(let dc=-4;dc<=4;dc++){const d=Math.max(Math.abs(dr),Math.abs(dc));set(r+dr,c+dc,d!==2&&d!==4);}};finder(3,3);finder(3,N-4);finder(N-4,3);
+  for(let i=8;i<N-8;i++){set(6,i,i%2===0);set(i,6,i%2===0);}for(let dr=-2;dr<=2;dr++)for(let dc=-2;dc<=2;dc++)set(30+dr,30+dc,Math.max(Math.abs(dr),Math.abs(dc))!==1);
+  const fmt=mask=>{let d=(1<<3)|mask,r=d;for(let i=0;i<10;i++)r=(r<<1)^(((r>>>9)&1)*0x537);const f=((d<<10)|r)^0x5412,bit=i=>((f>>>i)&1)!==0;for(let i=0;i<=5;i++)set(i,8,bit(i));set(7,8,bit(6));set(8,8,bit(7));set(8,7,bit(8));for(let i=9;i<15;i++)set(8,14-i,bit(i));for(let i=0;i<8;i++)set(8,N-1-i,bit(i));for(let i=8;i<15;i++)set(N-15+i,8,bit(i));set(N-8,8,true);};fmt(0);
+  let k=0;for(let right=N-1;right>=1;right-=2){if(right===6)right=5;for(let vert=0;vert<N;vert++){const up=((right+1)&2)===0,row=up?N-1-vert:vert;for(let j=0;j<2;j++){const c=right-j;if(!fn[row][c]){let v=k<db.length?db[k++]:0;if((row+c)%2===0)v^=1;m[row][c]=!!v;}}}}fmt(0);
+  const q=4,sc=5,sz=(N+q*2)*sc;let rects="";for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(m[r][c])rects+='<rect x="'+((c+q)*sc)+'" y="'+((r+q)*sc)+'" width="'+sc+'" height="'+sc+'"/>';
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+sz+' '+sz+'" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="white"/><g fill="black">'+rects+'</g></svg>';
+}
 function registerHandlers(){
-  const gen=$("genMfaBtn");if(gen)gen.onclick=()=>{pendingMfaSecret=newMfaSecret();$("mfaKey").textContent=pendingMfaSecret;$("mfaSetup").classList.remove("hide");$("mfaCode").focus();};
-  const finish=$("finishRegBtn");if(finish)finish.onclick=async()=>{
-    const u=$("regUser").value.trim(),pw=$("regPass").value,qa=$("secAnswer").value.trim(),qq=$("secQuestion").value,code=$("mfaCode").value.trim();
-    if(!validLocalUsername(u))return authMessage("regMsg","Username must be exactly: capital letter, small letter, two numbers, then two letters (example: Ab12cd).");
-    if(pw.length<8)return authMessage("regMsg","Password must contain at least 8 characters.");
-    if(qa.length<4)return authMessage("regMsg","Use a made-up security answer with at least 4 characters.");
-    if(!pendingMfaSecret)return authMessage("regMsg","Generate an authenticator setup key first.");
-    if(!(await verifyTotp(pendingMfaSecret,code)))return authMessage("regMsg","The authenticator code is not valid. Check that the key is time-based and try the current 6-digit code.");
-    const salt=Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>x.toString(16).padStart(2,"0")).join("");
-    const profile={username:u,salt,passwordHash:await shaText(pw,salt),question:qq,answerHash:await shaText(qa.toLowerCase(),salt),totpSecret:pendingMfaSecret,createdAt:new Date().toISOString()};
-    try{localStorage.setItem(PROFILE_STORE,JSON.stringify(profile));}catch(e){return authMessage("regMsg","This browser blocked local storage, so the profile could not be saved.");}
-    pendingMfaSecret="";setLocalAuth(true);authMessage("regMsg","Local profile created. Opening Practice…",true);setTimeout(()=>{renderLearningPath();go("practicePath");},250);
-  };
-  const have=$("haveProfileBtn");if(have)have.onclick=()=>go("loginView");
-  const newer=$("newProfileBtn");if(newer)newer.onclick=()=>{setLocalAuth(false);go("registerView");};
-  const login=$("loginBtn");if(login)login.onclick=async()=>{const p=profileData();if(!p)return go("registerView");const u=$("loginUser").value.trim(),pw=$("loginPass").value,code=$("loginMfa").value.trim();if(u!==p.username)return authMessage("loginMsg","Username does not match this device's local profile.");if(await shaText(pw,p.salt)!==p.passwordHash)return authMessage("loginMsg","Password is incorrect.");if(!(await verifyTotp(p.totpSecret,code)))return authMessage("loginMsg","Authenticator code is incorrect or expired.");setLocalAuth(true);authMessage("loginMsg","Unlocked.",true);setTimeout(()=>{renderLearningPath();go("practicePath");},150);};
+  makeCaptcha();
+  const agree=$("privacyAgree"),capBtn=$("captchaBtn"),capAns=$("captchaAnswer"),u=$("regUser"),pw=$("regPass"),qa=$("secAnswer"),finish=$("finishRegBtn");
+  const updateConsent=()=>{if(!agree)return;const ready=agree.checked&&captchaVerified;revealStage("usernameStage",ready);if(ready){setStatus("captchaMsg","✓ Acknowledgement accepted and human check passed.","good");u.focus();}};
+  if(agree)agree.onchange=updateConsent;
+  if(capBtn)capBtn.onclick=()=>{if(!agree.checked){captchaVerified=false;setStatus("captchaMsg","Please click I agree before completing the human check.","bad");return;}captchaVerified=Number(capAns.value)===captchaExpected;if(captchaVerified){setStatus("captchaMsg","✓ Human check passed.","good");updateConsent();}else{setStatus("captchaMsg","That answer is not correct. A new question has been created.","bad");makeCaptcha();}};
+  const updateUser=()=>{const val=u.value.trim(),ok=validLocalUsername(val);if(!val)setStatus("userStatus","Use: capital letter + lowercase letter + two numbers + two letters. Example format: Ab12cd.","neutral");else if(ok)setStatus("userStatus","✓ Username format is correct. Password setup is now open.","good");else setStatus("userStatus","Not yet. Position 1 uppercase, position 2 lowercase, positions 3–4 numbers, positions 5–6 letters.","bad");revealStage("passwordStage",ok);if(!ok){revealStage("securityStage",false);revealStage("mfaStage",false);finish.disabled=true;}};if(u)u.oninput=updateUser;
+  const updatePass=()=>{const checks=passwordChecks(pw.value);Object.entries(checks).forEach(([k,v])=>{const e=$("passwordRules").querySelector('[data-rule="'+k+'"]');if(e){e.classList.toggle("ok",v);e.textContent=(v?'✓ ':'○ ')+e.textContent.replace(/^[✓○]\s*/,"");}});const ok=passwordValid(pw.value);setStatus("passStatus",ok?"✓ Password meets every rule. Security-question setup is now open.":"Meet every password rule to continue.",ok?"good":"neutral");revealStage("securityStage",ok);if(!ok){revealStage("mfaStage",false);finish.disabled=true;}};if(pw)pw.oninput=updatePass;
+  const updateSec=()=>{const ok=qa.value.trim().length>=4;setStatus("secStatus",ok?"✓ Made-up security answer accepted. Authenticator setup is now open.":"Use at least 4 made-up characters. Do not use a real-life fact.",ok?"good":"neutral");revealStage("mfaStage",ok);if(!ok)finish.disabled=true;};if(qa)qa.oninput=updateSec;
+  const gen=$("genMfaBtn");if(gen)gen.onclick=()=>{if(!validLocalUsername(u.value.trim())||!passwordValid(pw.value)||qa.value.trim().length<4)return authMessage("regMsg","Complete the earlier registration steps first.");pendingMfaSecret=newMfaSecret();const uri=otpauthUri(u.value.trim(),pendingMfaSecret);$("mfaQr").innerHTML=qrSvg(uri);$("mfaKey").textContent=pendingMfaSecret;$("mfaSetup").classList.remove("hide");$("mfaCode").focus();finish.disabled=false;};
+  if(finish)finish.onclick=async()=>{const user=u.value.trim(),pass=pw.value,ans=qa.value.trim(),qq=$("secQuestion").value,code=$("mfaCode").value.trim();if(!agree.checked||!captchaVerified)return authMessage("regMsg","Complete the privacy acknowledgement and human check first.");if(!validLocalUsername(user))return authMessage("regMsg","Complete the username step correctly.");if(!passwordValid(pass))return authMessage("regMsg","Password does not meet the displayed policy.");if(ans.length<4)return authMessage("regMsg","Use a made-up security answer with at least 4 characters.");if(!pendingMfaSecret)return authMessage("regMsg","Generate the authenticator QR code first.");if(!(await verifyTotp(pendingMfaSecret,code)))return authMessage("regMsg","The authenticator code is not valid. Scan the QR code (or use the manual key) and enter the current 6-digit code.");const salt=Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>x.toString(16).padStart(2,"0")).join("");const profile={username:user,salt,passwordHash:await shaText(pass,salt),question:qq,answerHash:await shaText(ans.toLowerCase(),salt),totpSecret:pendingMfaSecret,createdAt:new Date().toISOString()};try{localStorage.setItem(PROFILE_STORE,JSON.stringify(profile));}catch(e){return authMessage("regMsg","This browser blocked local storage, so the profile could not be saved.");}pendingMfaSecret="";setLocalAuth(true);authMessage("regMsg","Local profile created. Opening Practice…",true);setTimeout(()=>{renderLearningPath();go("practicePath");},250);};
+  const have=$("haveProfileBtn");if(have)have.onclick=()=>go("loginView");const newer=$("newProfileBtn");if(newer)newer.onclick=()=>{setLocalAuth(false);go("registerView");};const login=$("loginBtn");if(login)login.onclick=async()=>{const p=profileData();if(!p)return go("registerView");const user=$("loginUser").value.trim(),pass=$("loginPass").value,code=$("loginMfa").value.trim();if(user!==p.username)return authMessage("loginMsg","Username does not match this device's local profile.");if(await shaText(pass,p.salt)!==p.passwordHash)return authMessage("loginMsg","Password is incorrect.");if(!(await verifyTotp(p.totpSecret,code)))return authMessage("loginMsg","Authenticator code is incorrect or expired.");setLocalAuth(true);authMessage("loginMsg","Unlocked.",true);setTimeout(()=>{renderLearningPath();go("practicePath");},150);};
 }
 registerHandlers();
 
 const PATH_STORE="grade3MathProgress.v1";
-const PATH_TOPICS=[
-  {k:"geometry",name:"Geometry",domains:["Geometry","Shapes","Lines","Angles","Triangles","Quadrilaterals"],desc:"Explore shapes, lines and visual reasoning.",icon:"geometry"},
-  {k:"length",name:"Measurement · Length",domains:["Measurement · Length","Measurement","Measurement · Units"],desc:"Measure, compare and reason about length.",icon:"ruler"},
-  {k:"factor",name:"Missing factor",domains:["Missing factor","Unknown number","Multiplication","Division"],desc:"Find the number that makes the equation true.",icon:"factor"},
-  {k:"patterns",name:"Number patterns",domains:["Number patterns","Geometric patterns","Properties of operations"],desc:"Spot the rule and predict what comes next.",icon:"pattern"},
-  {k:"perimeter",name:"Perimeter",domains:["Perimeter","Area & perimeter","Area vs perimeter"],desc:"Walk around shapes and calculate their boundaries.",icon:"perimeter"},
-  {k:"counting",name:"Counting",domains:["Place value","Addition","Subtraction","Multiplication","Supreme · Counting","Counting figures"],desc:"Build number sense by grouping, counting and combining.",icon:"counting"}
-];
+const TOPIC_META={
+  "Money":["money","Count coins, find totals and make change."],"Measurement":["ruler","Choose and use measurement units."],"Measurement · Length":["ruler","Measure and compare lengths."],"Measurement · Units":["ruler","Convert and reason about measurement units."],"Even and odd":["numbers","Recognize even and odd numbers."],"Comparing":["compare","Compare numbers using place value."],"Place value":["numbers","Understand hundreds, tens and ones."],"Addition":["numbers","Build fluency with addition."],"Subtraction":["numbers","Build fluency with subtraction."],"Multiplication":["factor","Practice equal groups and multiplication facts."],"Division":["factor","Practice sharing and division facts."],"Fractions":["fractions","Understand fractions as equal parts."],"Geometry":["geometry","Explore shapes and visual reasoning."],"Perimeter":["perimeter","Calculate distance around shapes."],"Area":["area","Measure space inside shapes."],"Number patterns":["pattern","Find rules and continue patterns."],"Multiples":["pattern","Recognize multiples and skip-counting patterns."],"Telling time":["clock","Read clocks and tell time."],"Elapsed time":["clock","Reason about how much time passes."],"Picture graph":["graph","Read and interpret picture graphs."],"Bar graph":["graph","Read and compare bar-graph data."],"Data · Line plot":["graph","Read and reason from line plots."]
+};
+function topicMeta(domain){const m=TOPIC_META[domain];if(m)return {icon:m[0],desc:m[1]};let icon=/geometry|shape|triangle|angle|polygon|line|symmetry|solid|net|diagonal|spatial|cross-section|quadrilateral|euler/i.test(domain)?"geometry":/measure|length|unit/i.test(domain)?"ruler":/area|perimeter/i.test(domain)?"perimeter":/fraction/i.test(domain)?"fractions":/time/i.test(domain)?"clock":/graph|data/i.test(domain)?"graph":/money/i.test(domain)?"money":/pattern|multiple|series/i.test(domain)?"pattern":/factor|multiply|division|unknown/i.test(domain)?"factor":"numbers";return {icon,desc:"Practice fresh "+domain.toLowerCase()+" questions from the generator engine."};}
+function engineTopicsForLevel(L){const seen=new Map();const gens=allLevelGenerators(L);for(const g of gens){for(let tries=0;tries<4;tries++){let q=null;try{q=g.f(L);}catch(e){}if(q&&q.domain){if(!seen.has(q.domain)){const m=topicMeta(q.domain),display={"Even and odd":"Odd & Even Numbers","Comparing":"Number Comparison","Measurement":"Measurement & Estimation"}[q.domain]||q.domain;seen.set(q.domain,{k:q.domain,name:display,domains:[q.domain],desc:m.desc,icon:m.icon});}break;}}}return [...seen.values()].sort((a,b)=>a.name.localeCompare(b.name));}
 function getPathProgress(){
   try{const p=profileData();const k=PATH_STORE+"."+(p&&p.username?p.username:"guest");const v=JSON.parse(localStorage.getItem(k)||"{}");return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
   catch(e){return {highestUnlocked:1};}
@@ -2062,6 +2119,11 @@ function topicIcon(kind){
   if(kind==="factor") return '<svg '+common+'><rect x="8" y="12" width="18" height="18" rx="5" fill="#c4b5fd"/><rect x="38" y="34" width="18" height="18" rx="5" fill="#93c5fd"/><path d="M27 21h10M32 16v10M18 43h14" stroke="#4338ca" stroke-width="4" stroke-linecap="round"/><text x="39" y="29" font-size="20" font-weight="800" fill="#7c3aed">?</text></svg>';
   if(kind==="pattern") return '<svg '+common+'><circle cx="11" cy="34" r="6" fill="#22c55e"/><rect x="22" y="27" width="14" height="14" rx="3" fill="#60a5fa"/><path d="M47 24 57 43H37Z" fill="#a78bfa"/><path d="M8 18h48" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4 5"/></svg>';
   if(kind==="perimeter") return '<svg '+common+'><rect x="12" y="14" width="40" height="34" rx="3" fill="#bbf7d0"/><rect x="12" y="14" width="40" height="34" rx="3" fill="none" stroke="#16a34a" stroke-width="4" stroke-dasharray="7 4"/><path d="m47 8 8 6-8 6" fill="none" stroke="#16a34a" stroke-width="3"/></svg>';
+  if(kind==="money") return '<svg '+common+'><circle cx="24" cy="32" r="17" fill="#fde68a" stroke="#d97706" stroke-width="3"/><circle cx="43" cy="34" r="13" fill="#bbf7d0" stroke="#16a34a" stroke-width="3"/><text x="18" y="39" font-size="20" font-weight="800" fill="#92400e">¢</text></svg>';
+  if(kind==="clock") return '<svg '+common+'><circle cx="32" cy="32" r="23" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/><path d="M32 18v15l11 7" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/></svg>';
+  if(kind==="graph") return '<svg '+common+'><path d="M10 52V12M10 52h45" stroke="#475569" stroke-width="3"/><rect x="17" y="35" width="8" height="17" fill="#60a5fa"/><rect x="30" y="24" width="8" height="28" fill="#a78bfa"/><rect x="43" y="15" width="8" height="37" fill="#34d399"/></svg>';
+  if(kind==="fractions") return '<svg '+common+'><circle cx="32" cy="32" r="22" fill="#bfdbfe"/><path d="M32 10a22 22 0 0 1 0 44Z" fill="#8b5cf6"/><path d="M32 10v44" stroke="#3730a3" stroke-width="3"/></svg>';
+  if(kind==="compare") return '<svg '+common+'><text x="9" y="42" font-size="31" font-weight="900" fill="#2563eb">&lt;</text><text x="39" y="42" font-size="31" font-weight="900" fill="#7c3aed">&gt;</text></svg>';
   return '<svg '+common+'><g fill="#f472b6"><circle cx="17" cy="20" r="6"/><circle cx="32" cy="20" r="6"/><circle cx="47" cy="20" r="6"/></g><g fill="#60a5fa"><circle cx="17" cy="39" r="6"/><circle cx="32" cy="39" r="6"/><circle cx="47" cy="39" r="6"/></g><path d="M13 53h38" stroke="#7c3aed" stroke-width="3" stroke-linecap="round"/></svg>';
 }
 function renderLearningPath(){
@@ -2070,22 +2132,13 @@ function renderLearningPath(){
   $("levelRoad").onclick=e=>{const b=e.target.closest('.level-card');if(!b||b.disabled)return;openLevel(+b.dataset.level);};
 }
 function openLevel(n){
-  const p=getPathProgress(); if(n>p.highestUnlocked)return;
-  pathLevel=n; level=n;
-  $("topicKicker").textContent='Level '+n+' · '+APP_LEVELS[n-1].stars;
-  $("topicTitle").textContent=APP_LEVELS[n-1].name+' practice';
-  $("topicLead").textContent='Choose a topic. Questions are generated fresh for '+APP_LEVELS[n-1].name+' level.';
-  $("topicGrid").innerHTML=PATH_TOPICS.map(t=>'<button type="button" class="topic-card" data-topic="'+esc(t.k)+'"><span class="topic-icon">'+topicIcon(t.icon)+'</span><b>'+esc(t.name)+'</b><small>'+esc(t.desc)+'</small></button>').join('');
-  $("assessmentTitle").textContent='Take '+APP_LEVELS[n-1].name+' Assessment';
-  $("assessmentCopy").textContent=n<5?'Score 100% to unlock the next level: '+APP_LEVELS[n].name+'.':'This is the final level. Aim for a perfect score and finish the path!';
-  $("assessmentBtn").textContent='Take '+APP_LEVELS[n-1].name+' Assessment →';
-  const nh=$("nextLevelHost");
-  if(n<5&&p.highestUnlocked>n) nh.innerHTML='<div class="unlock-banner">✓ '+esc(APP_LEVELS[n].name)+' is unlocked.<div style="margin-top:.7rem"><button class="btn sm" type="button" id="nextUnlockedBtn">Take me to Next Level: '+esc(APP_LEVELS[n].name)+' →</button></div></div>';
-  else nh.innerHTML='';
-  const nub=$("nextUnlockedBtn");if(nub)nub.onclick=()=>openLevel(n+1);
-  $("topicGrid").onclick=e=>{const b=e.target.closest('.topic-card');if(!b)return;startTopicPractice(b.dataset.topic);};
-  $("assessmentBtn").onclick=()=>startLevelAssessment(n);
-  show('topicHub');
+  const p=getPathProgress();if(n>p.highestUnlocked)return;pathLevel=n;level=n;const topics=engineTopicsForLevel(n);
+  $("topicKicker").textContent='Level '+n+' · '+APP_LEVELS[n-1].stars;$("topicTitle").textContent=APP_LEVELS[n-1].name+' practice';$("topicLead").textContent=topics.length+' topics are available at this level, discovered directly from the question-generator engine. Choose any topic to practise.';
+  $("topicGrid").innerHTML=topics.map(t=>'<button type="button" class="topic-card" data-topic="'+esc(t.k)+'"><span class="topic-icon">'+topicIcon(t.icon)+'</span><b>'+esc(t.name)+'</b><small>'+esc(t.desc)+'</small></button>').join('');
+  $("assessmentTitle").textContent='Take '+APP_LEVELS[n-1].name+' Assessment';$("assessmentCopy").textContent=n<5?'Score 100% to unlock the next level: '+APP_LEVELS[n].name+'.':'This is the final level. Aim for a perfect score and finish the path!';$("assessmentBtn").textContent='Take '+APP_LEVELS[n-1].name+' Assessment →';
+  const nh=$("nextLevelHost");if(n<5&&p.highestUnlocked>n)nh.innerHTML='<div class="unlock-banner">✓ '+esc(APP_LEVELS[n].name)+' is unlocked.<div style="margin-top:.7rem"><button class="btn sm" type="button" id="nextUnlockedBtn">Take me to Next Level: '+esc(APP_LEVELS[n].name)+' →</button></div></div>';else nh.innerHTML='';
+  const nub=$("nextUnlockedBtn");if(nub)nub.onclick=()=>openLevel(n+1);$("topicGrid").onclick=e=>{const b=e.target.closest('.topic-card');if(!b)return;startTopicPractice(b.dataset.topic);};$("assessmentBtn").onclick=()=>startLevelAssessment(n);
+  if(location.hash!=="#topicHub")history.replaceState(null,"","#topicHub");show('topicHub');
 }
 function allLevelGenerators(L){
   return GEN.filter(g=>g.minL<=L).concat(EXTRAGEN.filter(g=>g.minL<=L),GEOGEN.filter(g=>g.minL<=L),MULTIGEN.filter(g=>g.minL<=L),OLYGEN.filter(g=>g.minL<=L));
@@ -2106,9 +2159,7 @@ function buildTopicSession(n,L,topic){
 function launchQuestions(qs,kind){
   sessionKind=kind;QS=qs;resetArrays(QS.length);cur=0;nRight=0;nDone=0;show('runner');$("rWho").textContent=name;startClock();buildPalette();render();window.scrollTo(0,0);
 }
-function startTopicPractice(k){
-  const t=PATH_TOPICS.find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name='Learner';launchQuestions(buildTopicSession(12,level,t),'topic');
-}
+function startTopicPractice(k){const t=engineTopicsForLevel(pathLevel).find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name='Learner';launchQuestions(buildTopicSession(12,level,t),'topic');}
 function startLevelAssessment(n){
   mode='test';sessionKind='assessment';assessmentLevel=n;activeTopic=null;subject='all';level=n;name='Learner';limitMin=20;launchQuestions(buildSession(10,n,'all'),'assessment');
 }
@@ -2467,7 +2518,7 @@ function show(view){
   VIEWS.forEach(v=>{ const el=$(v); if(el) el.classList.toggle("hide", v!==view); });
   window.scrollTo(0,0);
 }
-function go(view){ location.hash = "#"+view; }
+function go(view){ const h="#"+view; if(location.hash===h) route(); else location.hash=h; }
 
 window.addEventListener("hashchange", route);
 function route(){

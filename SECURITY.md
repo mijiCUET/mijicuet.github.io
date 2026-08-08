@@ -112,6 +112,9 @@ history — scanning only the current tree would have been insufficient.
 
 ## 6. Privacy
 
+- Registration now begins with an explicit privacy acknowledgement and a local arithmetic CAPTCHA before any profile fields are shown. The CAPTCHA is a user-flow gate only; because this is a static client-side application it is not presented as server-side bot protection.
+- The authenticator QR code is generated locally in the browser from the TOTP URI; the TOTP secret is never sent to an external QR-code service.
+
 - Practice deliberately asks for a **made-up** username and tells users in large text not to enter a real name, email, school ID, government ID, address, phone number, or information from legal documents.
 - The username must match `^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$` (example: `Ab12cd`).
 - Passwords and security answers are not stored in plaintext; salted PBKDF2-HMAC-SHA-256 derived values are stored locally (120,000 iterations).
