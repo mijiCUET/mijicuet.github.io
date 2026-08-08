@@ -1,0 +1,12 @@
+# Never commit .dev.vars.
+SESSION_SECRET=replace-with-at-least-32-random-bytes
+DATA_ENCRYPTION_KEY=replace-with-a-separate-at-least-32-byte-random-secret
+
+# Recommended: GitHub App installed ONLY on mijiCUET/users-private
+GITHUB_APP_ID=
+GITHUB_INSTALLATION_ID=
+GITHUB_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+
+# Easier fallback: a fine-grained token restricted to users-private, Contents: Read/Write.
+# Do NOT configure this if using the GitHub App fields above.
+GITHUB_TOKEN=

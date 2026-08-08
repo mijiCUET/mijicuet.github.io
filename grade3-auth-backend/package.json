@@ -1,0 +1,18 @@
+{
+  "name": "grade3-math-auth-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "wrangler": "^4.36.0"
+  }
+}

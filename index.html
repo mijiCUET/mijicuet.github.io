@@ -12,8 +12,9 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-lyU19c+CKsrGSLsTSv8c8bcsnv4gw4TmC4s4Yfj8F4g='; style-src 'sha256-+VX6ZSA5tIleD1AwQIN6aYfuX6do9D6CrRzUhopzqDI='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-AmsQTKtdfYUaUGNJKwyaqj+ZjwyviuIVO5LxSbnXhao='; style-src 'sha256-UQGTpq310OHdFoSKbktXPFwK5FF3OPUxFFESm2e9utU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://*.workers.dev">
 <meta name="referrer" content="no-referrer">
+<meta name="grade3-api-base" content="https://grade3-math-auth.YOUR-WORKERS-SUBDOMAIN.workers.dev">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
 
@@ -297,6 +298,65 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 @media(max-width:800px){.level-road{grid-template-columns:1fr 1fr}.topic-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.level-road,.topic-grid{grid-template-columns:1fr}}
 
+
+/* ---------- account controls / staged login ---------- */
+.mast-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.15rem;min-height:42px}
+.mast-home-btn,.mast-account-btn{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:.52rem 1rem;font:inherit;font-size:.88rem;font-weight:750;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.mast-home-btn:hover,.mast-account-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.52)}
+.account-strip{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;margin-left:auto}
+.account-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.42rem .8rem;border:1px solid rgba(255,255,255,.26);border-radius:999px;background:rgba(8,20,45,.34);color:#e6efff;font-size:.84rem;font-weight:750;white-space:nowrap}
+@media(max-width:620px){.mast-topbar{align-items:flex-start;flex-direction:column}.account-strip{margin-left:0;justify-content:flex-start}.mast-home-btn,.mast-account-btn{padding:.46rem .82rem;font-size:.82rem}.account-pill{font-size:.78rem}}
+.login-stage{margin-top:1rem;padding:1rem;border:1px solid var(--rule);border-radius:16px;background:linear-gradient(135deg,#fff,#f8fbff)}
+.login-stage.locked{opacity:.58}
+.login-stage .big-auth-input{max-width:100%!important}
+.login-new{margin-top:1.2rem;padding:1rem;border-radius:14px;background:#f5f3ff;border:1px solid #ddd6fe}
+.login-new strong{display:block;color:#5b21b6;margin-bottom:.25rem}
+
+/* ---------- local profile / registration ---------- */
+.auth-shell{max-width:760px;margin:0 auto}
+.privacy-banner{padding:1.25rem 1.35rem;border:3px solid #2563eb;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#f5f3ff 52%,#ecfeff);box-shadow:var(--shadow);margin-bottom:1.25rem}
+.privacy-banner strong{display:block;font-size:clamp(1.2rem,1.05rem + 1vw,1.75rem);line-height:1.25;color:#172554;margin-bottom:.5rem}
+.privacy-banner p{font-weight:750;color:#334155}
+.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:650px){.auth-grid{grid-template-columns:1fr}}
+.auth-note{font-size:.88rem;color:var(--muted);margin-top:.45rem}
+.auth-error{margin-top:.8rem;padding:.7rem .9rem;border-radius:10px;background:#fee2e2;color:#991b1b;font-weight:700}
+.auth-ok{margin-top:.8rem;padding:.7rem .9rem;border-radius:10px;background:#dcfce7;color:#166534;font-weight:700}
+.mfa-box{margin-top:1.2rem;padding:1rem;border:2px solid #c4b5fd;border-radius:14px;background:#faf5ff}
+.mfa-key{font-family:var(--font-mono);font-size:1rem;letter-spacing:.12em;word-break:break-all;background:#fff;border:1px dashed #8b5cf6;border-radius:10px;padding:.75rem;margin:.65rem 0}
+.auth-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.25rem}
+
+
+/* staged privacy-preserving registration */
+.privacy-banner-large{padding:1.25rem 1.35rem}.privacy-banner-large strong{display:block;font-size:clamp(1.35rem,1.05rem + 1.3vw,2.05rem);line-height:1.12;letter-spacing:.01em}.privacy-banner-large p{font-size:1rem;margin-top:.65rem;line-height:1.55}
+.reg-card{overflow:visible}.reg-step{display:flex;gap:1rem;margin-top:1.15rem;padding:1.15rem;border:1px solid var(--rule);border-radius:18px;background:linear-gradient(135deg,#fff,#f8fbff)}.reg-step h3{font-size:1.08rem}.step-badge{flex:0 0 38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-weight:850;box-shadow:0 5px 15px rgba(37,99,235,.2)}.step-body{min-width:0;flex:1}.consent-row{display:flex;align-items:flex-start;gap:.8rem;margin-top:.9rem;padding:.9rem;border:2px solid #c7d2fe;border-radius:14px;background:#eef2ff;cursor:pointer}.consent-row input{width:22px;height:22px;flex:0 0 auto;margin-top:.1rem}.captcha-box{margin-top:1rem;padding:1rem;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0}.captcha-line{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.55rem}.captcha-question{font-family:var(--font-mono);font-size:1.25rem;font-weight:800;padding:.55rem .85rem;border-radius:10px;background:#fff;border:1px solid #86efac}.captcha-line input{width:105px!important;font-size:1.15rem;text-align:center}.big-auth-input{max-width:520px!important;padding:.9rem 1rem!important;font-size:1.2rem!important;font-weight:650;letter-spacing:.035em}.pattern-guide{display:flex;gap:.45rem;flex-wrap:wrap;margin:.65rem 0}.pattern-guide span{padding:.35rem .55rem;border-radius:9px;background:#f1f5f9;font-size:.8rem}.field-status{margin-top:.6rem;padding:.65rem .8rem;border-radius:10px;font-size:.88rem;font-weight:650}.field-status.neutral{background:#f1f5f9;color:#475569}.field-status.good{background:#dcfce7;color:#166534}.field-status.bad{background:#fee2e2;color:#991b1b}.password-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem .8rem;margin-top:.75rem;max-width:650px}.password-rules span{font-size:.84rem;padding:.35rem .5rem;border-radius:8px;background:#f8fafc;color:#64748b}.password-rules span.ok{background:#ecfdf5;color:#166534;font-weight:700}.mfa-setup-stack{margin-top:1rem;display:flex;flex-direction:column;align-items:flex-start;gap:.65rem}.qr-wrap{background:#fff;border:2px solid #e2e8f0;border-radius:16px;padding:12px;box-shadow:0 8px 24px rgba(15,23,42,.08)}.qr-wrap svg{width:min(300px,75vw);height:auto}.manual-key-label{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:.2rem}.mfa-key{font-family:var(--font-mono);font-size:1rem;letter-spacing:.08em;word-break:break-all;max-width:520px}.otp-input{max-width:210px!important;text-align:center;letter-spacing:.22em!important}.locked-step.hide{display:none!important}
+@media(max-width:650px){.reg-step{padding:.9rem;gap:.7rem}.password-rules{grid-template-columns:1fr}.step-badge{width:32px;height:32px;flex-basis:32px}}
+
+
+/* ---------- learner navigation + performance dashboard ---------- */
+.mast-inner{padding-top:1.15rem}
+.mast-brand-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.5rem;align-items:start}
+.mast-brand-left{min-width:0}.mast-brand-left h1{margin:0}
+.mast-home-link{margin-top:.7rem;border:0;background:transparent;color:#dbeafe;padding:0;font:inherit;font-weight:800;font-size:.96rem;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.mast-home-link:hover{color:#fff}
+.account-corner{display:flex;flex-direction:column;align-items:flex-end;gap:.55rem;min-width:210px}
+.account-guest-actions{display:flex;gap:.6rem;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.account-user{font-weight:850;color:#fff;font-size:1rem;background:rgba(7,18,42,.38);border:1px solid rgba(255,255,255,.28);padding:.48rem .8rem;border-radius:12px}
+.mast-account-btn.create{background:linear-gradient(135deg,#f59e0b,#ec4899);border-color:rgba(255,255,255,.35)}
+.mast-account-btn.logout{align-self:flex-end}
+@media(max-width:700px){.mast-brand-row{grid-template-columns:1fr}.account-corner{align-items:flex-start;min-width:0}.account-guest-actions{justify-content:flex-start}.mast-account-btn.logout{align-self:flex-start}}
+.dashboard{margin-top:1.25rem;background:linear-gradient(135deg,#eff6ff,#fff 42%,#faf5ff);border:1px solid #c7d2fe}
+.dashboard-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.dashboard-level{display:inline-flex;align-items:center;gap:.45rem;padding:.42rem .8rem;border-radius:999px;background:#ede9fe;color:#5b21b6;font-weight:850}
+.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.85rem;margin-top:1rem}
+.metric-card{padding:1rem;border-radius:16px;background:#fff;border:1px solid var(--rule);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.metric-card .num{display:block;font-size:clamp(1.45rem,1.1rem + 1vw,2rem);font-weight:900;line-height:1.1;color:#1e3a8a}.metric-card small{display:block;color:var(--muted);margin-top:.28rem}
+.topic-performance{margin-top:1.2rem}.topic-performance h3{font-size:1.05rem;margin-bottom:.65rem}
+.perf-row{display:grid;grid-template-columns:minmax(130px,1.4fr) 2fr 72px;gap:.75rem;align-items:center;padding:.48rem 0;border-bottom:1px solid var(--rule);font-size:.9rem}
+.perf-track{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden}.perf-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:inherit}
+.dashboard-empty{margin-top:1rem;padding:1rem;border-radius:14px;background:#fff;border:1px dashed #cbd5e1;color:var(--muted)}
+@media(max-width:760px){.metric-grid{grid-template-columns:1fr 1fr}.perf-row{grid-template-columns:1fr 1.4fr 62px}}
+
 </style>
 </head>
 <body>
@@ -422,8 +482,23 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
     </svg>
   </div>
   <div class="wrap mast-inner">
-    <h1>Grade&nbsp;3 Mathematics</h1>
-    <p class="mast-sub">Practice &amp; Test &nbsp;·&nbsp; Arithmetic &nbsp;·&nbsp; Geometry &nbsp;·&nbsp; Supreme</p>
+    <div class="mast-brand-row">
+      <div class="mast-brand-left">
+        <h1>Grade&nbsp;3 Mathematics</h1>
+        <button class="mast-home-link" id="headerHomeBtn" type="button">Home</button>
+        <p class="mast-sub">Practice &amp; Test &nbsp;·&nbsp; Arithmetic &nbsp;·&nbsp; Geometry &nbsp;·&nbsp; Supreme</p>
+      </div>
+      <div class="account-corner" aria-label="Account controls">
+        <div class="account-guest-actions" id="guestAccountActions">
+          <button class="mast-account-btn" id="headerLoginBtn" type="button">Login</button>
+          <button class="mast-account-btn create" id="headerCreateBtn" type="button">New user? Create account</button>
+        </div>
+        <div class="hide" id="loggedAccountActions">
+          <div class="account-user" id="accountStatus">Username</div>
+          <button class="mast-account-btn logout" id="headerLogoutBtn" type="button" style="margin-top:.5rem">Logout</button>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -447,7 +522,21 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
         <button class="btn big" type="button" id="goPractice">Practice</button>
         <button class="btn sec big" type="button" id="goTest">Take a Test</button>
       </div>
-      <p class="help">Practice progress stays on this device. No account information is collected by this prototype.</p>
+      <p class="help">Practice and test progress is stored in the private account repository through the secure backend. Do not enter personal information.</p>
+    </div>
+
+    <div class="card dashboard hide" id="learnerDashboard">
+      <div class="dashboard-head">
+        <div><p class="kicker">My progress</p><h2 class="wel-h sm" id="dashGreeting">Learning dashboard</h2><p class="help">Performance is calculated from completed questions saved to your account.</p></div>
+        <span class="dashboard-level" id="dashLevel">Current level: Beginner</span>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><span class="num" id="dashAttempted">0</span><small>Questions attempted</small></div>
+        <div class="metric-card"><span class="num" id="dashAccuracy">—</span><small>Overall accuracy</small></div>
+        <div class="metric-card"><span class="num" id="dashCorrect">0</span><small>Correct answers</small></div>
+        <div class="metric-card"><span class="num" id="dashSessions">0</span><small>Completed sessions</small></div>
+      </div>
+      <div class="topic-performance" id="dashTopics"></div>
     </div>
 
     <!-- ---------- voices ---------- -->
@@ -522,6 +611,136 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
   </div>
 </section>
 
+
+
+<!-- ================= LOCAL PROFILE REGISTRATION ================= -->
+<section class="section hide" id="registerView">
+  <div class="wrap auth-shell">
+    <div class="privacy-banner privacy-banner-large">
+      <strong>PLEASE DO NOT SHARE PERSONAL OR LEGAL INFORMATION.</strong>
+      <p>This learning profile does <b>not</b> need your real name, legal name, email address, phone number, home address, school ID, government ID, passport information, birth certificate information, or anything from a legal document. Use only made-up information for this site.</p>
+    </div>
+    <div class="card reg-card">
+      <p class="kicker">Private-by-design local profile</p>
+      <h2 class="path-title">Create your learning profile</h2>
+      <p class="path-lead">Complete each step in order. The next box opens only after the current step is completed correctly.</p>
+
+      <section class="reg-step" id="consentStage">
+        <span class="step-badge">1</span>
+        <div class="step-body">
+          <h3>Privacy acknowledgement</h3>
+          <label class="consent-row"><input type="checkbox" id="privacyAgree"> <span><b>I agree</b> to use only made-up information and not enter a real name, email address, government/document number, address, phone number, school identifier, or other personal/legal information.</span></label>
+          <div class="captcha-box">
+            <div><b>Quick human check</b><p class="auth-note">Solve this simple question on this device.</p></div>
+            <div class="captcha-line"><span class="captcha-question" id="captchaQuestion"></span><input id="captchaAnswer" type="text" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="CAPTCHA answer"><button class="btn sec sm" id="captchaBtn" type="button">Verify</button></div>
+            <div id="captchaMsg" class="field-status neutral">Complete the acknowledgement and human check to continue.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="usernameStage">
+        <span class="step-badge">2</span>
+        <div class="step-body">
+          <h3>Choose a made-up username</h3>
+          <label class="lbl" for="regUser">Six-character username</label>
+          <input class="big-auth-input" id="regUser" type="text" maxlength="6" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ab12cd">
+          <div class="pattern-guide"><span>1 <b>A</b> capital</span><span>2 <b>b</b> lowercase</span><span>3–4 <b>12</b> numbers</span><span>5–6 <b>cd</b> letters</span></div>
+          <div id="userStatus" class="field-status neutral">Example format: <b>Ab12cd</b>. Do not use initials or anything based on your real identity.</div>
+        </div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="passwordStage">
+        <span class="step-badge">3</span>
+        <div class="step-body">
+          <h3>Create a password</h3>
+          <label class="lbl" for="regPass">Password</label>
+          <input class="big-auth-input" id="regPass" type="password" autocomplete="new-password" placeholder="Example format: Math7!Rocket">
+          <p class="auth-note"><b>Example format only:</b> Math7!Rocket — do not use this exact password and do not reuse a password from email, school, banking, gaming, or another account.</p>
+          <div class="password-rules" id="passwordRules">
+            <span data-rule="len">○ 10 or more characters</span><span data-rule="upper">○ one uppercase letter</span><span data-rule="lower">○ one lowercase letter</span><span data-rule="digit">○ one number</span><span data-rule="symbol">○ one symbol (! @ # $ % etc.)</span><span data-rule="space">○ no spaces</span>
+          </div>
+          <div id="passStatus" class="field-status neutral">Meet every password rule to continue.</div>
+        </div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="securityStage">
+        <span class="step-badge">4</span>
+        <div class="step-body">
+          <h3>Choose a made-up security answer</h3>
+          <label class="lbl" for="secQuestion">Security question</label>
+          <select id="secQuestion"><option value="shape">What imaginary shape is your secret favorite?</option><option value="planet">What made-up planet name will you remember?</option><option value="word">What secret nonsense word will you remember?</option></select>
+          <label class="lbl" for="secAnswer">Made-up answer</label>
+          <input class="big-auth-input" id="secAnswer" type="password" autocomplete="off" placeholder="Use an invented answer, not a real-life fact">
+          <div id="secStatus" class="field-status neutral">Use at least 4 characters. Do not use a birthday, school, family name, pet name, hometown, or other real-life fact.</div>
+        </div>
+      </section>
+
+      <section class="reg-step locked-step hide" id="mfaStage">
+        <span class="step-badge">5</span>
+        <div class="step-body">
+          <h3>Set up required authenticator verification</h3>
+          <p class="auth-note">Use Google Authenticator or another compatible TOTP authenticator. The QR code is generated entirely in this browser; the setup secret is not sent to a QR-code website.</p>
+          <button class="btn sec" id="genMfaBtn" type="button">Generate authenticator QR code</button>
+          <div id="mfaSetup" class="hide mfa-setup-stack">
+            <div class="qr-wrap" id="mfaQr" aria-label="Authenticator QR code"></div>
+            <div class="manual-key-label">Manual setup key</div>
+            <div class="mfa-key" id="mfaKey"></div>
+            <label class="lbl" for="mfaCode">Current 6-digit authenticator code</label>
+            <input class="big-auth-input otp-input" id="mfaCode" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456">
+          </div>
+        </div>
+      </section>
+
+      <div id="regMsg"></div>
+      <div class="auth-actions"><button class="btn big" id="finishRegBtn" type="button" disabled>Create account</button><button class="btn sec" id="haveProfileBtn" type="button">I already have a profile</button><button class="btn sec" type="button" data-go="home">Back to home</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOCAL PROFILE LOGIN ================= -->
+<section class="section hide" id="loginView">
+  <div class="wrap auth-shell">
+    <div class="privacy-banner">
+      <strong>USE ONLY YOUR MADE-UP LEARNING USERNAME.</strong>
+      <p>This page does not need your real name, email, phone number, address, school information, or legal-document information.</p>
+    </div>
+    <div class="card">
+      <p class="kicker">Secure login</p>
+      <h2 class="path-title" id="loginTitle">Login to continue</h2>
+      <p class="path-lead" id="loginLead">First verify your username and password. Your authenticator code will be requested only after those credentials are correct.</p><p class="hintbox" id="backendSetupNotice">The account backend must be deployed before login can work.</p>
+
+      <div class="login-stage" id="credentialStage">
+        <h3>Step 1 · Username and password</h3>
+        <label class="lbl" for="loginUser">Username</label>
+        <input class="big-auth-input" id="loginUser" type="text" maxlength="6" autocomplete="username" placeholder="Ab12cd">
+        <label class="lbl" for="loginPass">Password</label>
+        <input class="big-auth-input" id="loginPass" type="password" autocomplete="current-password" placeholder="Enter your password">
+        <div class="auth-actions">
+          <button class="btn big" id="verifyCredentialsBtn" type="button">Verify username &amp; password</button>
+        </div>
+      </div>
+
+      <div class="login-stage hide" id="loginMfaStage">
+        <h3>Step 2 · Authenticator verification</h3>
+        <p class="auth-note">Username and password verified. Enter the current 6-digit code from the authenticator app used when this account was created.</p>
+        <label class="lbl" for="loginMfa">Authenticator code</label>
+        <input class="big-auth-input otp-input" id="loginMfa" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456">
+        <div class="auth-actions">
+          <button class="btn big" id="loginBtn" type="button">Complete login</button>
+          <button class="btn sec" id="loginBackBtn" type="button">← Back to password</button>
+        </div>
+      </div>
+
+      <div id="loginMsg"></div>
+      <div class="login-new">
+        <strong>New user?</strong>
+        <p class="auth-note">Create a local learning profile first. Registration will guide you through the privacy consent, CAPTCHA, username, password, security question, and authenticator setup.</p>
+        <button class="btn sec" id="newProfileBtn" type="button">Create account</button>
+      </div>
+      <div class="auth-actions"><button class="btn sec" type="button" data-go="home">Back to home</button></div>
+    </div>
+  </div>
+</section>
 
 <!-- ================= GUIDED PRACTICE PATH ================= -->
 <section class="section hide" id="practicePath">
@@ -1906,22 +2125,118 @@ function refreshSetup(){
 refreshSetup();
 
 
-/* ---- guided practice path ---- */
-const PATH_STORE="grade3MathProgress.v1";
-const PATH_TOPICS=[
-  {k:"geometry",name:"Geometry",domains:["Geometry","Shapes","Lines","Angles","Triangles","Quadrilaterals"],desc:"Explore shapes, lines and visual reasoning.",icon:"geometry"},
-  {k:"length",name:"Measurement · Length",domains:["Measurement · Length","Measurement","Measurement · Units"],desc:"Measure, compare and reason about length.",icon:"ruler"},
-  {k:"factor",name:"Missing factor",domains:["Missing factor","Unknown number","Multiplication","Division"],desc:"Find the number that makes the equation true.",icon:"factor"},
-  {k:"patterns",name:"Number patterns",domains:["Number patterns","Geometric patterns","Properties of operations"],desc:"Spot the rule and predict what comes next.",icon:"pattern"},
-  {k:"perimeter",name:"Perimeter",domains:["Perimeter","Area & perimeter","Area vs perimeter"],desc:"Walk around shapes and calculate their boundaries.",icon:"perimeter"},
-  {k:"counting",name:"Counting",domains:["Place value","Addition","Subtraction","Multiplication","Supreme · Counting","Counting figures"],desc:"Build number sense by grouping, counting and combining.",icon:"counting"}
-];
-function getPathProgress(){
-  try{const v=JSON.parse(localStorage.getItem(PATH_STORE)||"{}");return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
-  catch(e){return {highestUnlocked:1};}
+/* ---- backend-backed account + progress ---- */
+const API_BASE=(document.querySelector('meta[name="grade3-api-base"]')?.content||"").replace(/\/$/,"");
+const AUTH_TOKEN="grade3MathApiToken.v1";
+const AUTH_PROFILE="grade3MathApiProfile.v1";
+let pendingRegistrationChallenge="";
+let pendingLoginChallenge="";
+function backendConfigured(){return API_BASE&&API_BASE.indexOf("YOUR-WORKERS-SUBDOMAIN")===-1;}
+function authToken(){try{return sessionStorage.getItem(AUTH_TOKEN)||"";}catch(e){return "";}}
+function cacheProfile(p){try{if(p)sessionStorage.setItem(AUTH_PROFILE,JSON.stringify(p));else sessionStorage.removeItem(AUTH_PROFILE);}catch(e){}}
+async function apiCall(path,opts={}){
+  if(!backendConfigured())throw new Error("Backend is not configured yet. Deploy grade3-auth-backend, then replace YOUR-WORKERS-SUBDOMAIN in the grade3-api-base meta tag.");
+  const h={"Content-Type":"application/json",...(opts.headers||{})},t=authToken();if(t)h.Authorization="Bearer "+t;
+  const r=await fetch(API_BASE+path,{...opts,headers:h});let d={};try{d=await r.json();}catch(e){}
+  if(!r.ok)throw new Error(d.error||("Request failed ("+r.status+")"));return d;
 }
-function savePathProgress(v){try{localStorage.setItem(PATH_STORE,JSON.stringify(v));}catch(e){}}
-function unlockThrough(n){const p=getPathProgress(); if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);} return p;}
+function applyRemoteProgress(progress){const p=profileData();if(!p||!progress)return;if(!p.progress)p.progress={};Object.assign(p.progress,progress);cacheProfile(p);renderDashboard();}
+async function refreshRemoteSession(){if(!authToken()||!backendConfigured())return;try{const d=await apiCall("/api/me");cacheProfile(d.user);updateAccountControls();}catch(e){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(_e){}cacheProfile(null);updateAccountControls();}}
+
+/* ---- guided practice path ---- */
+const PROFILE_STORE="grade3MathApiProfile.v1";
+const AUTH_SESSION=AUTH_TOKEN;
+let pendingMfaSecret="";
+let pendingEntryKind="home";
+let credentialsVerified=false;
+function validLocalUsername(v){return /^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$/.test(String(v||""));}
+function profileData(){try{return JSON.parse(sessionStorage.getItem(AUTH_PROFILE)||"null");}catch(e){return null;}}
+function isLocallyAuthenticated(){return !!authToken()&&!!profileData();}
+function setLocalAuth(v){if(!v){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(e){}cacheProfile(null);} updateAccountControls();}
+function updateAccountControls(){const logged=isLocallyAuthenticated(),p=profileData(),guest=$("guestAccountActions"),user=$("loggedAccountActions"),st=$("accountStatus");if(guest)guest.classList.toggle("hide",logged);if(user)user.classList.toggle("hide",!logged);if(st)st.textContent=logged&&p?"Username: "+p.username:"Username";renderDashboard();}
+function loginDestinationLabel(){return pendingEntryKind==="test"?"Take a Test":pendingEntryKind==="practice"?"Practice":"Grade 3 Math";}
+function prepareLogin(kind="home"){pendingEntryKind=kind;credentialsVerified=false;pendingLoginChallenge="";const p=profileData();if($("loginTitle"))$("loginTitle").textContent="Login to continue to "+loginDestinationLabel();if($("loginLead"))$("loginLead").textContent="Verify your username and password first. After they are correct, authenticator verification will open.";if($("loginUser"))$("loginUser").value=p&&p.username?p.username:"";if($("loginPass"))$("loginPass").value="";if($("loginMfa"))$("loginMfa").value="";if($("loginMfaStage"))$("loginMfaStage").classList.add("hide");if($("credentialStage"))$("credentialStage").classList.remove("locked");const msg=$("loginMsg");if(msg){msg.className="";msg.textContent="";}go("loginView");}
+function finishLoginDestination(){if(pendingEntryKind==="practice"){renderLearningPath();go("practicePath");return;}if(pendingEntryKind==="test"){mode="test";sessionKind="standard";activeTopic=null;assessmentLevel=null;[...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k==="test")));refreshSetup();go("setup");return;}go("home");}
+function logoutLocal(){setLocalAuth(false);credentialsVerified=false;pendingLoginChallenge="";pendingEntryKind="home";go("home");}
+
+function performanceData(){const p=profileData(),d=p&&p.progress?p.progress:{};return {attempted:+d.attempted||0,correct:+d.correct||0,sessions:+d.sessions||0,topics:d.topics&&typeof d.topics==="object"?d.topics:{}};}
+function savePerformance(d){const p=profileData();if(!p)return;p.progress={...(p.progress||{}),...d};cacheProfile(p);}
+function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return;const topic=(q.domain||"Other").replace(/^Supreme · /,"Supreme: ");const d=performanceData();d.attempted++;if(isRight)d.correct++;d.topics[topic]=d.topics[topic]||{attempted:0,correct:0};d.topics[topic].attempted++;if(isRight)d.topics[topic].correct++;savePerformance(d);renderDashboard();apiCall("/api/progress/attempt",{method:"POST",body:JSON.stringify({topic,correct:!!isRight,level,kind:sessionKind})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}
+function recordCompletedSession(){if(!isLocallyAuthenticated())return;const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();apiCall("/api/progress/session",{method:"POST",body:"{}"}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}
+function renderDashboard(){const box=$("learnerDashboard");if(!box)return;const logged=isLocallyAuthenticated(),p=profileData();box.classList.toggle("hide",!logged);if(!logged||!p)return;const d=performanceData(),path=getPathProgress(),L=APP_LEVELS[Math.max(0,path.highestUnlocked-1)]||APP_LEVELS[0];$("dashGreeting").textContent=p.username+"'s learning dashboard";$("dashLevel").textContent="Current level: "+L.name;$("dashAttempted").textContent=d.attempted;$("dashCorrect").textContent=d.correct;$("dashAccuracy").textContent=d.attempted?Math.round(d.correct/d.attempted*100)+"%":"—";$("dashSessions").textContent=d.sessions;const rows=Object.entries(d.topics).filter(([,v])=>v&&v.attempted).sort((a,b)=>b[1].attempted-a[1].attempted||a[0].localeCompare(b[0])).slice(0,12);$("dashTopics").innerHTML=rows.length?('<h3>Performance by topic</h3>'+rows.map(([t,v])=>{const pc=Math.round(v.correct/v.attempted*100);return '<div class="perf-row"><strong>'+esc(t)+'</strong><div class="perf-track"><div class="perf-fill" style="width:'+pc+'%"></div></div><span>'+pc+'% <small>('+v.attempted+')</small></span></div>';}).join('')):'<div class="dashboard-empty">No completed questions yet. Start Practice or Take a Test to build your dashboard.</div>';}
+
+function bytesToB32(bytes){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out="";for(const b of bytes){val=(val<<8)|b;bits+=8;while(bits>=5){out+=a[(val>>>(bits-5))&31];bits-=5;}}if(bits>0)out+=a[(val<<(5-bits))&31];return out;}
+function b32ToBytes(s){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out=[];s=String(s||"").replace(/=+$/,'').toUpperCase();for(const ch of s){const i=a.indexOf(ch);if(i<0)continue;val=(val<<5)|i;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;}}return new Uint8Array(out);}
+function newMfaSecret(){const b=new Uint8Array(20);crypto.getRandomValues(b);return bytesToB32(b);}
+async function shaText(text,salt){const enc=new TextEncoder();const key=await crypto.subtle.importKey("raw",enc.encode(String(text)),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(String(salt)),iterations:120000,hash:"SHA-256"},key,256);return Array.from(new Uint8Array(bits),x=>x.toString(16).padStart(2,"0")).join("");}
+async function totpFor(secret,stepOffset=0){const key=await crypto.subtle.importKey("raw",b32ToBytes(secret),{name:"HMAC",hash:"SHA-1"},false,["sign"]);const counter=Math.floor(Date.now()/30000)+stepOffset;const msg=new Uint8Array(8);let n=counter;for(let i=7;i>=0;i--){msg[i]=n&255;n=Math.floor(n/256);}const sig=new Uint8Array(await crypto.subtle.sign("HMAC",key,msg));const off=sig[sig.length-1]&15;const bin=((sig[off]&127)<<24)|(sig[off+1]<<16)|(sig[off+2]<<8)|sig[off+3];return String(bin%1000000).padStart(6,"0");}
+async function verifyTotp(secret,code){if(!/^\d{6}$/.test(String(code||"")))return false;for(const o of [-1,0,1])if(await totpFor(secret,o)===String(code))return true;return false;}
+function authMessage(id,text,ok=false){const e=$(id);if(!e)return;e.className=ok?"auth-ok":"auth-error";e.textContent=text;}
+function openPracticeEntry(){
+  if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
+  renderLearningPath();go("practicePath");
+}
+
+function passwordChecks(pw){return {len:pw.length>=10,upper:/[A-Z]/.test(pw),lower:/[a-z]/.test(pw),digit:/\d/.test(pw),symbol:/[^A-Za-z0-9\s]/.test(pw),space:!/\s/.test(pw)};}
+function passwordValid(pw){const x=passwordChecks(pw);return Object.values(x).every(Boolean);}
+let captchaExpected=null,captchaVerified=false;
+function makeCaptcha(){const a=rand(2,9),b=rand(1,9);captchaExpected=a+b;captchaVerified=false;if($("captchaQuestion"))$("captchaQuestion").textContent=a+" + "+b+" = ?";if($("captchaAnswer"))$("captchaAnswer").value="";}
+function revealStage(id,on=true){const e=$(id);if(e)e.classList.toggle("hide",!on);}
+function setStatus(id,text,state="neutral"){const e=$(id);if(!e)return;e.className="field-status "+state;e.textContent=text;}
+function otpauthUri(user,secret){return "otpauth://totp/G3:"+encodeURIComponent(user)+"?secret="+secret+"&issuer=G3Math";}
+/* Local QR encoder: QR version 5-L, byte mode. No network request and no external QR service. */
+function qrSvg(text){
+  const N=37,DATA=108,ECC=26,bytes=Array.from(new TextEncoder().encode(text));
+  if(bytes.length>106)throw new Error("Authenticator QR payload is too long.");
+  const bits=[],put=(v,n)=>{for(let i=n-1;i>=0;i--)bits.push((v>>>i)&1);};put(4,4);put(bytes.length,8);bytes.forEach(b=>put(b,8));
+  for(let i=0;i<Math.min(4,DATA*8-bits.length);i++)bits.push(0);while(bits.length%8)bits.push(0);
+  const data=[];for(let i=0;i<bits.length;i+=8){let b=0;for(let j=0;j<8;j++)b=(b<<1)|bits[i+j];data.push(b);}for(let p=0;data.length<DATA;p++)data.push(p%2?0x11:0xEC);
+  const mul=(x,y)=>{let z=0;for(let i=7;i>=0;i--){z=(z<<1)^((z>>>7)*0x11D);z^=((y>>>i)&1)*x;}return z;};
+  let gen=new Array(ECC).fill(0);gen[ECC-1]=1;let root=1;for(let i=0;i<ECC;i++){for(let j=0;j<ECC;j++){gen[j]=mul(gen[j],root);if(j+1<ECC)gen[j]^=gen[j+1];}root=mul(root,2);}
+  const rem=new Array(ECC).fill(0);for(const b of data){const f=b^rem.shift();rem.push(0);for(let i=0;i<ECC;i++)rem[i]^=mul(gen[i],f);}const code=data.concat(rem),db=[];code.forEach(b=>{for(let i=7;i>=0;i--)db.push((b>>>i)&1);});
+  const m=Array.from({length:N},()=>Array(N).fill(false)),fn=Array.from({length:N},()=>Array(N).fill(false));const set=(r,c,v)=>{if(r>=0&&r<N&&c>=0&&c<N){m[r][c]=!!v;fn[r][c]=true;}};
+  const finder=(r,c)=>{for(let dr=-4;dr<=4;dr++)for(let dc=-4;dc<=4;dc++){const d=Math.max(Math.abs(dr),Math.abs(dc));set(r+dr,c+dc,d!==2&&d!==4);}};finder(3,3);finder(3,N-4);finder(N-4,3);
+  for(let i=8;i<N-8;i++){set(6,i,i%2===0);set(i,6,i%2===0);}for(let dr=-2;dr<=2;dr++)for(let dc=-2;dc<=2;dc++)set(30+dr,30+dc,Math.max(Math.abs(dr),Math.abs(dc))!==1);
+  const fmt=mask=>{let d=(1<<3)|mask,r=d;for(let i=0;i<10;i++)r=(r<<1)^(((r>>>9)&1)*0x537);const f=((d<<10)|r)^0x5412,bit=i=>((f>>>i)&1)!==0;for(let i=0;i<=5;i++)set(i,8,bit(i));set(7,8,bit(6));set(8,8,bit(7));set(8,7,bit(8));for(let i=9;i<15;i++)set(8,14-i,bit(i));for(let i=0;i<8;i++)set(8,N-1-i,bit(i));for(let i=8;i<15;i++)set(N-15+i,8,bit(i));set(N-8,8,true);};fmt(0);
+  let k=0;for(let right=N-1;right>=1;right-=2){if(right===6)right=5;for(let vert=0;vert<N;vert++){const up=((right+1)&2)===0,row=up?N-1-vert:vert;for(let j=0;j<2;j++){const c=right-j;if(!fn[row][c]){let v=k<db.length?db[k++]:0;if((row+c)%2===0)v^=1;m[row][c]=!!v;}}}}fmt(0);
+  const q=4,sc=5,sz=(N+q*2)*sc;let rects="";for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(m[r][c])rects+='<rect x="'+((c+q)*sc)+'" y="'+((r+q)*sc)+'" width="'+sc+'" height="'+sc+'"/>';
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+sz+' '+sz+'" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="white"/><g fill="black">'+rects+'</g></svg>';
+}
+function registerHandlers(){
+  makeCaptcha();
+  const agree=$("privacyAgree"),capBtn=$("captchaBtn"),capAns=$("captchaAnswer"),u=$("regUser"),pw=$("regPass"),qa=$("secAnswer"),finish=$("finishRegBtn");
+  const updateConsent=()=>{if(!agree)return;const ready=agree.checked&&captchaVerified;revealStage("usernameStage",ready);if(ready){setStatus("captchaMsg","✓ Acknowledgement accepted and human check passed.","good");u.focus();}};
+  if(agree)agree.onchange=updateConsent;
+  if(capBtn)capBtn.onclick=()=>{if(!agree.checked){captchaVerified=false;setStatus("captchaMsg","Please click I agree before completing the human check.","bad");return;}captchaVerified=Number(capAns.value)===captchaExpected;if(captchaVerified){setStatus("captchaMsg","✓ Human check passed.","good");updateConsent();}else{setStatus("captchaMsg","That answer is not correct. A new question has been created.","bad");makeCaptcha();}};
+  const updateUser=()=>{const val=u.value.trim(),ok=validLocalUsername(val);if(!val)setStatus("userStatus","Use: capital letter + lowercase letter + two numbers + two letters. Example format: Ab12cd.","neutral");else if(ok)setStatus("userStatus","✓ Username format is correct. Password setup is now open.","good");else setStatus("userStatus","Not yet. Position 1 uppercase, position 2 lowercase, positions 3–4 numbers, positions 5–6 letters.","bad");revealStage("passwordStage",ok);if(!ok){revealStage("securityStage",false);revealStage("mfaStage",false);finish.disabled=true;}};if(u)u.oninput=updateUser;
+  const updatePass=()=>{const checks=passwordChecks(pw.value);Object.entries(checks).forEach(([k,v])=>{const e=$("passwordRules").querySelector('[data-rule="'+k+'"]');if(e){e.classList.toggle("ok",v);e.textContent=(v?'✓ ':'○ ')+e.textContent.replace(/^[✓○]\s*/,"");}});const ok=passwordValid(pw.value);setStatus("passStatus",ok?"✓ Password meets every rule. Security-question setup is now open.":"Meet every password rule to continue.",ok?"good":"neutral");revealStage("securityStage",ok);if(!ok){revealStage("mfaStage",false);finish.disabled=true;}};if(pw)pw.oninput=updatePass;
+  const updateSec=()=>{const ok=qa.value.trim().length>=4;setStatus("secStatus",ok?"✓ Made-up security answer accepted. Authenticator setup is now open.":"Use at least 4 made-up characters. Do not use a real-life fact.",ok?"good":"neutral");revealStage("mfaStage",ok);if(!ok)finish.disabled=true;};if(qa)qa.oninput=updateSec;
+  const gen=$("genMfaBtn");if(gen)gen.onclick=async()=>{if(!validLocalUsername(u.value.trim())||!passwordValid(pw.value)||qa.value.trim().length<4)return authMessage("regMsg","Complete the earlier registration steps first.");try{gen.disabled=true;authMessage("regMsg","Preparing secure authenticator setup…",true);const d=await apiCall("/api/register/start",{method:"POST",body:JSON.stringify({username:u.value.trim(),password:pw.value,securityQuestion:$("secQuestion").value,securityAnswer:qa.value.trim()})});pendingRegistrationChallenge=d.challenge;pendingMfaSecret=d.totpSecret;$("mfaQr").innerHTML=qrSvg(d.otpauthUri);$("mfaKey").textContent=d.totpSecret;$("mfaSetup").classList.remove("hide");$("mfaCode").focus();finish.disabled=false;authMessage("regMsg","Scan the QR code, then enter the current 6-digit authenticator code.",true);}catch(e){authMessage("regMsg",e.message);}finally{gen.disabled=false;}};
+  if(finish)finish.onclick=async()=>{const code=$("mfaCode").value.trim();if(!agree.checked||!captchaVerified)return authMessage("regMsg","Complete the privacy acknowledgement and human check first.");if(!pendingRegistrationChallenge)return authMessage("regMsg","Generate the authenticator QR code first.");try{finish.disabled=true;await apiCall("/api/register/finish",{method:"POST",body:JSON.stringify({challenge:pendingRegistrationChallenge,code})});pendingMfaSecret="";pendingRegistrationChallenge="";authMessage("regMsg","Account created in the private account store. Please log in with your username, password, and authenticator code.",true);setTimeout(()=>prepareLogin(pendingEntryKind),500);}catch(e){authMessage("regMsg",e.message);finish.disabled=false;}};
+  const have=$("haveProfileBtn");if(have)have.onclick=()=>prepareLogin(pendingEntryKind==="test"?"test":"practice");
+  const newer=$("newProfileBtn");if(newer)newer.onclick=()=>{setLocalAuth(false);go("registerView");};
+  const verify=$("verifyCredentialsBtn");if(verify)verify.onclick=async()=>{const user=$("loginUser").value.trim(),pass=$("loginPass").value;if(!validLocalUsername(user))return authMessage("loginMsg","Enter your six-character username.");if(!pass)return authMessage("loginMsg","Enter your password.");try{verify.disabled=true;const d=await apiCall("/api/login/password",{method:"POST",body:JSON.stringify({username:user,password:pass})});pendingLoginChallenge=d.challenge;credentialsVerified=true;$("credentialStage").classList.add("locked");$("loginMfaStage").classList.remove("hide");authMessage("loginMsg","Username and password verified. Complete authenticator verification.",true);$("loginMfa").focus();}catch(e){credentialsVerified=false;pendingLoginChallenge="";authMessage("loginMsg",e.message);}finally{verify.disabled=false;}};
+  const back=$("loginBackBtn");if(back)back.onclick=()=>{credentialsVerified=false;pendingLoginChallenge="";$("credentialStage").classList.remove("locked");$("loginMfaStage").classList.add("hide");$("loginMfa").value="";$("loginPass").focus();};
+  const login=$("loginBtn");if(login)login.onclick=async()=>{if(!credentialsVerified||!pendingLoginChallenge)return authMessage("loginMsg","Verify username and password first.");const code=$("loginMfa").value.trim();try{login.disabled=true;const d=await apiCall("/api/login/mfa",{method:"POST",body:JSON.stringify({challenge:pendingLoginChallenge,code})});sessionStorage.setItem(AUTH_TOKEN,d.token);cacheProfile(d.user);credentialsVerified=false;pendingLoginChallenge="";updateAccountControls();authMessage("loginMsg","Login complete.",true);setTimeout(finishLoginDestination,180);}catch(e){authMessage("loginMsg",e.message);}finally{login.disabled=false;}};
+  const headerHome=$("headerHomeBtn");if(headerHome)headerHome.onclick=()=>go("home");
+  const headerLogin=$("headerLoginBtn");if(headerLogin)headerLogin.onclick=()=>prepareLogin("home");
+  const headerCreate=$("headerCreateBtn");if(headerCreate)headerCreate.onclick=()=>{setLocalAuth(false);pendingEntryKind="home";go("registerView");};
+  const headerLogout=$("headerLogoutBtn");if(headerLogout)headerLogout.onclick=logoutLocal;
+}
+registerHandlers();
+if($("backendSetupNotice"))$("backendSetupNotice").classList.toggle("hide",backendConfigured());
+updateAccountControls();
+refreshRemoteSession();
+
+const PATH_STORE="grade3MathProgress.v1";
+const TOPIC_META={
+  "Money":["money","Count coins, find totals and make change."],"Measurement":["ruler","Choose and use measurement units."],"Measurement · Length":["ruler","Measure and compare lengths."],"Measurement · Units":["ruler","Convert and reason about measurement units."],"Even and odd":["numbers","Recognize even and odd numbers."],"Comparing":["compare","Compare numbers using place value."],"Place value":["numbers","Understand hundreds, tens and ones."],"Addition":["numbers","Build fluency with addition."],"Subtraction":["numbers","Build fluency with subtraction."],"Multiplication":["factor","Practice equal groups and multiplication facts."],"Division":["factor","Practice sharing and division facts."],"Fractions":["fractions","Understand fractions as equal parts."],"Geometry":["geometry","Explore shapes and visual reasoning."],"Perimeter":["perimeter","Calculate distance around shapes."],"Area":["area","Measure space inside shapes."],"Number patterns":["pattern","Find rules and continue patterns."],"Multiples":["pattern","Recognize multiples and skip-counting patterns."],"Telling time":["clock","Read clocks and tell time."],"Elapsed time":["clock","Reason about how much time passes."],"Picture graph":["graph","Read and interpret picture graphs."],"Bar graph":["graph","Read and compare bar-graph data."],"Data · Line plot":["graph","Read and reason from line plots."]
+};
+function topicMeta(domain){const m=TOPIC_META[domain];if(m)return {icon:m[0],desc:m[1]};let icon=/geometry|shape|triangle|angle|polygon|line|symmetry|solid|net|diagonal|spatial|cross-section|quadrilateral|euler/i.test(domain)?"geometry":/measure|length|unit/i.test(domain)?"ruler":/area|perimeter/i.test(domain)?"perimeter":/fraction/i.test(domain)?"fractions":/time/i.test(domain)?"clock":/graph|data/i.test(domain)?"graph":/money/i.test(domain)?"money":/pattern|multiple|series/i.test(domain)?"pattern":/factor|multiply|division|unknown/i.test(domain)?"factor":"numbers";return {icon,desc:"Practice fresh "+domain.toLowerCase()+" questions from the generator engine."};}
+function engineTopicsForLevel(L){const seen=new Map();const gens=allLevelGenerators(L);for(const g of gens){for(let tries=0;tries<4;tries++){let q=null;try{q=g.f(L);}catch(e){}if(q&&q.domain){if(!seen.has(q.domain)){const m=topicMeta(q.domain),display={"Even and odd":"Odd & Even Numbers","Comparing":"Number Comparison","Measurement":"Measurement & Estimation"}[q.domain]||q.domain;seen.set(q.domain,{k:q.domain,name:display,domains:[q.domain],desc:m.desc,icon:m.icon});}break;}}}return [...seen.values()].sort((a,b)=>a.name.localeCompare(b.name));}
+function getPathProgress(){const p=profileData(),v=p&&p.progress?p.progress:{};return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
+function savePathProgress(v){const p=profileData();if(!p)return;p.progress={...(p.progress||{}),highestUnlocked:v.highestUnlocked};cacheProfile(p);}
+function unlockThrough(n){const p=getPathProgress();if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);apiCall("/api/progress/unlock",{method:"POST",body:JSON.stringify({completedLevel:n-1,scorePct:100})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}renderDashboard();return p;}
 function topicIcon(kind){
   const common='viewBox="0 0 64 64" aria-hidden="true"';
   if(kind==="geometry") return '<svg '+common+'><path d="M8 49 25 15l18 34Z" fill="#60a5fa" opacity=".28"/><circle cx="43" cy="22" r="11" fill="#a78bfa" opacity=".45"/><rect x="31" y="34" width="20" height="20" rx="3" fill="#22c55e" opacity=".35"/><path d="M8 49 25 15l18 34Z" fill="none" stroke="#2563eb" stroke-width="3"/></svg>';
@@ -1929,6 +2244,11 @@ function topicIcon(kind){
   if(kind==="factor") return '<svg '+common+'><rect x="8" y="12" width="18" height="18" rx="5" fill="#c4b5fd"/><rect x="38" y="34" width="18" height="18" rx="5" fill="#93c5fd"/><path d="M27 21h10M32 16v10M18 43h14" stroke="#4338ca" stroke-width="4" stroke-linecap="round"/><text x="39" y="29" font-size="20" font-weight="800" fill="#7c3aed">?</text></svg>';
   if(kind==="pattern") return '<svg '+common+'><circle cx="11" cy="34" r="6" fill="#22c55e"/><rect x="22" y="27" width="14" height="14" rx="3" fill="#60a5fa"/><path d="M47 24 57 43H37Z" fill="#a78bfa"/><path d="M8 18h48" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4 5"/></svg>';
   if(kind==="perimeter") return '<svg '+common+'><rect x="12" y="14" width="40" height="34" rx="3" fill="#bbf7d0"/><rect x="12" y="14" width="40" height="34" rx="3" fill="none" stroke="#16a34a" stroke-width="4" stroke-dasharray="7 4"/><path d="m47 8 8 6-8 6" fill="none" stroke="#16a34a" stroke-width="3"/></svg>';
+  if(kind==="money") return '<svg '+common+'><circle cx="24" cy="32" r="17" fill="#fde68a" stroke="#d97706" stroke-width="3"/><circle cx="43" cy="34" r="13" fill="#bbf7d0" stroke="#16a34a" stroke-width="3"/><text x="18" y="39" font-size="20" font-weight="800" fill="#92400e">¢</text></svg>';
+  if(kind==="clock") return '<svg '+common+'><circle cx="32" cy="32" r="23" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/><path d="M32 18v15l11 7" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/></svg>';
+  if(kind==="graph") return '<svg '+common+'><path d="M10 52V12M10 52h45" stroke="#475569" stroke-width="3"/><rect x="17" y="35" width="8" height="17" fill="#60a5fa"/><rect x="30" y="24" width="8" height="28" fill="#a78bfa"/><rect x="43" y="15" width="8" height="37" fill="#34d399"/></svg>';
+  if(kind==="fractions") return '<svg '+common+'><circle cx="32" cy="32" r="22" fill="#bfdbfe"/><path d="M32 10a22 22 0 0 1 0 44Z" fill="#8b5cf6"/><path d="M32 10v44" stroke="#3730a3" stroke-width="3"/></svg>';
+  if(kind==="compare") return '<svg '+common+'><text x="9" y="42" font-size="31" font-weight="900" fill="#2563eb">&lt;</text><text x="39" y="42" font-size="31" font-weight="900" fill="#7c3aed">&gt;</text></svg>';
   return '<svg '+common+'><g fill="#f472b6"><circle cx="17" cy="20" r="6"/><circle cx="32" cy="20" r="6"/><circle cx="47" cy="20" r="6"/></g><g fill="#60a5fa"><circle cx="17" cy="39" r="6"/><circle cx="32" cy="39" r="6"/><circle cx="47" cy="39" r="6"/></g><path d="M13 53h38" stroke="#7c3aed" stroke-width="3" stroke-linecap="round"/></svg>';
 }
 function renderLearningPath(){
@@ -1937,22 +2257,13 @@ function renderLearningPath(){
   $("levelRoad").onclick=e=>{const b=e.target.closest('.level-card');if(!b||b.disabled)return;openLevel(+b.dataset.level);};
 }
 function openLevel(n){
-  const p=getPathProgress(); if(n>p.highestUnlocked)return;
-  pathLevel=n; level=n;
-  $("topicKicker").textContent='Level '+n+' · '+APP_LEVELS[n-1].stars;
-  $("topicTitle").textContent=APP_LEVELS[n-1].name+' practice';
-  $("topicLead").textContent='Choose a topic. Questions are generated fresh for '+APP_LEVELS[n-1].name+' level.';
-  $("topicGrid").innerHTML=PATH_TOPICS.map(t=>'<button type="button" class="topic-card" data-topic="'+esc(t.k)+'"><span class="topic-icon">'+topicIcon(t.icon)+'</span><b>'+esc(t.name)+'</b><small>'+esc(t.desc)+'</small></button>').join('');
-  $("assessmentTitle").textContent='Take '+APP_LEVELS[n-1].name+' Assessment';
-  $("assessmentCopy").textContent=n<5?'Score 100% to unlock the next level: '+APP_LEVELS[n].name+'.':'This is the final level. Aim for a perfect score and finish the path!';
-  $("assessmentBtn").textContent='Take '+APP_LEVELS[n-1].name+' Assessment →';
-  const nh=$("nextLevelHost");
-  if(n<5&&p.highestUnlocked>n) nh.innerHTML='<div class="unlock-banner">✓ '+esc(APP_LEVELS[n].name)+' is unlocked.<div style="margin-top:.7rem"><button class="btn sm" type="button" id="nextUnlockedBtn">Take me to Next Level: '+esc(APP_LEVELS[n].name)+' →</button></div></div>';
-  else nh.innerHTML='';
-  const nub=$("nextUnlockedBtn");if(nub)nub.onclick=()=>openLevel(n+1);
-  $("topicGrid").onclick=e=>{const b=e.target.closest('.topic-card');if(!b)return;startTopicPractice(b.dataset.topic);};
-  $("assessmentBtn").onclick=()=>startLevelAssessment(n);
-  show('topicHub');
+  const p=getPathProgress();if(n>p.highestUnlocked)return;pathLevel=n;level=n;const topics=engineTopicsForLevel(n);
+  $("topicKicker").textContent='Level '+n+' · '+APP_LEVELS[n-1].stars;$("topicTitle").textContent=APP_LEVELS[n-1].name+' practice';$("topicLead").textContent=topics.length+' topics are available at this level, discovered directly from the question-generator engine. Choose any topic to practise.';
+  $("topicGrid").innerHTML=topics.map(t=>'<button type="button" class="topic-card" data-topic="'+esc(t.k)+'"><span class="topic-icon">'+topicIcon(t.icon)+'</span><b>'+esc(t.name)+'</b><small>'+esc(t.desc)+'</small></button>').join('');
+  $("assessmentTitle").textContent='Take '+APP_LEVELS[n-1].name+' Assessment';$("assessmentCopy").textContent=n<5?'Score 100% to unlock the next level: '+APP_LEVELS[n].name+'.':'This is the final level. Aim for a perfect score and finish the path!';$("assessmentBtn").textContent='Take '+APP_LEVELS[n-1].name+' Assessment →';
+  const nh=$("nextLevelHost");if(n<5&&p.highestUnlocked>n)nh.innerHTML='<div class="unlock-banner">✓ '+esc(APP_LEVELS[n].name)+' is unlocked.<div style="margin-top:.7rem"><button class="btn sm" type="button" id="nextUnlockedBtn">Take me to Next Level: '+esc(APP_LEVELS[n].name)+' →</button></div></div>';else nh.innerHTML='';
+  const nub=$("nextUnlockedBtn");if(nub)nub.onclick=()=>openLevel(n+1);$("topicGrid").onclick=e=>{const b=e.target.closest('.topic-card');if(!b)return;startTopicPractice(b.dataset.topic);};$("assessmentBtn").onclick=()=>startLevelAssessment(n);
+  if(location.hash!=="#topicHub")history.replaceState(null,"","#topicHub");show('topicHub');
 }
 function allLevelGenerators(L){
   return GEN.filter(g=>g.minL<=L).concat(EXTRAGEN.filter(g=>g.minL<=L),GEOGEN.filter(g=>g.minL<=L),MULTIGEN.filter(g=>g.minL<=L),OLYGEN.filter(g=>g.minL<=L));
@@ -1973,9 +2284,7 @@ function buildTopicSession(n,L,topic){
 function launchQuestions(qs,kind){
   sessionKind=kind;QS=qs;resetArrays(QS.length);cur=0;nRight=0;nDone=0;show('runner');$("rWho").textContent=name;startClock();buildPalette();render();window.scrollTo(0,0);
 }
-function startTopicPractice(k){
-  const t=PATH_TOPICS.find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name='Learner';launchQuestions(buildTopicSession(12,level,t),'topic');
-}
+function startTopicPractice(k){const t=engineTopicsForLevel(pathLevel).find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name='Learner';launchQuestions(buildTopicSession(12,level,t),'topic');}
 function startLevelAssessment(n){
   mode='test';sessionKind='assessment';assessmentLevel=n;activeTopic=null;subject='all';level=n;name='Learner';limitMin=20;launchQuestions(buildSession(10,n,'all'),'assessment');
 }
@@ -2173,6 +2482,7 @@ function onSubmit(){
   /* ---------- practice ---------- */
   if(right){
     answered[cur]=true; nDone++; nRight++;
+    recordQuestionPerformance(q,true);
     render();                              // shows green feedback
     advanceTimer=setTimeout(goNext,1100);
     return;
@@ -2188,6 +2498,7 @@ function onSubmit(){
   }
   /* hints exhausted → mark wrong, reveal the answer, then move on */
   answered[cur]=true; nDone++;
+  recordQuestionPerformance(q,false);
   render();
   advanceTimer=setTimeout(goNext,3200);
 }
@@ -2257,6 +2568,8 @@ function finish(auto){
   let score,total;
   if(mode==="test"){ total=QS.length; score=QS.reduce((s,q,i)=>s+(correct(q,ANS[i])?1:0),0); }
   else { total=nDone; score=nRight; }
+  if(mode==="test"){QS.forEach((q,i)=>{if(answered[i])recordQuestionPerformance(q,correct(q,ANS[i]));});}
+  recordCompletedSession();
   const pct = total? Math.round(score/total*100) : 0;
   const grade = pct>=90?"Excellent! ⭐⭐⭐":pct>=75?"Great work! ⭐⭐":pct>=60?"Good effort! ⭐":"Keep practising 💪";
 
@@ -2328,31 +2641,36 @@ function finish(auto){
 /* =======================================================================
    ROUTER · HOME · QUOTES
    ======================================================================= */
-const VIEWS = ["home","practicePath","topicHub","setup","runner","results"];
+const VIEWS = ["home","registerView","loginView","practicePath","topicHub","setup","runner","results"];
 
 function show(view){
   VIEWS.forEach(v=>{ const el=$(v); if(el) el.classList.toggle("hide", v!==view); });
   window.scrollTo(0,0);
 }
-function go(view){ location.hash = "#"+view; }
+function go(view){ const h="#"+view; if(location.hash===h) route(); else location.hash=h; }
 
 window.addEventListener("hashchange", route);
 function route(){
   const v=(location.hash||"#home").slice(1);
   if(VIEWS.indexOf(v)===-1) return show("home");
   if(v==="runner"||v==="results") return;       // driven by the app, not the URL
-  if(v==="practicePath") renderLearningPath();
-  else if(v==="topicHub") openLevel(pathLevel);
-  else show(v);
+  if(v==="practicePath"){
+    if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
+    renderLearningPath(); show("practicePath"); return;
+  }
+  if(v==="topicHub"){
+    if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
+    openLevel(pathLevel); return;
+  }
+  show(v);
+  if(v==="home")renderDashboard();
 }
 
 /* ---------- start a session ---------- */
 function requestSession(kind){
   mode = kind; sessionKind="standard"; activeTopic=null; assessmentLevel=null;
-  if(kind==="practice"){renderLearningPath();go("practicePath");return;}
-  [...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k===kind)));
-  refreshSetup();
-  go("setup");
+  setLocalAuth(false);
+  prepareLogin(kind);
 }
 ["goPractice","goPractice2"].forEach(id=>{ const b=$(id); if(b) b.onclick=()=>requestSession("practice"); });
 ["goTest","goTest2"].forEach(id=>{ const b=$(id); if(b) b.onclick=()=>requestSession("test"); });
