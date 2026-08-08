@@ -3,7 +3,7 @@
 Live at **<https://mijicuet.github.io>**
 
 A single self-contained web page for Grade 3 mathematics practice and timed testing.
-One HTML file, no dependencies, no build step, no backend, no accounts and no tracking.
+One HTML file, no dependencies, no build step, no backend and no tracking. Practice uses an optional device-local learning profile; nothing is transmitted.
 
 ---
 
@@ -74,10 +74,7 @@ Then two buttons, and nothing else:
 
 **Practice** · **Take a Test**
 
-**There are no accounts, no registration, no sign-in and no gate.** Both buttons go straight
-to the session setup. The only text field anywhere on the site is an optional first name on
-the setup screen, used purely to print on your own results page; it is never stored and
-disappears on refresh.
+**Practice uses a device-local learning profile.** The site asks for a made-up six-character username, a new password, a non-personal security answer, and a TOTP authenticator code. These values are processed and stored only in the current browser; no email, real name, school ID, phone number, address, or legal-document information is requested or transmitted. Take a Test remains separate from the guided Practice path.
 
 ---
 
@@ -123,8 +120,7 @@ generated questions** across every subject × level, all well-formed and answera
 The app was security-tested; findings and fixes are documented in **[SECURITY.md](SECURITY.md)**.
 
 Headlines: two XSS vulnerabilities and two answer-integrity flaws were found and fixed; there
-are no dependencies, no cookies, no `localStorage`, no analytics and no network calls of any
-kind. The page ships a hash-pinned Content-Security-Policy with `default-src 'none'`,
+are no dependencies, no cookies, no analytics and no network calls of any kind. `localStorage` is used for the device-local Practice profile and level progress. The page ships a hash-pinned Content-Security-Policy with `default-src 'none'`,
 `connect-src 'none'` and no `unsafe-inline` or `unsafe-eval`.
 
 **Nothing a child types or the local learning-path progress ever leaves their browser** — which is also why the site sits outside
@@ -132,8 +128,7 @@ COPPA and GDPR-K data-collection obligations entirely. It collects nothing, so t
 nothing to consent to, nothing to breach and nothing to delete.
 
 The suites are re-run on every change — currently **130 assertions** across four files:
-feature behaviour (40), XSS payloads (52), resource-abuse resilience, and the accountless
-home page and quote rotation (38).
+feature behaviour, XSS payloads, resource-abuse resilience, and the home page / guided Practice flow. Re-run the suites whenever profile or routing code changes.
 
 > ⚠️ If you edit `index.html`, the CSP script/style hashes must be recomputed or the browser
 > will refuse to run the page. The one-shot snippet is in SECURITY.md.

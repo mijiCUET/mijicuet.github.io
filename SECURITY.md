@@ -3,7 +3,7 @@
 **Scope:** the single-page Grade 3 Math practice & test application (`index.html`) and the
 repository that hosts it.
 **Architecture:** one self-contained static HTML file. No backend, no database, no
-authentication, no accounts, no third-party code, no network calls.
+no backend authentication, no third-party code and no network calls. Practice now has a device-local profile gate implemented entirely in browser storage.
 
 ---
 
@@ -17,7 +17,7 @@ authentication, no accounts, no third-party code, no network calls.
 | Secrets in repo or git history | None found (217 files, 79 commits, 91 blobs scanned) |
 | Third-party dependencies | None — zero supply-chain exposure |
 | Outbound network / trackers / cookies | None |
-| Data storage | Local learning-path unlock state only (`localStorage`); nothing transmitted |
+| Data storage | Device-local Practice profile + learning-path state in `localStorage`; session unlock flag in `sessionStorage`; nothing transmitted |
 | Denial of service / resource abuse | Resistant (bounded generator loops) |
 | Transport hardening | Applied as far as static hosting allows |
 
@@ -112,12 +112,13 @@ history — scanning only the current tree would have been insufficient.
 
 ## 6. Privacy
 
-- The student name is used **only** for on-screen display. It is never stored, never
-  transmitted, and disappears on refresh.
-- No cookies, analytics, tracking pixels or fingerprinting. `localStorage` is used only for the highest unlocked practice level and never leaves the device.
-- `referrer` is set to `no-referrer`.
-- Relevant for a tool aimed at children: **nothing about a child leaves their browser**,
-  which keeps the page clear of COPPA/GDPR data-collection concerns by design.
+- Practice deliberately asks for a **made-up** username and tells users in large text not to enter a real name, email, school ID, government ID, address, phone number, or information from legal documents.
+- The username must match `^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$` (example: `Ab12cd`).
+- Passwords and security answers are not stored in plaintext; salted PBKDF2-HMAC-SHA-256 derived values are stored locally (120,000 iterations).
+- A TOTP secret is stored locally so an authenticator app can be required. This is a **device-local profile lock, not server-backed MFA**: anyone who can inspect or modify this browser's storage can recover/bypass the local gate.
+- `localStorage` contains the local profile, TOTP secret and per-profile learning-path progress. `sessionStorage` contains only the current-tab/session unlock flag.
+- No cookies, analytics, tracking pixels, fingerprinting, backend requests, or profile transmission are performed.
+- Because the app has no backend, account recovery across devices, centralized revocation, remote password reset and strong second-factor separation are not possible. A future real account system would require a backend and a fresh privacy/security review.
 
 ---
 
