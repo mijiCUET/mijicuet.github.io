@@ -12,7 +12,7 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-n8gtKWQXK1coFHmE4MrCJNdvCNfHiB852kM8zJxOIIY='; style-src 'sha256-WE7qQRiWdUT0HxpcYOfDSefU8V9Pao0JrUqkoUcUlhM='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-+oCdzEc3ra5cukdOhXLReeUtqFjOc2CR+CuYKtNEqFA='; style-src 'sha256-UQGTpq310OHdFoSKbktXPFwK5FF3OPUxFFESm2e9utU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
@@ -299,10 +299,12 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 
 
 /* ---------- account controls / staged login ---------- */
-.account-strip{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-top:1rem}
-.account-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.38rem .75rem;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(255,255,255,.08);color:#dbeafe;font-size:.82rem;font-weight:700}
-.mast-account-btn{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;border-radius:999px;padding:.48rem .9rem;font:inherit;font-size:.84rem;font-weight:750;cursor:pointer}
-.mast-account-btn:hover{background:rgba(255,255,255,.18)}
+.mast-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.15rem;min-height:42px}
+.mast-home-btn,.mast-account-btn{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:.52rem 1rem;font:inherit;font-size:.88rem;font-weight:750;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.mast-home-btn:hover,.mast-account-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.52)}
+.account-strip{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;margin-left:auto}
+.account-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.42rem .8rem;border:1px solid rgba(255,255,255,.26);border-radius:999px;background:rgba(8,20,45,.34);color:#e6efff;font-size:.84rem;font-weight:750;white-space:nowrap}
+@media(max-width:620px){.mast-topbar{align-items:flex-start;flex-direction:column}.account-strip{margin-left:0;justify-content:flex-start}.mast-home-btn,.mast-account-btn{padding:.46rem .82rem;font-size:.82rem}.account-pill{font-size:.78rem}}
 .login-stage{margin-top:1rem;padding:1rem;border:1px solid var(--rule);border-radius:16px;background:linear-gradient(135deg,#fff,#f8fbff)}
 .login-stage.locked{opacity:.58}
 .login-stage .big-auth-input{max-width:100%!important}
@@ -328,6 +330,31 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 .privacy-banner-large{padding:1.25rem 1.35rem}.privacy-banner-large strong{display:block;font-size:clamp(1.35rem,1.05rem + 1.3vw,2.05rem);line-height:1.12;letter-spacing:.01em}.privacy-banner-large p{font-size:1rem;margin-top:.65rem;line-height:1.55}
 .reg-card{overflow:visible}.reg-step{display:flex;gap:1rem;margin-top:1.15rem;padding:1.15rem;border:1px solid var(--rule);border-radius:18px;background:linear-gradient(135deg,#fff,#f8fbff)}.reg-step h3{font-size:1.08rem}.step-badge{flex:0 0 38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-weight:850;box-shadow:0 5px 15px rgba(37,99,235,.2)}.step-body{min-width:0;flex:1}.consent-row{display:flex;align-items:flex-start;gap:.8rem;margin-top:.9rem;padding:.9rem;border:2px solid #c7d2fe;border-radius:14px;background:#eef2ff;cursor:pointer}.consent-row input{width:22px;height:22px;flex:0 0 auto;margin-top:.1rem}.captcha-box{margin-top:1rem;padding:1rem;border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0}.captcha-line{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.55rem}.captcha-question{font-family:var(--font-mono);font-size:1.25rem;font-weight:800;padding:.55rem .85rem;border-radius:10px;background:#fff;border:1px solid #86efac}.captcha-line input{width:105px!important;font-size:1.15rem;text-align:center}.big-auth-input{max-width:520px!important;padding:.9rem 1rem!important;font-size:1.2rem!important;font-weight:650;letter-spacing:.035em}.pattern-guide{display:flex;gap:.45rem;flex-wrap:wrap;margin:.65rem 0}.pattern-guide span{padding:.35rem .55rem;border-radius:9px;background:#f1f5f9;font-size:.8rem}.field-status{margin-top:.6rem;padding:.65rem .8rem;border-radius:10px;font-size:.88rem;font-weight:650}.field-status.neutral{background:#f1f5f9;color:#475569}.field-status.good{background:#dcfce7;color:#166534}.field-status.bad{background:#fee2e2;color:#991b1b}.password-rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem .8rem;margin-top:.75rem;max-width:650px}.password-rules span{font-size:.84rem;padding:.35rem .5rem;border-radius:8px;background:#f8fafc;color:#64748b}.password-rules span.ok{background:#ecfdf5;color:#166534;font-weight:700}.mfa-setup-stack{margin-top:1rem;display:flex;flex-direction:column;align-items:flex-start;gap:.65rem}.qr-wrap{background:#fff;border:2px solid #e2e8f0;border-radius:16px;padding:12px;box-shadow:0 8px 24px rgba(15,23,42,.08)}.qr-wrap svg{width:min(300px,75vw);height:auto}.manual-key-label{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:.2rem}.mfa-key{font-family:var(--font-mono);font-size:1rem;letter-spacing:.08em;word-break:break-all;max-width:520px}.otp-input{max-width:210px!important;text-align:center;letter-spacing:.22em!important}.locked-step.hide{display:none!important}
 @media(max-width:650px){.reg-step{padding:.9rem;gap:.7rem}.password-rules{grid-template-columns:1fr}.step-badge{width:32px;height:32px;flex-basis:32px}}
+
+
+/* ---------- learner navigation + performance dashboard ---------- */
+.mast-inner{padding-top:1.15rem}
+.mast-brand-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.5rem;align-items:start}
+.mast-brand-left{min-width:0}.mast-brand-left h1{margin:0}
+.mast-home-link{margin-top:.7rem;border:0;background:transparent;color:#dbeafe;padding:0;font:inherit;font-weight:800;font-size:.96rem;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.mast-home-link:hover{color:#fff}
+.account-corner{display:flex;flex-direction:column;align-items:flex-end;gap:.55rem;min-width:210px}
+.account-guest-actions{display:flex;gap:.6rem;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.account-user{font-weight:850;color:#fff;font-size:1rem;background:rgba(7,18,42,.38);border:1px solid rgba(255,255,255,.28);padding:.48rem .8rem;border-radius:12px}
+.mast-account-btn.create{background:linear-gradient(135deg,#f59e0b,#ec4899);border-color:rgba(255,255,255,.35)}
+.mast-account-btn.logout{align-self:flex-end}
+@media(max-width:700px){.mast-brand-row{grid-template-columns:1fr}.account-corner{align-items:flex-start;min-width:0}.account-guest-actions{justify-content:flex-start}.mast-account-btn.logout{align-self:flex-start}}
+.dashboard{margin-top:1.25rem;background:linear-gradient(135deg,#eff6ff,#fff 42%,#faf5ff);border:1px solid #c7d2fe}
+.dashboard-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.dashboard-level{display:inline-flex;align-items:center;gap:.45rem;padding:.42rem .8rem;border-radius:999px;background:#ede9fe;color:#5b21b6;font-weight:850}
+.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.85rem;margin-top:1rem}
+.metric-card{padding:1rem;border-radius:16px;background:#fff;border:1px solid var(--rule);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.metric-card .num{display:block;font-size:clamp(1.45rem,1.1rem + 1vw,2rem);font-weight:900;line-height:1.1;color:#1e3a8a}.metric-card small{display:block;color:var(--muted);margin-top:.28rem}
+.topic-performance{margin-top:1.2rem}.topic-performance h3{font-size:1.05rem;margin-bottom:.65rem}
+.perf-row{display:grid;grid-template-columns:minmax(130px,1.4fr) 2fr 72px;gap:.75rem;align-items:center;padding:.48rem 0;border-bottom:1px solid var(--rule);font-size:.9rem}
+.perf-track{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden}.perf-fill{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:inherit}
+.dashboard-empty{margin-top:1rem;padding:1rem;border-radius:14px;background:#fff;border:1px dashed #cbd5e1;color:var(--muted)}
+@media(max-width:760px){.metric-grid{grid-template-columns:1fr 1fr}.perf-row{grid-template-columns:1fr 1.4fr 62px}}
 
 </style>
 </head>
@@ -454,12 +481,22 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
     </svg>
   </div>
   <div class="wrap mast-inner">
-    <h1>Grade&nbsp;3 Mathematics</h1>
-    <p class="mast-sub">Practice &amp; Test &nbsp;·&nbsp; Arithmetic &nbsp;·&nbsp; Geometry &nbsp;·&nbsp; Supreme</p>
-    <div class="account-strip" aria-label="Account controls">
-      <span class="account-pill" id="accountStatus">Not logged in</span>
-      <button class="mast-account-btn" id="headerLoginBtn" type="button">Login</button>
-      <button class="mast-account-btn hide" id="headerLogoutBtn" type="button">Logout</button>
+    <div class="mast-brand-row">
+      <div class="mast-brand-left">
+        <h1>Grade&nbsp;3 Mathematics</h1>
+        <button class="mast-home-link" id="headerHomeBtn" type="button">Home</button>
+        <p class="mast-sub">Practice &amp; Test &nbsp;·&nbsp; Arithmetic &nbsp;·&nbsp; Geometry &nbsp;·&nbsp; Supreme</p>
+      </div>
+      <div class="account-corner" aria-label="Account controls">
+        <div class="account-guest-actions" id="guestAccountActions">
+          <button class="mast-account-btn" id="headerLoginBtn" type="button">Login</button>
+          <button class="mast-account-btn create" id="headerCreateBtn" type="button">New user? Create account</button>
+        </div>
+        <div class="hide" id="loggedAccountActions">
+          <div class="account-user" id="accountStatus">Username</div>
+          <button class="mast-account-btn logout" id="headerLogoutBtn" type="button" style="margin-top:.5rem">Logout</button>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -485,6 +522,20 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
         <button class="btn sec big" type="button" id="goTest">Take a Test</button>
       </div>
       <p class="help">Practice progress stays on this device. No account information is collected by this prototype.</p>
+    </div>
+
+    <div class="card dashboard hide" id="learnerDashboard">
+      <div class="dashboard-head">
+        <div><p class="kicker">My progress</p><h2 class="wel-h sm" id="dashGreeting">Learning dashboard</h2><p class="help">Performance is calculated from completed questions on this device.</p></div>
+        <span class="dashboard-level" id="dashLevel">Current level: Beginner</span>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><span class="num" id="dashAttempted">0</span><small>Questions attempted</small></div>
+        <div class="metric-card"><span class="num" id="dashAccuracy">—</span><small>Overall accuracy</small></div>
+        <div class="metric-card"><span class="num" id="dashCorrect">0</span><small>Correct answers</small></div>
+        <div class="metric-card"><span class="num" id="dashSessions">0</span><small>Completed sessions</small></div>
+      </div>
+      <div class="topic-performance" id="dashTopics"></div>
     </div>
 
     <!-- ---------- voices ---------- -->
@@ -2083,11 +2134,19 @@ function validLocalUsername(v){return /^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$/.test(Str
 function profileData(){try{return JSON.parse(localStorage.getItem(PROFILE_STORE)||"null");}catch(e){return null;}}
 function isLocallyAuthenticated(){try{return sessionStorage.getItem(AUTH_SESSION)==="1";}catch(e){return false;}}
 function setLocalAuth(v){try{if(v)sessionStorage.setItem(AUTH_SESSION,"1");else sessionStorage.removeItem(AUTH_SESSION);}catch(e){} updateAccountControls();}
-function updateAccountControls(){const logged=isLocallyAuthenticated(),p=profileData(),st=$("accountStatus"),li=$("headerLoginBtn"),lo=$("headerLogoutBtn");if(st)st.textContent=logged&&p?"Logged in · "+p.username:"Not logged in";if(li)li.classList.toggle("hide",logged);if(lo)lo.classList.toggle("hide",!logged);}
+function updateAccountControls(){const logged=isLocallyAuthenticated(),p=profileData(),guest=$("guestAccountActions"),user=$("loggedAccountActions"),st=$("accountStatus");if(guest)guest.classList.toggle("hide",logged);if(user)user.classList.toggle("hide",!logged);if(st)st.textContent=logged&&p?"Username: "+p.username:"Username";renderDashboard();}
 function loginDestinationLabel(){return pendingEntryKind==="test"?"Take a Test":pendingEntryKind==="practice"?"Practice":"Grade 3 Math";}
 function prepareLogin(kind="home"){pendingEntryKind=kind;credentialsVerified=false;const p=profileData();if($("loginTitle"))$("loginTitle").textContent="Login to continue to "+loginDestinationLabel();if($("loginLead"))$("loginLead").textContent="Verify your username and password first. After they are correct, authenticator verification will open.";if($("loginUser"))$("loginUser").value=p&&p.username?p.username:"";if($("loginPass"))$("loginPass").value="";if($("loginMfa"))$("loginMfa").value="";if($("loginMfaStage"))$("loginMfaStage").classList.add("hide");if($("credentialStage"))$("credentialStage").classList.remove("locked");const msg=$("loginMsg");if(msg){msg.className="";msg.textContent="";}go("loginView");}
 function finishLoginDestination(){if(pendingEntryKind==="practice"){renderLearningPath();go("practicePath");return;}if(pendingEntryKind==="test"){mode="test";sessionKind="standard";activeTopic=null;assessmentLevel=null;[...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k==="test")));refreshSetup();go("setup");return;}go("home");}
 function logoutLocal(){setLocalAuth(false);credentialsVerified=false;pendingEntryKind="home";go("home");}
+
+const PERF_STORE="grade3MathPerformance.v1";
+function perfKey(){const p=profileData();return PERF_STORE+"."+(p&&p.username?p.username:"guest");}
+function performanceData(){try{const d=JSON.parse(localStorage.getItem(perfKey())||"{}");return {attempted:+d.attempted||0,correct:+d.correct||0,sessions:+d.sessions||0,topics:d.topics&&typeof d.topics==="object"?d.topics:{}};}catch(e){return {attempted:0,correct:0,sessions:0,topics:{}};}}
+function savePerformance(d){try{localStorage.setItem(perfKey(),JSON.stringify(d));}catch(e){}}
+function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return;const d=performanceData();const topic=(q.domain||"Other").replace(/^Supreme · /,"Supreme: ");d.attempted++;if(isRight)d.correct++;d.topics[topic]=d.topics[topic]||{attempted:0,correct:0};d.topics[topic].attempted++;if(isRight)d.topics[topic].correct++;savePerformance(d);renderDashboard();}
+function recordCompletedSession(){if(!isLocallyAuthenticated())return;const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();}
+function renderDashboard(){const box=$("learnerDashboard");if(!box)return;const logged=isLocallyAuthenticated(),p=profileData();box.classList.toggle("hide",!logged);if(!logged||!p)return;const d=performanceData(),path=getPathProgress(),L=APP_LEVELS[Math.max(0,path.highestUnlocked-1)]||APP_LEVELS[0];$("dashGreeting").textContent=p.username+"'s learning dashboard";$("dashLevel").textContent="Current level: "+L.name;$("dashAttempted").textContent=d.attempted;$("dashCorrect").textContent=d.correct;$("dashAccuracy").textContent=d.attempted?Math.round(d.correct/d.attempted*100)+"%":"—";$("dashSessions").textContent=d.sessions;const rows=Object.entries(d.topics).filter(([,v])=>v&&v.attempted).sort((a,b)=>b[1].attempted-a[1].attempted||a[0].localeCompare(b[0])).slice(0,12);$("dashTopics").innerHTML=rows.length?('<h3>Performance by topic</h3>'+rows.map(([t,v])=>{const pc=Math.round(v.correct/v.attempted*100);return '<div class="perf-row"><strong>'+esc(t)+'</strong><div class="perf-track"><div class="perf-fill" style="width:'+pc+'%"></div></div><span>'+pc+'% <small>('+v.attempted+')</small></span></div>';}).join('')):'<div class="dashboard-empty">No completed questions yet. Start Practice or Take a Test to build your dashboard.</div>';}
 
 function bytesToB32(bytes){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out="";for(const b of bytes){val=(val<<8)|b;bits+=8;while(bits>=5){out+=a[(val>>>(bits-5))&31];bits-=5;}}if(bits>0)out+=a[(val<<(5-bits))&31];return out;}
 function b32ToBytes(s){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out=[];s=String(s||"").replace(/=+$/,'').toUpperCase();for(const ch of s){const i=a.indexOf(ch);if(i<0)continue;val=(val<<5)|i;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;}}return new Uint8Array(out);}
@@ -2142,7 +2201,9 @@ function registerHandlers(){
   const verify=$("verifyCredentialsBtn");if(verify)verify.onclick=async()=>{const p=profileData();if(!p)return authMessage("loginMsg","No local account exists on this browser yet. Choose Create account below.");const user=$("loginUser").value.trim(),pass=$("loginPass").value;if(user!==p.username)return authMessage("loginMsg","Username does not match the local account on this browser.");if(await shaText(pass,p.salt)!==p.passwordHash)return authMessage("loginMsg","Password is incorrect.");credentialsVerified=true;$("credentialStage").classList.add("locked");$("loginMfaStage").classList.remove("hide");authMessage("loginMsg","Username and password verified. Complete authenticator verification.",true);$("loginMfa").focus();};
   const back=$("loginBackBtn");if(back)back.onclick=()=>{credentialsVerified=false;$("credentialStage").classList.remove("locked");$("loginMfaStage").classList.add("hide");$("loginMfa").value="";$("loginPass").focus();};
   const login=$("loginBtn");if(login)login.onclick=async()=>{const p=profileData();if(!p)return authMessage("loginMsg","No local account exists. Create an account first.");if(!credentialsVerified)return authMessage("loginMsg","Verify username and password first.");const code=$("loginMfa").value.trim();if(!(await verifyTotp(p.totpSecret,code)))return authMessage("loginMsg","Authenticator code is incorrect or expired.");setLocalAuth(true);authMessage("loginMsg","Login complete.",true);setTimeout(finishLoginDestination,180);};
+  const headerHome=$("headerHomeBtn");if(headerHome)headerHome.onclick=()=>go("home");
   const headerLogin=$("headerLoginBtn");if(headerLogin)headerLogin.onclick=()=>prepareLogin("home");
+  const headerCreate=$("headerCreateBtn");if(headerCreate)headerCreate.onclick=()=>{setLocalAuth(false);pendingEntryKind="home";go("registerView");};
   const headerLogout=$("headerLogoutBtn");if(headerLogout)headerLogout.onclick=logoutLocal;
 }
 registerHandlers();
@@ -2159,7 +2220,7 @@ function getPathProgress(){
   catch(e){return {highestUnlocked:1};}
 }
 function savePathProgress(v){try{const p=profileData();const k=PATH_STORE+"."+(p&&p.username?p.username:"guest");localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-function unlockThrough(n){const p=getPathProgress(); if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);} return p;}
+function unlockThrough(n){const p=getPathProgress(); if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);} renderDashboard(); return p;}
 function topicIcon(kind){
   const common='viewBox="0 0 64 64" aria-hidden="true"';
   if(kind==="geometry") return '<svg '+common+'><path d="M8 49 25 15l18 34Z" fill="#60a5fa" opacity=".28"/><circle cx="43" cy="22" r="11" fill="#a78bfa" opacity=".45"/><rect x="31" y="34" width="20" height="20" rx="3" fill="#22c55e" opacity=".35"/><path d="M8 49 25 15l18 34Z" fill="none" stroke="#2563eb" stroke-width="3"/></svg>';
@@ -2405,6 +2466,7 @@ function onSubmit(){
   /* ---------- practice ---------- */
   if(right){
     answered[cur]=true; nDone++; nRight++;
+    recordQuestionPerformance(q,true);
     render();                              // shows green feedback
     advanceTimer=setTimeout(goNext,1100);
     return;
@@ -2420,6 +2482,7 @@ function onSubmit(){
   }
   /* hints exhausted → mark wrong, reveal the answer, then move on */
   answered[cur]=true; nDone++;
+  recordQuestionPerformance(q,false);
   render();
   advanceTimer=setTimeout(goNext,3200);
 }
@@ -2489,6 +2552,8 @@ function finish(auto){
   let score,total;
   if(mode==="test"){ total=QS.length; score=QS.reduce((s,q,i)=>s+(correct(q,ANS[i])?1:0),0); }
   else { total=nDone; score=nRight; }
+  if(mode==="test"){QS.forEach((q,i)=>{if(answered[i])recordQuestionPerformance(q,correct(q,ANS[i]));});}
+  recordCompletedSession();
   const pct = total? Math.round(score/total*100) : 0;
   const grade = pct>=90?"Excellent! ⭐⭐⭐":pct>=75?"Great work! ⭐⭐":pct>=60?"Good effort! ⭐":"Keep practising 💪";
 
@@ -2582,6 +2647,7 @@ function route(){
     openLevel(pathLevel); return;
   }
   show(v);
+  if(v==="home")renderDashboard();
 }
 
 /* ---------- start a session ---------- */
