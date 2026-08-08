@@ -12,8 +12,9 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-+oCdzEc3ra5cukdOhXLReeUtqFjOc2CR+CuYKtNEqFA='; style-src 'sha256-UQGTpq310OHdFoSKbktXPFwK5FF3OPUxFFESm2e9utU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-AmsQTKtdfYUaUGNJKwyaqj+ZjwyviuIVO5LxSbnXhao='; style-src 'sha256-UQGTpq310OHdFoSKbktXPFwK5FF3OPUxFFESm2e9utU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://*.workers.dev">
 <meta name="referrer" content="no-referrer">
+<meta name="grade3-api-base" content="https://grade3-math-auth.YOUR-WORKERS-SUBDOMAIN.workers.dev">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
 
@@ -521,12 +522,12 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
         <button class="btn big" type="button" id="goPractice">Practice</button>
         <button class="btn sec big" type="button" id="goTest">Take a Test</button>
       </div>
-      <p class="help">Practice progress stays on this device. No account information is collected by this prototype.</p>
+      <p class="help">Practice and test progress is stored in the private account repository through the secure backend. Do not enter personal information.</p>
     </div>
 
     <div class="card dashboard hide" id="learnerDashboard">
       <div class="dashboard-head">
-        <div><p class="kicker">My progress</p><h2 class="wel-h sm" id="dashGreeting">Learning dashboard</h2><p class="help">Performance is calculated from completed questions on this device.</p></div>
+        <div><p class="kicker">My progress</p><h2 class="wel-h sm" id="dashGreeting">Learning dashboard</h2><p class="help">Performance is calculated from completed questions saved to your account.</p></div>
         <span class="dashboard-level" id="dashLevel">Current level: Beginner</span>
       </div>
       <div class="metric-grid">
@@ -691,7 +692,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       </section>
 
       <div id="regMsg"></div>
-      <div class="auth-actions"><button class="btn big" id="finishRegBtn" type="button" disabled>Create local profile</button><button class="btn sec" id="haveProfileBtn" type="button">I already have a profile</button><button class="btn sec" type="button" data-go="home">Back to home</button></div>
+      <div class="auth-actions"><button class="btn big" id="finishRegBtn" type="button" disabled>Create account</button><button class="btn sec" id="haveProfileBtn" type="button">I already have a profile</button><button class="btn sec" type="button" data-go="home">Back to home</button></div>
     </div>
   </div>
 </section>
@@ -704,9 +705,9 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       <p>This page does not need your real name, email, phone number, address, school information, or legal-document information.</p>
     </div>
     <div class="card">
-      <p class="kicker">Secure local login</p>
+      <p class="kicker">Secure login</p>
       <h2 class="path-title" id="loginTitle">Login to continue</h2>
-      <p class="path-lead" id="loginLead">First verify your username and password. Your authenticator code will be requested only after those credentials are correct.</p>
+      <p class="path-lead" id="loginLead">First verify your username and password. Your authenticator code will be requested only after those credentials are correct.</p><p class="hintbox" id="backendSetupNotice">The account backend must be deployed before login can work.</p>
 
       <div class="login-stage" id="credentialStage">
         <h3>Step 1 · Username and password</h3>
@@ -721,7 +722,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 
       <div class="login-stage hide" id="loginMfaStage">
         <h3>Step 2 · Authenticator verification</h3>
-        <p class="auth-note">Username and password verified. Enter the current 6-digit code from the authenticator app used when this local profile was created.</p>
+        <p class="auth-note">Username and password verified. Enter the current 6-digit code from the authenticator app used when this account was created.</p>
         <label class="lbl" for="loginMfa">Authenticator code</label>
         <input class="big-auth-input otp-input" id="loginMfa" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="123456">
         <div class="auth-actions">
@@ -2124,28 +2125,44 @@ function refreshSetup(){
 refreshSetup();
 
 
+/* ---- backend-backed account + progress ---- */
+const API_BASE=(document.querySelector('meta[name="grade3-api-base"]')?.content||"").replace(/\/$/,"");
+const AUTH_TOKEN="grade3MathApiToken.v1";
+const AUTH_PROFILE="grade3MathApiProfile.v1";
+let pendingRegistrationChallenge="";
+let pendingLoginChallenge="";
+function backendConfigured(){return API_BASE&&API_BASE.indexOf("YOUR-WORKERS-SUBDOMAIN")===-1;}
+function authToken(){try{return sessionStorage.getItem(AUTH_TOKEN)||"";}catch(e){return "";}}
+function cacheProfile(p){try{if(p)sessionStorage.setItem(AUTH_PROFILE,JSON.stringify(p));else sessionStorage.removeItem(AUTH_PROFILE);}catch(e){}}
+async function apiCall(path,opts={}){
+  if(!backendConfigured())throw new Error("Backend is not configured yet. Deploy grade3-auth-backend, then replace YOUR-WORKERS-SUBDOMAIN in the grade3-api-base meta tag.");
+  const h={"Content-Type":"application/json",...(opts.headers||{})},t=authToken();if(t)h.Authorization="Bearer "+t;
+  const r=await fetch(API_BASE+path,{...opts,headers:h});let d={};try{d=await r.json();}catch(e){}
+  if(!r.ok)throw new Error(d.error||("Request failed ("+r.status+")"));return d;
+}
+function applyRemoteProgress(progress){const p=profileData();if(!p||!progress)return;if(!p.progress)p.progress={};Object.assign(p.progress,progress);cacheProfile(p);renderDashboard();}
+async function refreshRemoteSession(){if(!authToken()||!backendConfigured())return;try{const d=await apiCall("/api/me");cacheProfile(d.user);updateAccountControls();}catch(e){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(_e){}cacheProfile(null);updateAccountControls();}}
+
 /* ---- guided practice path ---- */
-const PROFILE_STORE="grade3MathLocalProfile.v1";
-const AUTH_SESSION="grade3MathLocalAuth.v1";
+const PROFILE_STORE="grade3MathApiProfile.v1";
+const AUTH_SESSION=AUTH_TOKEN;
 let pendingMfaSecret="";
 let pendingEntryKind="home";
 let credentialsVerified=false;
 function validLocalUsername(v){return /^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$/.test(String(v||""));}
-function profileData(){try{return JSON.parse(localStorage.getItem(PROFILE_STORE)||"null");}catch(e){return null;}}
-function isLocallyAuthenticated(){try{return sessionStorage.getItem(AUTH_SESSION)==="1";}catch(e){return false;}}
-function setLocalAuth(v){try{if(v)sessionStorage.setItem(AUTH_SESSION,"1");else sessionStorage.removeItem(AUTH_SESSION);}catch(e){} updateAccountControls();}
+function profileData(){try{return JSON.parse(sessionStorage.getItem(AUTH_PROFILE)||"null");}catch(e){return null;}}
+function isLocallyAuthenticated(){return !!authToken()&&!!profileData();}
+function setLocalAuth(v){if(!v){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(e){}cacheProfile(null);} updateAccountControls();}
 function updateAccountControls(){const logged=isLocallyAuthenticated(),p=profileData(),guest=$("guestAccountActions"),user=$("loggedAccountActions"),st=$("accountStatus");if(guest)guest.classList.toggle("hide",logged);if(user)user.classList.toggle("hide",!logged);if(st)st.textContent=logged&&p?"Username: "+p.username:"Username";renderDashboard();}
 function loginDestinationLabel(){return pendingEntryKind==="test"?"Take a Test":pendingEntryKind==="practice"?"Practice":"Grade 3 Math";}
-function prepareLogin(kind="home"){pendingEntryKind=kind;credentialsVerified=false;const p=profileData();if($("loginTitle"))$("loginTitle").textContent="Login to continue to "+loginDestinationLabel();if($("loginLead"))$("loginLead").textContent="Verify your username and password first. After they are correct, authenticator verification will open.";if($("loginUser"))$("loginUser").value=p&&p.username?p.username:"";if($("loginPass"))$("loginPass").value="";if($("loginMfa"))$("loginMfa").value="";if($("loginMfaStage"))$("loginMfaStage").classList.add("hide");if($("credentialStage"))$("credentialStage").classList.remove("locked");const msg=$("loginMsg");if(msg){msg.className="";msg.textContent="";}go("loginView");}
+function prepareLogin(kind="home"){pendingEntryKind=kind;credentialsVerified=false;pendingLoginChallenge="";const p=profileData();if($("loginTitle"))$("loginTitle").textContent="Login to continue to "+loginDestinationLabel();if($("loginLead"))$("loginLead").textContent="Verify your username and password first. After they are correct, authenticator verification will open.";if($("loginUser"))$("loginUser").value=p&&p.username?p.username:"";if($("loginPass"))$("loginPass").value="";if($("loginMfa"))$("loginMfa").value="";if($("loginMfaStage"))$("loginMfaStage").classList.add("hide");if($("credentialStage"))$("credentialStage").classList.remove("locked");const msg=$("loginMsg");if(msg){msg.className="";msg.textContent="";}go("loginView");}
 function finishLoginDestination(){if(pendingEntryKind==="practice"){renderLearningPath();go("practicePath");return;}if(pendingEntryKind==="test"){mode="test";sessionKind="standard";activeTopic=null;assessmentLevel=null;[...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k==="test")));refreshSetup();go("setup");return;}go("home");}
-function logoutLocal(){setLocalAuth(false);credentialsVerified=false;pendingEntryKind="home";go("home");}
+function logoutLocal(){setLocalAuth(false);credentialsVerified=false;pendingLoginChallenge="";pendingEntryKind="home";go("home");}
 
-const PERF_STORE="grade3MathPerformance.v1";
-function perfKey(){const p=profileData();return PERF_STORE+"."+(p&&p.username?p.username:"guest");}
-function performanceData(){try{const d=JSON.parse(localStorage.getItem(perfKey())||"{}");return {attempted:+d.attempted||0,correct:+d.correct||0,sessions:+d.sessions||0,topics:d.topics&&typeof d.topics==="object"?d.topics:{}};}catch(e){return {attempted:0,correct:0,sessions:0,topics:{}};}}
-function savePerformance(d){try{localStorage.setItem(perfKey(),JSON.stringify(d));}catch(e){}}
-function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return;const d=performanceData();const topic=(q.domain||"Other").replace(/^Supreme · /,"Supreme: ");d.attempted++;if(isRight)d.correct++;d.topics[topic]=d.topics[topic]||{attempted:0,correct:0};d.topics[topic].attempted++;if(isRight)d.topics[topic].correct++;savePerformance(d);renderDashboard();}
-function recordCompletedSession(){if(!isLocallyAuthenticated())return;const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();}
+function performanceData(){const p=profileData(),d=p&&p.progress?p.progress:{};return {attempted:+d.attempted||0,correct:+d.correct||0,sessions:+d.sessions||0,topics:d.topics&&typeof d.topics==="object"?d.topics:{}};}
+function savePerformance(d){const p=profileData();if(!p)return;p.progress={...(p.progress||{}),...d};cacheProfile(p);}
+function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return;const topic=(q.domain||"Other").replace(/^Supreme · /,"Supreme: ");const d=performanceData();d.attempted++;if(isRight)d.correct++;d.topics[topic]=d.topics[topic]||{attempted:0,correct:0};d.topics[topic].attempted++;if(isRight)d.topics[topic].correct++;savePerformance(d);renderDashboard();apiCall("/api/progress/attempt",{method:"POST",body:JSON.stringify({topic,correct:!!isRight,level,kind:sessionKind})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}
+function recordCompletedSession(){if(!isLocallyAuthenticated())return;const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();apiCall("/api/progress/session",{method:"POST",body:"{}"}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}
 function renderDashboard(){const box=$("learnerDashboard");if(!box)return;const logged=isLocallyAuthenticated(),p=profileData();box.classList.toggle("hide",!logged);if(!logged||!p)return;const d=performanceData(),path=getPathProgress(),L=APP_LEVELS[Math.max(0,path.highestUnlocked-1)]||APP_LEVELS[0];$("dashGreeting").textContent=p.username+"'s learning dashboard";$("dashLevel").textContent="Current level: "+L.name;$("dashAttempted").textContent=d.attempted;$("dashCorrect").textContent=d.correct;$("dashAccuracy").textContent=d.attempted?Math.round(d.correct/d.attempted*100)+"%":"—";$("dashSessions").textContent=d.sessions;const rows=Object.entries(d.topics).filter(([,v])=>v&&v.attempted).sort((a,b)=>b[1].attempted-a[1].attempted||a[0].localeCompare(b[0])).slice(0,12);$("dashTopics").innerHTML=rows.length?('<h3>Performance by topic</h3>'+rows.map(([t,v])=>{const pc=Math.round(v.correct/v.attempted*100);return '<div class="perf-row"><strong>'+esc(t)+'</strong><div class="perf-track"><div class="perf-fill" style="width:'+pc+'%"></div></div><span>'+pc+'% <small>('+v.attempted+')</small></span></div>';}).join('')):'<div class="dashboard-empty">No completed questions yet. Start Practice or Take a Test to build your dashboard.</div>';}
 
 function bytesToB32(bytes){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out="";for(const b of bytes){val=(val<<8)|b;bits+=8;while(bits>=5){out+=a[(val>>>(bits-5))&31];bits-=5;}}if(bits>0)out+=a[(val<<(5-bits))&31];return out;}
@@ -2194,20 +2211,22 @@ function registerHandlers(){
   const updateUser=()=>{const val=u.value.trim(),ok=validLocalUsername(val);if(!val)setStatus("userStatus","Use: capital letter + lowercase letter + two numbers + two letters. Example format: Ab12cd.","neutral");else if(ok)setStatus("userStatus","✓ Username format is correct. Password setup is now open.","good");else setStatus("userStatus","Not yet. Position 1 uppercase, position 2 lowercase, positions 3–4 numbers, positions 5–6 letters.","bad");revealStage("passwordStage",ok);if(!ok){revealStage("securityStage",false);revealStage("mfaStage",false);finish.disabled=true;}};if(u)u.oninput=updateUser;
   const updatePass=()=>{const checks=passwordChecks(pw.value);Object.entries(checks).forEach(([k,v])=>{const e=$("passwordRules").querySelector('[data-rule="'+k+'"]');if(e){e.classList.toggle("ok",v);e.textContent=(v?'✓ ':'○ ')+e.textContent.replace(/^[✓○]\s*/,"");}});const ok=passwordValid(pw.value);setStatus("passStatus",ok?"✓ Password meets every rule. Security-question setup is now open.":"Meet every password rule to continue.",ok?"good":"neutral");revealStage("securityStage",ok);if(!ok){revealStage("mfaStage",false);finish.disabled=true;}};if(pw)pw.oninput=updatePass;
   const updateSec=()=>{const ok=qa.value.trim().length>=4;setStatus("secStatus",ok?"✓ Made-up security answer accepted. Authenticator setup is now open.":"Use at least 4 made-up characters. Do not use a real-life fact.",ok?"good":"neutral");revealStage("mfaStage",ok);if(!ok)finish.disabled=true;};if(qa)qa.oninput=updateSec;
-  const gen=$("genMfaBtn");if(gen)gen.onclick=()=>{if(!validLocalUsername(u.value.trim())||!passwordValid(pw.value)||qa.value.trim().length<4)return authMessage("regMsg","Complete the earlier registration steps first.");pendingMfaSecret=newMfaSecret();const uri=otpauthUri(u.value.trim(),pendingMfaSecret);$("mfaQr").innerHTML=qrSvg(uri);$("mfaKey").textContent=pendingMfaSecret;$("mfaSetup").classList.remove("hide");$("mfaCode").focus();finish.disabled=false;};
-  if(finish)finish.onclick=async()=>{const user=u.value.trim(),pass=pw.value,ans=qa.value.trim(),qq=$("secQuestion").value,code=$("mfaCode").value.trim();if(!agree.checked||!captchaVerified)return authMessage("regMsg","Complete the privacy acknowledgement and human check first.");if(!validLocalUsername(user))return authMessage("regMsg","Complete the username step correctly.");if(!passwordValid(pass))return authMessage("regMsg","Password does not meet the displayed policy.");if(ans.length<4)return authMessage("regMsg","Use a made-up security answer with at least 4 characters.");if(!pendingMfaSecret)return authMessage("regMsg","Generate the authenticator QR code first.");if(!(await verifyTotp(pendingMfaSecret,code)))return authMessage("regMsg","The authenticator code is not valid. Scan the QR code (or use the manual key) and enter the current 6-digit code.");const salt=Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>x.toString(16).padStart(2,"0")).join("");const profile={username:user,salt,passwordHash:await shaText(pass,salt),question:qq,answerHash:await shaText(ans.toLowerCase(),salt),totpSecret:pendingMfaSecret,createdAt:new Date().toISOString()};try{localStorage.setItem(PROFILE_STORE,JSON.stringify(profile));}catch(e){return authMessage("regMsg","This browser blocked local storage, so the profile could not be saved.");}pendingMfaSecret="";setLocalAuth(false);authMessage("regMsg","Local profile created. Please log in with your username, password, and authenticator code.",true);setTimeout(()=>prepareLogin(pendingEntryKind),450);};
+  const gen=$("genMfaBtn");if(gen)gen.onclick=async()=>{if(!validLocalUsername(u.value.trim())||!passwordValid(pw.value)||qa.value.trim().length<4)return authMessage("regMsg","Complete the earlier registration steps first.");try{gen.disabled=true;authMessage("regMsg","Preparing secure authenticator setup…",true);const d=await apiCall("/api/register/start",{method:"POST",body:JSON.stringify({username:u.value.trim(),password:pw.value,securityQuestion:$("secQuestion").value,securityAnswer:qa.value.trim()})});pendingRegistrationChallenge=d.challenge;pendingMfaSecret=d.totpSecret;$("mfaQr").innerHTML=qrSvg(d.otpauthUri);$("mfaKey").textContent=d.totpSecret;$("mfaSetup").classList.remove("hide");$("mfaCode").focus();finish.disabled=false;authMessage("regMsg","Scan the QR code, then enter the current 6-digit authenticator code.",true);}catch(e){authMessage("regMsg",e.message);}finally{gen.disabled=false;}};
+  if(finish)finish.onclick=async()=>{const code=$("mfaCode").value.trim();if(!agree.checked||!captchaVerified)return authMessage("regMsg","Complete the privacy acknowledgement and human check first.");if(!pendingRegistrationChallenge)return authMessage("regMsg","Generate the authenticator QR code first.");try{finish.disabled=true;await apiCall("/api/register/finish",{method:"POST",body:JSON.stringify({challenge:pendingRegistrationChallenge,code})});pendingMfaSecret="";pendingRegistrationChallenge="";authMessage("regMsg","Account created in the private account store. Please log in with your username, password, and authenticator code.",true);setTimeout(()=>prepareLogin(pendingEntryKind),500);}catch(e){authMessage("regMsg",e.message);finish.disabled=false;}};
   const have=$("haveProfileBtn");if(have)have.onclick=()=>prepareLogin(pendingEntryKind==="test"?"test":"practice");
   const newer=$("newProfileBtn");if(newer)newer.onclick=()=>{setLocalAuth(false);go("registerView");};
-  const verify=$("verifyCredentialsBtn");if(verify)verify.onclick=async()=>{const p=profileData();if(!p)return authMessage("loginMsg","No local account exists on this browser yet. Choose Create account below.");const user=$("loginUser").value.trim(),pass=$("loginPass").value;if(user!==p.username)return authMessage("loginMsg","Username does not match the local account on this browser.");if(await shaText(pass,p.salt)!==p.passwordHash)return authMessage("loginMsg","Password is incorrect.");credentialsVerified=true;$("credentialStage").classList.add("locked");$("loginMfaStage").classList.remove("hide");authMessage("loginMsg","Username and password verified. Complete authenticator verification.",true);$("loginMfa").focus();};
-  const back=$("loginBackBtn");if(back)back.onclick=()=>{credentialsVerified=false;$("credentialStage").classList.remove("locked");$("loginMfaStage").classList.add("hide");$("loginMfa").value="";$("loginPass").focus();};
-  const login=$("loginBtn");if(login)login.onclick=async()=>{const p=profileData();if(!p)return authMessage("loginMsg","No local account exists. Create an account first.");if(!credentialsVerified)return authMessage("loginMsg","Verify username and password first.");const code=$("loginMfa").value.trim();if(!(await verifyTotp(p.totpSecret,code)))return authMessage("loginMsg","Authenticator code is incorrect or expired.");setLocalAuth(true);authMessage("loginMsg","Login complete.",true);setTimeout(finishLoginDestination,180);};
+  const verify=$("verifyCredentialsBtn");if(verify)verify.onclick=async()=>{const user=$("loginUser").value.trim(),pass=$("loginPass").value;if(!validLocalUsername(user))return authMessage("loginMsg","Enter your six-character username.");if(!pass)return authMessage("loginMsg","Enter your password.");try{verify.disabled=true;const d=await apiCall("/api/login/password",{method:"POST",body:JSON.stringify({username:user,password:pass})});pendingLoginChallenge=d.challenge;credentialsVerified=true;$("credentialStage").classList.add("locked");$("loginMfaStage").classList.remove("hide");authMessage("loginMsg","Username and password verified. Complete authenticator verification.",true);$("loginMfa").focus();}catch(e){credentialsVerified=false;pendingLoginChallenge="";authMessage("loginMsg",e.message);}finally{verify.disabled=false;}};
+  const back=$("loginBackBtn");if(back)back.onclick=()=>{credentialsVerified=false;pendingLoginChallenge="";$("credentialStage").classList.remove("locked");$("loginMfaStage").classList.add("hide");$("loginMfa").value="";$("loginPass").focus();};
+  const login=$("loginBtn");if(login)login.onclick=async()=>{if(!credentialsVerified||!pendingLoginChallenge)return authMessage("loginMsg","Verify username and password first.");const code=$("loginMfa").value.trim();try{login.disabled=true;const d=await apiCall("/api/login/mfa",{method:"POST",body:JSON.stringify({challenge:pendingLoginChallenge,code})});sessionStorage.setItem(AUTH_TOKEN,d.token);cacheProfile(d.user);credentialsVerified=false;pendingLoginChallenge="";updateAccountControls();authMessage("loginMsg","Login complete.",true);setTimeout(finishLoginDestination,180);}catch(e){authMessage("loginMsg",e.message);}finally{login.disabled=false;}};
   const headerHome=$("headerHomeBtn");if(headerHome)headerHome.onclick=()=>go("home");
   const headerLogin=$("headerLoginBtn");if(headerLogin)headerLogin.onclick=()=>prepareLogin("home");
   const headerCreate=$("headerCreateBtn");if(headerCreate)headerCreate.onclick=()=>{setLocalAuth(false);pendingEntryKind="home";go("registerView");};
   const headerLogout=$("headerLogoutBtn");if(headerLogout)headerLogout.onclick=logoutLocal;
 }
 registerHandlers();
+if($("backendSetupNotice"))$("backendSetupNotice").classList.toggle("hide",backendConfigured());
 updateAccountControls();
+refreshRemoteSession();
 
 const PATH_STORE="grade3MathProgress.v1";
 const TOPIC_META={
@@ -2215,12 +2234,9 @@ const TOPIC_META={
 };
 function topicMeta(domain){const m=TOPIC_META[domain];if(m)return {icon:m[0],desc:m[1]};let icon=/geometry|shape|triangle|angle|polygon|line|symmetry|solid|net|diagonal|spatial|cross-section|quadrilateral|euler/i.test(domain)?"geometry":/measure|length|unit/i.test(domain)?"ruler":/area|perimeter/i.test(domain)?"perimeter":/fraction/i.test(domain)?"fractions":/time/i.test(domain)?"clock":/graph|data/i.test(domain)?"graph":/money/i.test(domain)?"money":/pattern|multiple|series/i.test(domain)?"pattern":/factor|multiply|division|unknown/i.test(domain)?"factor":"numbers";return {icon,desc:"Practice fresh "+domain.toLowerCase()+" questions from the generator engine."};}
 function engineTopicsForLevel(L){const seen=new Map();const gens=allLevelGenerators(L);for(const g of gens){for(let tries=0;tries<4;tries++){let q=null;try{q=g.f(L);}catch(e){}if(q&&q.domain){if(!seen.has(q.domain)){const m=topicMeta(q.domain),display={"Even and odd":"Odd & Even Numbers","Comparing":"Number Comparison","Measurement":"Measurement & Estimation"}[q.domain]||q.domain;seen.set(q.domain,{k:q.domain,name:display,domains:[q.domain],desc:m.desc,icon:m.icon});}break;}}}return [...seen.values()].sort((a,b)=>a.name.localeCompare(b.name));}
-function getPathProgress(){
-  try{const p=profileData();const k=PATH_STORE+"."+(p&&p.username?p.username:"guest");const v=JSON.parse(localStorage.getItem(k)||"{}");return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
-  catch(e){return {highestUnlocked:1};}
-}
-function savePathProgress(v){try{const p=profileData();const k=PATH_STORE+"."+(p&&p.username?p.username:"guest");localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-function unlockThrough(n){const p=getPathProgress(); if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);} renderDashboard(); return p;}
+function getPathProgress(){const p=profileData(),v=p&&p.progress?p.progress:{};return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
+function savePathProgress(v){const p=profileData();if(!p)return;p.progress={...(p.progress||{}),highestUnlocked:v.highestUnlocked};cacheProfile(p);}
+function unlockThrough(n){const p=getPathProgress();if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);apiCall("/api/progress/unlock",{method:"POST",body:JSON.stringify({completedLevel:n-1,scorePct:100})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}renderDashboard();return p;}
 function topicIcon(kind){
   const common='viewBox="0 0 64 64" aria-hidden="true"';
   if(kind==="geometry") return '<svg '+common+'><path d="M8 49 25 15l18 34Z" fill="#60a5fa" opacity=".28"/><circle cx="43" cy="22" r="11" fill="#a78bfa" opacity=".45"/><rect x="31" y="34" width="20" height="20" rx="3" fill="#22c55e" opacity=".35"/><path d="M8 49 25 15l18 34Z" fill="none" stroke="#2563eb" stroke-width="3"/></svg>';
