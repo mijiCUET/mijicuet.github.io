@@ -12,9 +12,9 @@
 <meta property="og:description" content="Arithmetic, geometry and Supreme competition practice for Grade 3 — five levels, timed tests, unlimited fresh questions.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-AmsQTKtdfYUaUGNJKwyaqj+ZjwyviuIVO5LxSbnXhao='; style-src 'sha256-UQGTpq310OHdFoSKbktXPFwK5FF3OPUxFFESm2e9utU='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://*.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-ayZNl/gaeDUUTSZ8UfbJP/bz8CST8Gwzje57tTX2O0k='; style-src 'sha256-W77OT77vEtNmpbWUVfLVGbgCp3CqJjf396AY9tDSXSA='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.your-workers-subdomain.workers.dev">
 <meta name="referrer" content="no-referrer">
-<meta name="grade3-api-base" content="https://grade3-math-auth.YOUR-WORKERS-SUBDOMAIN.workers.dev">
+<meta name="grade3-api-base" content="https://math-auth.your-workers-subdomain.workers.dev">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="format-detection" content="telephone=no">
 
@@ -312,7 +312,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 .login-new{margin-top:1.2rem;padding:1rem;border-radius:14px;background:#f5f3ff;border:1px solid #ddd6fe}
 .login-new strong{display:block;color:#5b21b6;margin-bottom:.25rem}
 
-/* ---------- local profile / registration ---------- */
+/* ---------- pseudonymous account / registration ---------- */
 .auth-shell{max-width:760px;margin:0 auto}
 .privacy-banner{padding:1.25rem 1.35rem;border:3px solid #2563eb;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#f5f3ff 52%,#ecfeff);box-shadow:var(--shadow);margin-bottom:1.25rem}
 .privacy-banner strong{display:block;font-size:clamp(1.2rem,1.05rem + 1vw,1.75rem);line-height:1.25;color:#172554;margin-bottom:.5rem}
@@ -613,7 +613,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 
 
 
-<!-- ================= LOCAL PROFILE REGISTRATION ================= -->
+<!-- ================= PSEUDONYMOUS ACCOUNT REGISTRATION ================= -->
 <section class="section hide" id="registerView">
   <div class="wrap auth-shell">
     <div class="privacy-banner privacy-banner-large">
@@ -621,7 +621,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       <p>This learning profile does <b>not</b> need your real name, legal name, email address, phone number, home address, school ID, government ID, passport information, birth certificate information, or anything from a legal document. Use only made-up information for this site.</p>
     </div>
     <div class="card reg-card">
-      <p class="kicker">Private-by-design local profile</p>
+      <p class="kicker">Pseudonymous learning account</p>
       <h2 class="path-title">Create your learning profile</h2>
       <p class="path-lead">Complete each step in order. The next box opens only after the current step is completed correctly.</p>
 
@@ -631,7 +631,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
           <h3>Privacy acknowledgement</h3>
           <label class="consent-row"><input type="checkbox" id="privacyAgree"> <span><b>I agree</b> to use only made-up information and not enter a real name, email address, government/document number, address, phone number, school identifier, or other personal/legal information.</span></label>
           <div class="captcha-box">
-            <div><b>Quick human check</b><p class="auth-note">Solve this simple question on this device.</p></div>
+            <div><b>Quick human check</b><p class="auth-note">Solve this simple question. It is issued as a short-lived server challenge and does not require personal information.</p></div>
             <div class="captcha-line"><span class="captcha-question" id="captchaQuestion"></span><input id="captchaAnswer" type="text" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="CAPTCHA answer"><button class="btn sec sm" id="captchaBtn" type="button">Verify</button></div>
             <div id="captchaMsg" class="field-status neutral">Complete the acknowledgement and human check to continue.</div>
           </div>
@@ -654,10 +654,10 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
         <div class="step-body">
           <h3>Create a password</h3>
           <label class="lbl" for="regPass">Password</label>
-          <input class="big-auth-input" id="regPass" type="password" autocomplete="new-password" placeholder="Example format: Math7!Rocket">
-          <p class="auth-note"><b>Example format only:</b> Math7!Rocket — do not use this exact password and do not reuse a password from email, school, banking, gaming, or another account.</p>
+          <input class="big-auth-input" id="regPass" type="password" autocomplete="new-password" placeholder="Example passphrase: Purple comet 47 river!">
+          <p class="auth-note"><b>Example only:</b> Purple comet 47 river! — do not use this exact password and do not reuse a password from email, school, banking, gaming, or another account. Spaces and symbols are allowed.</p>
           <div class="password-rules" id="passwordRules">
-            <span data-rule="len">○ 10 or more characters</span><span data-rule="upper">○ one uppercase letter</span><span data-rule="lower">○ one lowercase letter</span><span data-rule="digit">○ one number</span><span data-rule="symbol">○ one symbol (! @ # $ % etc.)</span><span data-rule="space">○ no spaces</span>
+            <span data-rule="len">○ at least 12 characters</span><span data-rule="max">○ no more than 128 characters</span><span data-rule="control">○ no control characters</span><span data-rule="username">○ does not contain your username</span><span data-rule="common">○ not a common blocked password</span><span data-rule="context">○ not based on this site/service name</span>
           </div>
           <div id="passStatus" class="field-status neutral">Meet every password rule to continue.</div>
         </div>
@@ -671,7 +671,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
           <select id="secQuestion"><option value="shape">What imaginary shape is your secret favorite?</option><option value="planet">What made-up planet name will you remember?</option><option value="word">What secret nonsense word will you remember?</option></select>
           <label class="lbl" for="secAnswer">Made-up answer</label>
           <input class="big-auth-input" id="secAnswer" type="password" autocomplete="off" placeholder="Use an invented answer, not a real-life fact">
-          <div id="secStatus" class="field-status neutral">Use at least 4 characters. Do not use a birthday, school, family name, pet name, hometown, or other real-life fact.</div>
+          <div id="secStatus" class="field-status neutral">Use at least 6 made-up characters. Do not use a birthday, school, family name, pet name, hometown, or other real-life fact.</div>
         </div>
       </section>
 
@@ -697,7 +697,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
   </div>
 </section>
 
-<!-- ================= LOCAL PROFILE LOGIN ================= -->
+<!-- ================= ACCOUNT LOGIN ================= -->
 <section class="section hide" id="loginView">
   <div class="wrap auth-shell">
     <div class="privacy-banner">
@@ -734,7 +734,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       <div id="loginMsg"></div>
       <div class="login-new">
         <strong>New user?</strong>
-        <p class="auth-note">Create a local learning profile first. Registration will guide you through the privacy consent, CAPTCHA, username, password, security question, and authenticator setup.</p>
+        <p class="auth-note">Create a pseudonymous learning account first. Registration will guide you through the privacy acknowledgement, CAPTCHA, username, password, security question, and authenticator setup.</p>
         <button class="btn sec" id="newProfileBtn" type="button">Create account</button>
       </div>
       <div class="auth-actions"><button class="btn sec" type="button" data-go="home">Back to home</button></div>
@@ -751,7 +751,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       <p class="path-lead">Begin with the foundations. Practice any topic in your unlocked level, then earn 100% on the level assessment to open the next challenge.</p>
       <div class="level-road" id="levelRoad"></div>
       <div class="path-note"><strong>How unlocking works:</strong> Beginner starts open. Every later level stays locked until you score 100% on the previous level assessment.</div>
-      <p class="progress-local">Prototype progress is saved only in this browser on this device. No account information is collected by this version.</p>
+      <p class="progress-local">Progress is synchronized to your pseudonymous account in the private account repository through the math-auth backend.</p>
       <div class="btnrow" style="margin-top:1.2rem"><button class="btn sec" type="button" data-go="home">← Back to home</button></div>
     </div>
   </div>
@@ -783,9 +783,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
     <div class="card">
       <h2 style="font-family:var(--font-display);font-weight:500;font-size:1.6rem">Set up your session</h2>
 
-      <label class="lbl" for="who">Your name <span class="opt">(optional)</span></label>
-      <input type="text" id="who" placeholder="Only to put on your results — leave it blank if you like"
-             autocomplete="off" maxlength="40">
+      <p class="help" id="setupUserLine">This session will use your made-up account username.</p>
 
       <label class="lbl">Mode</label>
       <div class="grid opt-grid" id="modeGrid"></div>
@@ -853,6 +851,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 </footer>
 
 <script>
+if(window.top!==window.self){document.documentElement.innerHTML="<head><title>Grade 3 Mathematics</title></head><body><p>This application cannot run inside an embedded frame.</p></body>";throw new Error("Framed execution blocked");}
 
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
@@ -862,13 +861,6 @@ function opts4(correct,pool){const s=[correct];const p=shuffle(pool.filter(x=>St
   let k=1;while(s.length<4){const v=(typeof correct==='number')?correct+k:String(correct)+k;if(!s.map(String).includes(String(v)))s.push(v);k++;}
   return shuffle(s.map(String));}
 
-const LEVELS=[
- {n:1,name:"Beginner",stars:"★☆☆☆☆",desc:"Small numbers, basic facts, lots of pictures."},
- {n:2,name:"Developing",stars:"★★☆☆☆",desc:"Facts to 10, add & subtract to 500, simple fractions."},
- {n:3,name:"Intermediate",stars:"★★★☆☆",desc:"On grade level — full Grade 3 range and word problems."},
- {n:4,name:"Advanced",stars:"★★★★☆",desc:"Bigger numbers, two-step problems, missing numbers."},
- {n:5,name:"Superior",stars:"★★★★★",desc:"Multi-step challenges and tougher reasoning."}
-];
 
 const NAMES=["Ava","Liam","Maya","Noah","Zoe","Ethan","Aria","Kai","Sofia","Leo","Nina","Omar","Ivy","Diego","Lily","Sam","Priya","Jack","Mia","Ben","Ella","Ravi","Grace","Theo"];
 const OBJ=[["apples","baskets"],["stickers","sheets"],["cookies","plates"],["pencils","boxes"],["marbles","bags"],["crayons","packs"],["books","shelves"],["flowers","vases"]];
@@ -2072,18 +2064,15 @@ function cleanNum(v){
   const t=String(v===null||v===undefined?"":v).trim();
   return /^-?\d{0,12}(\.\d{0,6})?$/.test(t) ? t : "";
 }
-/* names are display-only: strip control chars and cap the length */
-function cleanName(v){
-  return String(v||"").replace(/[\x00-\x1F\x7F<>]/g,"").trim().slice(0,60) || "Student";
-}
 
 let mode="practice", subject="all", level=3;
-let QS=[],ANS=[],cur=0,answered=[],tick=null,elapsed=0,remaining=0,limitMin=30,name="Student";
+let QS=[],ANS=[],cur=0,answered=[],tick=null,elapsed=0,remaining=0,limitMin=30,name="Learner";
 let nRight=0,nDone=0;
 let sessionKind="standard", activeTopic=null, pathLevel=1, assessmentLevel=null;
 let tries=[];           // wrong attempts per question (drives hint reveal)
 let hintsShown=[];      // hints revealed so far per question
 let advanceTimer=null;  // auto-advance handle
+let finishing=false;      // guards duplicate result/progress submission
 
 /* ---- setup UI ---- */
 
@@ -2127,63 +2116,76 @@ refreshSetup();
 
 /* ---- backend-backed account + progress ---- */
 const API_BASE=(document.querySelector('meta[name="grade3-api-base"]')?.content||"").replace(/\/$/,"");
-const AUTH_TOKEN="grade3MathApiToken.v1";
-const AUTH_PROFILE="grade3MathApiProfile.v1";
+const AUTH_TOKEN="mathAuthApiToken.v1";
+const AUTH_PROFILE="mathAuthApiProfile.v1";
 let pendingRegistrationChallenge="";
 let pendingLoginChallenge="";
-function backendConfigured(){return API_BASE&&API_BASE.indexOf("YOUR-WORKERS-SUBDOMAIN")===-1;}
+let sessionValidated=false;
+function clearRegistrationSecrets(){
+  pendingRegistrationChallenge=""; captchaExpected=null; captchaVerified=false; captchaChallenge="";
+  const pw=$("regPass"),qa=$("secAnswer"),code=$("mfaCode"),key=$("mfaKey"),qr=$("mfaQr"),setup=$("mfaSetup"),finish=$("finishRegBtn"),agree=$("privacyAgree"),capAns=$("captchaAnswer"),capBtn=$("captchaBtn"),user=$("regUser");
+  if(pw)pw.value=""; if(qa)qa.value=""; if(code)code.value=""; if(key)key.textContent=""; if(qr)qr.innerHTML=""; if(user)user.value="";
+  if(agree)agree.checked=false; if(capAns){capAns.value="";capAns.disabled=false;} if(capBtn)capBtn.disabled=false;
+  ["usernameStage","passwordStage","securityStage","mfaStage"].forEach(id=>revealStage(id,false));
+  setStatus("captchaMsg","Complete the acknowledgement and human check to continue.","neutral");
+  setStatus("userStatus","Use: capital letter + lowercase letter + two numbers + two letters. Example format: Ab12cd.","neutral");
+  setStatus("passStatus","Meet every password rule to continue.","neutral");
+  setStatus("secStatus","Use at least 6 made-up characters. Do not use a real-life fact.","neutral");
+  const rules=$("passwordRules");if(rules)rules.querySelectorAll("[data-rule]").forEach(e=>{e.classList.remove("ok");e.textContent="○ "+e.textContent.replace(/^[✓○]\s*/,"");});
+  if(setup)setup.classList.add("hide"); if(finish)finish.disabled=true;
+}
+function clearLoginChallenge(){
+  pendingLoginChallenge=""; credentialsVerified=false;
+  const pw=$("loginPass"),code=$("loginMfa"),stage=$("loginMfaStage"),cred=$("credentialStage");
+  if(pw)pw.value=""; if(code)code.value=""; if(stage)stage.classList.add("hide"); if(cred)cred.classList.remove("locked");
+}
+function backendConfigured(){return !!API_BASE&&!/your-workers-subdomain/i.test(API_BASE);}
 function authToken(){try{return sessionStorage.getItem(AUTH_TOKEN)||"";}catch(e){return "";}}
 function cacheProfile(p){try{if(p)sessionStorage.setItem(AUTH_PROFILE,JSON.stringify(p));else sessionStorage.removeItem(AUTH_PROFILE);}catch(e){}}
 async function apiCall(path,opts={}){
-  if(!backendConfigured())throw new Error("Backend is not configured yet. Deploy grade3-auth-backend, then replace YOUR-WORKERS-SUBDOMAIN in the grade3-api-base meta tag.");
-  const h={"Content-Type":"application/json",...(opts.headers||{})},t=authToken();if(t)h.Authorization="Bearer "+t;
-  const r=await fetch(API_BASE+path,{...opts,headers:h});let d={};try{d=await r.json();}catch(e){}
-  if(!r.ok)throw new Error(d.error||("Request failed ("+r.status+")"));return d;
+  if(!backendConfigured())throw new Error("Backend is not configured yet. Deploy math-auth-backend, then configure the grade3-api-base meta tag.");
+  if(!/^\/api\//.test(path))throw new Error("Invalid API path.");
+  const h={...(opts.headers||{})},t=authToken();if(opts.body!==undefined)h["Content-Type"]="application/json";if(t)h.Authorization="Bearer "+t;
+  const r=await fetch(API_BASE+path,{...opts,headers:h,cache:"no-store",referrerPolicy:"no-referrer"});let d={};try{d=await r.json();}catch(e){}
+  if(!r.ok){if(r.status===401&&t){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(_e){}cacheProfile(null);sessionValidated=false;}throw new Error(d.error||("Request failed ("+r.status+")"));}return d;
 }
 function applyRemoteProgress(progress){const p=profileData();if(!p||!progress)return;if(!p.progress)p.progress={};Object.assign(p.progress,progress);cacheProfile(p);renderDashboard();}
-async function refreshRemoteSession(){if(!authToken()||!backendConfigured())return;try{const d=await apiCall("/api/me");cacheProfile(d.user);updateAccountControls();}catch(e){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(_e){}cacheProfile(null);updateAccountControls();}}
+async function refreshRemoteSession(){sessionValidated=false;if(!authToken()||!backendConfigured()){if(!authToken())cacheProfile(null);updateAccountControls();return false;}try{const d=await apiCall("/api/me");cacheProfile(d.user);sessionValidated=true;updateAccountControls();return true;}catch(e){cacheProfile(null);sessionValidated=false;updateAccountControls();return false;}}
 
 /* ---- guided practice path ---- */
-const PROFILE_STORE="grade3MathApiProfile.v1";
-const AUTH_SESSION=AUTH_TOKEN;
-let pendingMfaSecret="";
 let pendingEntryKind="home";
 let credentialsVerified=false;
 function validLocalUsername(v){return /^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$/.test(String(v||""));}
 function profileData(){try{return JSON.parse(sessionStorage.getItem(AUTH_PROFILE)||"null");}catch(e){return null;}}
-function isLocallyAuthenticated(){return !!authToken()&&!!profileData();}
-function setLocalAuth(v){if(!v){try{sessionStorage.removeItem(AUTH_TOKEN);}catch(e){}cacheProfile(null);} updateAccountControls();}
+function isLocallyAuthenticated(){return sessionValidated&&!!authToken()&&!!profileData();}
+function setLocalAuth(v){if(!v){sessionValidated=false;try{sessionStorage.removeItem(AUTH_TOKEN);}catch(e){}cacheProfile(null);} updateAccountControls();}
 function updateAccountControls(){const logged=isLocallyAuthenticated(),p=profileData(),guest=$("guestAccountActions"),user=$("loggedAccountActions"),st=$("accountStatus");if(guest)guest.classList.toggle("hide",logged);if(user)user.classList.toggle("hide",!logged);if(st)st.textContent=logged&&p?"Username: "+p.username:"Username";renderDashboard();}
 function loginDestinationLabel(){return pendingEntryKind==="test"?"Take a Test":pendingEntryKind==="practice"?"Practice":"Grade 3 Math";}
 function prepareLogin(kind="home"){pendingEntryKind=kind;credentialsVerified=false;pendingLoginChallenge="";const p=profileData();if($("loginTitle"))$("loginTitle").textContent="Login to continue to "+loginDestinationLabel();if($("loginLead"))$("loginLead").textContent="Verify your username and password first. After they are correct, authenticator verification will open.";if($("loginUser"))$("loginUser").value=p&&p.username?p.username:"";if($("loginPass"))$("loginPass").value="";if($("loginMfa"))$("loginMfa").value="";if($("loginMfaStage"))$("loginMfaStage").classList.add("hide");if($("credentialStage"))$("credentialStage").classList.remove("locked");const msg=$("loginMsg");if(msg){msg.className="";msg.textContent="";}go("loginView");}
 function finishLoginDestination(){if(pendingEntryKind==="practice"){renderLearningPath();go("practicePath");return;}if(pendingEntryKind==="test"){mode="test";sessionKind="standard";activeTopic=null;assessmentLevel=null;[...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k==="test")));refreshSetup();go("setup");return;}go("home");}
-function logoutLocal(){setLocalAuth(false);credentialsVerified=false;pendingLoginChallenge="";pendingEntryKind="home";go("home");}
+async function revokeLocalSession(){if(authToken()&&backendConfigured()){try{await apiCall("/api/logout",{method:"POST",body:"{}"});}catch(e){}}setLocalAuth(false);}
+async function logoutLocal(){await revokeLocalSession();credentialsVerified=false;pendingLoginChallenge="";pendingEntryKind="home";go("home");}
 
 function performanceData(){const p=profileData(),d=p&&p.progress?p.progress:{};return {attempted:+d.attempted||0,correct:+d.correct||0,sessions:+d.sessions||0,topics:d.topics&&typeof d.topics==="object"?d.topics:{}};}
 function savePerformance(d){const p=profileData();if(!p)return;p.progress={...(p.progress||{}),...d};cacheProfile(p);}
-function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return;const topic=(q.domain||"Other").replace(/^Supreme · /,"Supreme: ");const d=performanceData();d.attempted++;if(isRight)d.correct++;d.topics[topic]=d.topics[topic]||{attempted:0,correct:0};d.topics[topic].attempted++;if(isRight)d.topics[topic].correct++;savePerformance(d);renderDashboard();apiCall("/api/progress/attempt",{method:"POST",body:JSON.stringify({topic,correct:!!isRight,level,kind:sessionKind})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}
-function recordCompletedSession(){if(!isLocallyAuthenticated())return;const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();apiCall("/api/progress/session",{method:"POST",body:"{}"}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}
+function localAttemptData(q,isRight){if(!q)return null;return {topic:(q.domain||"Other").replace(/^Supreme · /,"Supreme: "),correct:!!isRight};}
+function applyLocalAttempt(a){if(!a)return;const d=performanceData();d.attempted++;if(a.correct)d.correct++;d.topics[a.topic]=d.topics[a.topic]||{attempted:0,correct:0};d.topics[a.topic].attempted++;if(a.correct)d.topics[a.topic].correct++;savePerformance(d);}
+let progressWriteChain=Promise.resolve();
+function queueProgressWrite(task){const run=progressWriteChain.catch(()=>{}).then(task);progressWriteChain=run.catch(()=>{});return run;}
+function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return Promise.resolve();const a=localAttemptData(q,isRight);applyLocalAttempt(a);renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/attempt",{method:"POST",body:JSON.stringify(a)}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
+function recordQuestionBatch(attempts,sessionCompleted=true){if(!isLocallyAuthenticated()||!attempts.length)return Promise.resolve();attempts.forEach(applyLocalAttempt);if(sessionCompleted){const d=performanceData();d.sessions++;savePerformance(d);}renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/batch",{method:"POST",body:JSON.stringify({attempts,sessionCompleted:!!sessionCompleted})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
+function recordCompletedSession(){if(!isLocallyAuthenticated())return Promise.resolve();const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/session",{method:"POST",body:"{}"}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
 function renderDashboard(){const box=$("learnerDashboard");if(!box)return;const logged=isLocallyAuthenticated(),p=profileData();box.classList.toggle("hide",!logged);if(!logged||!p)return;const d=performanceData(),path=getPathProgress(),L=APP_LEVELS[Math.max(0,path.highestUnlocked-1)]||APP_LEVELS[0];$("dashGreeting").textContent=p.username+"'s learning dashboard";$("dashLevel").textContent="Current level: "+L.name;$("dashAttempted").textContent=d.attempted;$("dashCorrect").textContent=d.correct;$("dashAccuracy").textContent=d.attempted?Math.round(d.correct/d.attempted*100)+"%":"—";$("dashSessions").textContent=d.sessions;const rows=Object.entries(d.topics).filter(([,v])=>v&&v.attempted).sort((a,b)=>b[1].attempted-a[1].attempted||a[0].localeCompare(b[0])).slice(0,12);$("dashTopics").innerHTML=rows.length?('<h3>Performance by topic</h3>'+rows.map(([t,v])=>{const pc=Math.round(v.correct/v.attempted*100);return '<div class="perf-row"><strong>'+esc(t)+'</strong><div class="perf-track"><div class="perf-fill" style="width:'+pc+'%"></div></div><span>'+pc+'% <small>('+v.attempted+')</small></span></div>';}).join('')):'<div class="dashboard-empty">No completed questions yet. Start Practice or Take a Test to build your dashboard.</div>';}
 
-function bytesToB32(bytes){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out="";for(const b of bytes){val=(val<<8)|b;bits+=8;while(bits>=5){out+=a[(val>>>(bits-5))&31];bits-=5;}}if(bits>0)out+=a[(val<<(5-bits))&31];return out;}
-function b32ToBytes(s){const a="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";let bits=0,val=0,out=[];s=String(s||"").replace(/=+$/,'').toUpperCase();for(const ch of s){const i=a.indexOf(ch);if(i<0)continue;val=(val<<5)|i;bits+=5;if(bits>=8){out.push((val>>>(bits-8))&255);bits-=8;}}return new Uint8Array(out);}
-function newMfaSecret(){const b=new Uint8Array(20);crypto.getRandomValues(b);return bytesToB32(b);}
-async function shaText(text,salt){const enc=new TextEncoder();const key=await crypto.subtle.importKey("raw",enc.encode(String(text)),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(String(salt)),iterations:120000,hash:"SHA-256"},key,256);return Array.from(new Uint8Array(bits),x=>x.toString(16).padStart(2,"0")).join("");}
-async function totpFor(secret,stepOffset=0){const key=await crypto.subtle.importKey("raw",b32ToBytes(secret),{name:"HMAC",hash:"SHA-1"},false,["sign"]);const counter=Math.floor(Date.now()/30000)+stepOffset;const msg=new Uint8Array(8);let n=counter;for(let i=7;i>=0;i--){msg[i]=n&255;n=Math.floor(n/256);}const sig=new Uint8Array(await crypto.subtle.sign("HMAC",key,msg));const off=sig[sig.length-1]&15;const bin=((sig[off]&127)<<24)|(sig[off+1]<<16)|(sig[off+2]<<8)|sig[off+3];return String(bin%1000000).padStart(6,"0");}
-async function verifyTotp(secret,code){if(!/^\d{6}$/.test(String(code||"")))return false;for(const o of [-1,0,1])if(await totpFor(secret,o)===String(code))return true;return false;}
 function authMessage(id,text,ok=false){const e=$(id);if(!e)return;e.className=ok?"auth-ok":"auth-error";e.textContent=text;}
-function openPracticeEntry(){
-  if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
-  renderLearningPath();go("practicePath");
-}
-
-function passwordChecks(pw){return {len:pw.length>=10,upper:/[A-Z]/.test(pw),lower:/[a-z]/.test(pw),digit:/\d/.test(pw),symbol:/[^A-Za-z0-9\s]/.test(pw),space:!/\s/.test(pw)};}
-function passwordValid(pw){const x=passwordChecks(pw);return Object.values(x).every(Boolean);}
-let captchaExpected=null,captchaVerified=false;
-function makeCaptcha(){const a=rand(2,9),b=rand(1,9);captchaExpected=a+b;captchaVerified=false;if($("captchaQuestion"))$("captchaQuestion").textContent=a+" + "+b+" = ?";if($("captchaAnswer"))$("captchaAnswer").value="";}
+const COMMON_PASSWORDS_CLIENT=new Set(["password123!","password1234","password12345","password123456","passwordpassword","password!@#$","qwerty123456","qwertyuiop12","qwertyuiop123","letmein123456","welcome123456","admin12345678","administrator1","iloveyou12345","123456789012","1234567890ab","111111111111","000000000000","abcdefghijkl","abcdefgh1234","abc123abc123","monkey123456","dragon123456","football1234","baseball1234","sunshine1234","princess1234","computer1234","whatever1234","starwars1234","superman1234","pokemon123456","minecraft1234","chocolate1234","1q2w3e4r5t6y","qazwsxedc123","zaq12wsx34edc","purple comet 47 river!","grade3math123","mathematics123"]);
+const CONTEXT_PASSWORD_TERMS_CLIENT=["grade3math","mijicuet","math-auth"];
+function passwordChecks(pw,user=""){pw=String(pw||"").normalize("NFC");const n=Array.from(pw).length,low=pw.toLocaleLowerCase("en-US"),u=String(user||"").toLocaleLowerCase("en-US");return {len:n>=12,max:n<=128,control:!/[\u0000-\u001F\u007F]/u.test(pw),username:!u||!low.includes(u),common:!COMMON_PASSWORDS_CLIENT.has(low),context:!CONTEXT_PASSWORD_TERMS_CLIENT.some(x=>low.includes(x))};}
+function passwordValid(pw,user=""){const x=passwordChecks(pw,user);return Object.values(x).every(Boolean);}
+let captchaExpected=null,captchaVerified=false,captchaChallenge="";
+async function makeCaptcha(){captchaExpected=null;captchaVerified=false;captchaChallenge="";if($("captchaAnswer"))$("captchaAnswer").value="";if($("captchaQuestion"))$("captchaQuestion").textContent="Loading…";try{const d=await apiCall("/api/captcha",{method:"POST",body:"{}"});captchaChallenge=d.challenge;const m=String(d.question||"").match(/(\d+)\s*\+\s*(\d+)/);if(!m)throw new Error("Invalid human-check response.");captchaExpected=Number(m[1])+Number(m[2]);$("captchaQuestion").textContent=d.question;}catch(e){if($("captchaQuestion"))$("captchaQuestion").textContent="Unavailable";setStatus("captchaMsg",e.message,"bad");}}
 function revealStage(id,on=true){const e=$(id);if(e)e.classList.toggle("hide",!on);}
 function setStatus(id,text,state="neutral"){const e=$(id);if(!e)return;e.className="field-status "+state;e.textContent=text;}
-function otpauthUri(user,secret){return "otpauth://totp/G3:"+encodeURIComponent(user)+"?secret="+secret+"&issuer=G3Math";}
 /* Local QR encoder: QR version 5-L, byte mode. No network request and no external QR service. */
 function qrSvg(text){
   const N=37,DATA=108,ECC=26,bytes=Array.from(new TextEncoder().encode(text));
@@ -2203,21 +2205,20 @@ function qrSvg(text){
   return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+sz+' '+sz+'" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="white"/><g fill="black">'+rects+'</g></svg>';
 }
 function registerHandlers(){
-  makeCaptcha();
   const agree=$("privacyAgree"),capBtn=$("captchaBtn"),capAns=$("captchaAnswer"),u=$("regUser"),pw=$("regPass"),qa=$("secAnswer"),finish=$("finishRegBtn");
   const updateConsent=()=>{if(!agree)return;const ready=agree.checked&&captchaVerified;revealStage("usernameStage",ready);if(ready){setStatus("captchaMsg","✓ Acknowledgement accepted and human check passed.","good");u.focus();}};
-  if(agree)agree.onchange=updateConsent;
-  if(capBtn)capBtn.onclick=()=>{if(!agree.checked){captchaVerified=false;setStatus("captchaMsg","Please click I agree before completing the human check.","bad");return;}captchaVerified=Number(capAns.value)===captchaExpected;if(captchaVerified){setStatus("captchaMsg","✓ Human check passed.","good");updateConsent();}else{setStatus("captchaMsg","That answer is not correct. A new question has been created.","bad");makeCaptcha();}};
+  if(agree)agree.onchange=()=>{if(!agree.checked){captchaVerified=false;capAns.disabled=false;capBtn.disabled=false;revealStage("usernameStage",false);}updateConsent();};
+  if(capBtn)capBtn.onclick=async()=>{if(!agree.checked){captchaVerified=false;setStatus("captchaMsg","Please click I agree before completing the human check.","bad");return;}if(captchaExpected===null||!captchaChallenge){setStatus("captchaMsg","Human check is not ready. Loading a new question…","bad");await makeCaptcha();return;}captchaVerified=Number(capAns.value)===captchaExpected;if(captchaVerified){capAns.disabled=true;capBtn.disabled=true;setStatus("captchaMsg","✓ Acknowledgement accepted and human check passed.","good");updateConsent();}else{setStatus("captchaMsg","That answer is not correct. A new question has been created.","bad");await makeCaptcha();}};
   const updateUser=()=>{const val=u.value.trim(),ok=validLocalUsername(val);if(!val)setStatus("userStatus","Use: capital letter + lowercase letter + two numbers + two letters. Example format: Ab12cd.","neutral");else if(ok)setStatus("userStatus","✓ Username format is correct. Password setup is now open.","good");else setStatus("userStatus","Not yet. Position 1 uppercase, position 2 lowercase, positions 3–4 numbers, positions 5–6 letters.","bad");revealStage("passwordStage",ok);if(!ok){revealStage("securityStage",false);revealStage("mfaStage",false);finish.disabled=true;}};if(u)u.oninput=updateUser;
-  const updatePass=()=>{const checks=passwordChecks(pw.value);Object.entries(checks).forEach(([k,v])=>{const e=$("passwordRules").querySelector('[data-rule="'+k+'"]');if(e){e.classList.toggle("ok",v);e.textContent=(v?'✓ ':'○ ')+e.textContent.replace(/^[✓○]\s*/,"");}});const ok=passwordValid(pw.value);setStatus("passStatus",ok?"✓ Password meets every rule. Security-question setup is now open.":"Meet every password rule to continue.",ok?"good":"neutral");revealStage("securityStage",ok);if(!ok){revealStage("mfaStage",false);finish.disabled=true;}};if(pw)pw.oninput=updatePass;
-  const updateSec=()=>{const ok=qa.value.trim().length>=4;setStatus("secStatus",ok?"✓ Made-up security answer accepted. Authenticator setup is now open.":"Use at least 4 made-up characters. Do not use a real-life fact.",ok?"good":"neutral");revealStage("mfaStage",ok);if(!ok)finish.disabled=true;};if(qa)qa.oninput=updateSec;
-  const gen=$("genMfaBtn");if(gen)gen.onclick=async()=>{if(!validLocalUsername(u.value.trim())||!passwordValid(pw.value)||qa.value.trim().length<4)return authMessage("regMsg","Complete the earlier registration steps first.");try{gen.disabled=true;authMessage("regMsg","Preparing secure authenticator setup…",true);const d=await apiCall("/api/register/start",{method:"POST",body:JSON.stringify({username:u.value.trim(),password:pw.value,securityQuestion:$("secQuestion").value,securityAnswer:qa.value.trim()})});pendingRegistrationChallenge=d.challenge;pendingMfaSecret=d.totpSecret;$("mfaQr").innerHTML=qrSvg(d.otpauthUri);$("mfaKey").textContent=d.totpSecret;$("mfaSetup").classList.remove("hide");$("mfaCode").focus();finish.disabled=false;authMessage("regMsg","Scan the QR code, then enter the current 6-digit authenticator code.",true);}catch(e){authMessage("regMsg",e.message);}finally{gen.disabled=false;}};
-  if(finish)finish.onclick=async()=>{const code=$("mfaCode").value.trim();if(!agree.checked||!captchaVerified)return authMessage("regMsg","Complete the privacy acknowledgement and human check first.");if(!pendingRegistrationChallenge)return authMessage("regMsg","Generate the authenticator QR code first.");try{finish.disabled=true;await apiCall("/api/register/finish",{method:"POST",body:JSON.stringify({challenge:pendingRegistrationChallenge,code})});pendingMfaSecret="";pendingRegistrationChallenge="";authMessage("regMsg","Account created in the private account store. Please log in with your username, password, and authenticator code.",true);setTimeout(()=>prepareLogin(pendingEntryKind),500);}catch(e){authMessage("regMsg",e.message);finish.disabled=false;}};
+  const updatePass=()=>{const checks=passwordChecks(pw.value,u.value.trim());Object.entries(checks).forEach(([k,v])=>{const e=$("passwordRules").querySelector('[data-rule="'+k+'"]');if(e){e.classList.toggle("ok",v);e.textContent=(v?'✓ ':'○ ')+e.textContent.replace(/^[✓○]\s*/,"");}});const ok=passwordValid(pw.value,u.value.trim());setStatus("passStatus",ok?"✓ Password meets every rule. Security-question setup is now open.":"Meet every password rule to continue.",ok?"good":"neutral");revealStage("securityStage",ok);if(!ok){revealStage("mfaStage",false);finish.disabled=true;}};if(pw)pw.oninput=updatePass;
+  const updateSec=()=>{const ok=Array.from(qa.value.trim()).length>=6;setStatus("secStatus",ok?"✓ Made-up security answer accepted. Authenticator setup is now open.":"Use at least 6 made-up characters. Do not use a real-life fact.",ok?"good":"neutral");revealStage("mfaStage",ok);if(!ok)finish.disabled=true;};if(qa)qa.oninput=updateSec;
+  const gen=$("genMfaBtn");if(gen)gen.onclick=async()=>{if(!agree.checked||!captchaVerified||!captchaChallenge||!validLocalUsername(u.value.trim())||!passwordValid(pw.value,u.value.trim())||Array.from(qa.value.trim()).length<6)return authMessage("regMsg","Complete the earlier registration steps first.");try{gen.disabled=true;authMessage("regMsg","Preparing secure authenticator setup…",true);const d=await apiCall("/api/register/start",{method:"POST",body:JSON.stringify({privacyAccepted:true,captchaChallenge,captchaAnswer:Number(capAns.value),username:u.value.trim(),password:pw.value,securityQuestion:$("secQuestion").value,securityAnswer:qa.value.trim()})});pendingRegistrationChallenge=d.challenge;$("mfaQr").innerHTML=qrSvg(d.otpauthUri);$("mfaKey").textContent=d.totpSecret;pw.value="";qa.value="";$("mfaSetup").classList.remove("hide");$("mfaCode").focus();finish.disabled=false;authMessage("regMsg","Scan the QR code, then enter the current 6-digit authenticator code.",true);}catch(e){authMessage("regMsg",e.message);}finally{gen.disabled=false;}};
+  if(finish)finish.onclick=async()=>{const code=$("mfaCode").value.trim();if(!agree.checked||!captchaVerified)return authMessage("regMsg","Complete the privacy acknowledgement and human check first.");if(!pendingRegistrationChallenge)return authMessage("regMsg","Generate the authenticator QR code first.");try{finish.disabled=true;await apiCall("/api/register/finish",{method:"POST",body:JSON.stringify({challenge:pendingRegistrationChallenge,code})});pendingRegistrationChallenge="";$("mfaKey").textContent="";$("mfaQr").innerHTML="";$("mfaCode").value="";$("mfaSetup").classList.add("hide");authMessage("regMsg","Account created in the private account store. Please log in with your username, password, and authenticator code.",true);setTimeout(()=>prepareLogin(pendingEntryKind),500);}catch(e){authMessage("regMsg",e.message);finish.disabled=false;}};
   const have=$("haveProfileBtn");if(have)have.onclick=()=>prepareLogin(pendingEntryKind==="test"?"test":"practice");
   const newer=$("newProfileBtn");if(newer)newer.onclick=()=>{setLocalAuth(false);go("registerView");};
-  const verify=$("verifyCredentialsBtn");if(verify)verify.onclick=async()=>{const user=$("loginUser").value.trim(),pass=$("loginPass").value;if(!validLocalUsername(user))return authMessage("loginMsg","Enter your six-character username.");if(!pass)return authMessage("loginMsg","Enter your password.");try{verify.disabled=true;const d=await apiCall("/api/login/password",{method:"POST",body:JSON.stringify({username:user,password:pass})});pendingLoginChallenge=d.challenge;credentialsVerified=true;$("credentialStage").classList.add("locked");$("loginMfaStage").classList.remove("hide");authMessage("loginMsg","Username and password verified. Complete authenticator verification.",true);$("loginMfa").focus();}catch(e){credentialsVerified=false;pendingLoginChallenge="";authMessage("loginMsg",e.message);}finally{verify.disabled=false;}};
+  const verify=$("verifyCredentialsBtn");if(verify)verify.onclick=async()=>{const user=$("loginUser").value.trim(),pass=$("loginPass").value;if(!validLocalUsername(user))return authMessage("loginMsg","Enter your six-character username.");if(!pass)return authMessage("loginMsg","Enter your password.");try{verify.disabled=true;const d=await apiCall("/api/login/password",{method:"POST",body:JSON.stringify({username:user,password:pass})});pendingLoginChallenge=d.challenge;credentialsVerified=true;$("loginPass").value="";$("credentialStage").classList.add("locked");$("loginMfaStage").classList.remove("hide");authMessage("loginMsg","Username and password verified. Complete authenticator verification.",true);$("loginMfa").focus();}catch(e){credentialsVerified=false;pendingLoginChallenge="";authMessage("loginMsg",e.message);}finally{verify.disabled=false;}};
   const back=$("loginBackBtn");if(back)back.onclick=()=>{credentialsVerified=false;pendingLoginChallenge="";$("credentialStage").classList.remove("locked");$("loginMfaStage").classList.add("hide");$("loginMfa").value="";$("loginPass").focus();};
-  const login=$("loginBtn");if(login)login.onclick=async()=>{if(!credentialsVerified||!pendingLoginChallenge)return authMessage("loginMsg","Verify username and password first.");const code=$("loginMfa").value.trim();try{login.disabled=true;const d=await apiCall("/api/login/mfa",{method:"POST",body:JSON.stringify({challenge:pendingLoginChallenge,code})});sessionStorage.setItem(AUTH_TOKEN,d.token);cacheProfile(d.user);credentialsVerified=false;pendingLoginChallenge="";updateAccountControls();authMessage("loginMsg","Login complete.",true);setTimeout(finishLoginDestination,180);}catch(e){authMessage("loginMsg",e.message);}finally{login.disabled=false;}};
+  const login=$("loginBtn");if(login)login.onclick=async()=>{if(!credentialsVerified||!pendingLoginChallenge)return authMessage("loginMsg","Verify username and password first.");const code=$("loginMfa").value.trim();try{login.disabled=true;const d=await apiCall("/api/login/mfa",{method:"POST",body:JSON.stringify({challenge:pendingLoginChallenge,code})});sessionStorage.setItem(AUTH_TOKEN,d.token);cacheProfile(d.user);sessionValidated=true;credentialsVerified=false;pendingLoginChallenge="";$("loginMfa").value="";updateAccountControls();authMessage("loginMsg","Login complete.",true);setTimeout(finishLoginDestination,180);}catch(e){authMessage("loginMsg",e.message);}finally{login.disabled=false;}};
   const headerHome=$("headerHomeBtn");if(headerHome)headerHome.onclick=()=>go("home");
   const headerLogin=$("headerLoginBtn");if(headerLogin)headerLogin.onclick=()=>prepareLogin("home");
   const headerCreate=$("headerCreateBtn");if(headerCreate)headerCreate.onclick=()=>{setLocalAuth(false);pendingEntryKind="home";go("registerView");};
@@ -2226,9 +2227,7 @@ function registerHandlers(){
 registerHandlers();
 if($("backendSetupNotice"))$("backendSetupNotice").classList.toggle("hide",backendConfigured());
 updateAccountControls();
-refreshRemoteSession();
 
-const PATH_STORE="grade3MathProgress.v1";
 const TOPIC_META={
   "Money":["money","Count coins, find totals and make change."],"Measurement":["ruler","Choose and use measurement units."],"Measurement · Length":["ruler","Measure and compare lengths."],"Measurement · Units":["ruler","Convert and reason about measurement units."],"Even and odd":["numbers","Recognize even and odd numbers."],"Comparing":["compare","Compare numbers using place value."],"Place value":["numbers","Understand hundreds, tens and ones."],"Addition":["numbers","Build fluency with addition."],"Subtraction":["numbers","Build fluency with subtraction."],"Multiplication":["factor","Practice equal groups and multiplication facts."],"Division":["factor","Practice sharing and division facts."],"Fractions":["fractions","Understand fractions as equal parts."],"Geometry":["geometry","Explore shapes and visual reasoning."],"Perimeter":["perimeter","Calculate distance around shapes."],"Area":["area","Measure space inside shapes."],"Number patterns":["pattern","Find rules and continue patterns."],"Multiples":["pattern","Recognize multiples and skip-counting patterns."],"Telling time":["clock","Read clocks and tell time."],"Elapsed time":["clock","Reason about how much time passes."],"Picture graph":["graph","Read and interpret picture graphs."],"Bar graph":["graph","Read and compare bar-graph data."],"Data · Line plot":["graph","Read and reason from line plots."]
 };
@@ -2236,7 +2235,7 @@ function topicMeta(domain){const m=TOPIC_META[domain];if(m)return {icon:m[0],des
 function engineTopicsForLevel(L){const seen=new Map();const gens=allLevelGenerators(L);for(const g of gens){for(let tries=0;tries<4;tries++){let q=null;try{q=g.f(L);}catch(e){}if(q&&q.domain){if(!seen.has(q.domain)){const m=topicMeta(q.domain),display={"Even and odd":"Odd & Even Numbers","Comparing":"Number Comparison","Measurement":"Measurement & Estimation"}[q.domain]||q.domain;seen.set(q.domain,{k:q.domain,name:display,domains:[q.domain],desc:m.desc,icon:m.icon});}break;}}}return [...seen.values()].sort((a,b)=>a.name.localeCompare(b.name));}
 function getPathProgress(){const p=profileData(),v=p&&p.progress?p.progress:{};return {highestUnlocked:Math.max(1,Math.min(5,+v.highestUnlocked||1))};}
 function savePathProgress(v){const p=profileData();if(!p)return;p.progress={...(p.progress||{}),highestUnlocked:v.highestUnlocked};cacheProfile(p);}
-function unlockThrough(n){const p=getPathProgress();if(n>p.highestUnlocked){p.highestUnlocked=Math.min(5,n);savePathProgress(p);apiCall("/api/progress/unlock",{method:"POST",body:JSON.stringify({completedLevel:n-1,scorePct:100})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>{});}renderDashboard();return p;}
+async function unlockThrough(n,questionCount,correctCount){const target=Math.max(1,Math.min(5,n)),p=getPathProgress();if(target<=p.highestUnlocked)return p;const x=await queueProgressWrite(()=>apiCall("/api/progress/unlock",{method:"POST",body:JSON.stringify({completedLevel:target-1,scorePct:100,questionCount,correctCount})}));applyRemoteProgress(x.progress);return getPathProgress();}
 function topicIcon(kind){
   const common='viewBox="0 0 64 64" aria-hidden="true"';
   if(kind==="geometry") return '<svg '+common+'><path d="M8 49 25 15l18 34Z" fill="#60a5fa" opacity=".28"/><circle cx="43" cy="22" r="11" fill="#a78bfa" opacity=".45"/><rect x="31" y="34" width="20" height="20" rx="3" fill="#22c55e" opacity=".35"/><path d="M8 49 25 15l18 34Z" fill="none" stroke="#2563eb" stroke-width="3"/></svg>';
@@ -2252,11 +2251,13 @@ function topicIcon(kind){
   return '<svg '+common+'><g fill="#f472b6"><circle cx="17" cy="20" r="6"/><circle cx="32" cy="20" r="6"/><circle cx="47" cy="20" r="6"/></g><g fill="#60a5fa"><circle cx="17" cy="39" r="6"/><circle cx="32" cy="39" r="6"/><circle cx="47" cy="39" r="6"/></g><path d="M13 53h38" stroke="#7c3aed" stroke-width="3" stroke-linecap="round"/></svg>';
 }
 function renderLearningPath(){
+  if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
   const p=getPathProgress();
   $("levelRoad").innerHTML=APP_LEVELS.map(l=>{const open=l.n<=p.highestUnlocked;return '<button type="button" class="level-card'+(open?'':' locked')+'" data-level="'+l.n+'" '+(open?'':'disabled aria-disabled="true"')+'><span class="level-num">Level '+l.n+'</span><span class="level-name">'+esc(l.name)+'</span><span class="level-stars">'+esc(l.stars)+'</span><small>'+esc(l.desc)+'</small><span class="level-state">'+(open?'✓ Unlocked':'🔒 Locked')+'</span></button>';}).join('');
   $("levelRoad").onclick=e=>{const b=e.target.closest('.level-card');if(!b||b.disabled)return;openLevel(+b.dataset.level);};
 }
 function openLevel(n){
+  if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
   const p=getPathProgress();if(n>p.highestUnlocked)return;pathLevel=n;level=n;const topics=engineTopicsForLevel(n);
   $("topicKicker").textContent='Level '+n+' · '+APP_LEVELS[n-1].stars;$("topicTitle").textContent=APP_LEVELS[n-1].name+' practice';$("topicLead").textContent=topics.length+' topics are available at this level, discovered directly from the question-generator engine. Choose any topic to practise.';
   $("topicGrid").innerHTML=topics.map(t=>'<button type="button" class="topic-card" data-topic="'+esc(t.k)+'"><span class="topic-icon">'+topicIcon(t.icon)+'</span><b>'+esc(t.name)+'</b><small>'+esc(t.desc)+'</small></button>').join('');
@@ -2282,11 +2283,12 @@ function buildTopicSession(n,L,topic){
   return shuffle(out).slice(0,n);
 }
 function launchQuestions(qs,kind){
-  sessionKind=kind;QS=qs;resetArrays(QS.length);cur=0;nRight=0;nDone=0;show('runner');$("rWho").textContent=name;startClock();buildPalette();render();window.scrollTo(0,0);
+  if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
+  finishing=false;sessionKind=kind;QS=qs;resetArrays(QS.length);cur=0;nRight=0;nDone=0;show('runner');$("rWho").textContent=name;startClock();buildPalette();render();window.scrollTo(0,0);
 }
-function startTopicPractice(k){const t=engineTopicsForLevel(pathLevel).find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name='Learner';launchQuestions(buildTopicSession(12,level,t),'topic');}
+function startTopicPractice(k){const t=engineTopicsForLevel(pathLevel).find(x=>x.k===k);if(!t)return;mode='practice';sessionKind='topic';activeTopic=t;assessmentLevel=null;subject='all';level=pathLevel;name=(profileData()&&profileData().username)||'Learner';launchQuestions(buildTopicSession(12,level,t),'topic');}
 function startLevelAssessment(n){
-  mode='test';sessionKind='assessment';assessmentLevel=n;activeTopic=null;subject='all';level=n;name='Learner';limitMin=20;launchQuestions(buildSession(10,n,'all'),'assessment');
+  mode='test';sessionKind='assessment';assessmentLevel=n;activeTopic=null;subject='all';level=n;name=(profileData()&&profileData().username)||'Learner';limitMin=20;launchQuestions(buildSession(10,n,'all'),'assessment');
 }
 
 /* ---- timers ---- */
@@ -2312,7 +2314,8 @@ function resetArrays(n){
   tries=new Array(n).fill(0);  hintsShown=new Array(n).fill(0);
 }
 $("startBtn").onclick=()=>{
-  name=cleanName($("who").value);
+  if(!isLocallyAuthenticated()){prepareLogin(mode==="test"?"test":"practice");return;}
+  finishing=false;name=(profileData()&&profileData().username)||"Learner";if($("setupUserLine"))$("setupUserLine").textContent="Session username: "+name;
   const L = (subject==="supreme") ? Math.max(level,4) : level;
   level=L;
   if(mode==="test"){
@@ -2563,13 +2566,14 @@ function finishConfirm(){
 
 /* ---- results ---- */
 function finish(auto){
+  if(finishing)return;finishing=true;
   clearInterval(tick); clearTimeout(advanceTimer);
   const used = mode==="test" ? (limitMin*60-remaining) : elapsed;
   let score,total;
   if(mode==="test"){ total=QS.length; score=QS.reduce((s,q,i)=>s+(correct(q,ANS[i])?1:0),0); }
   else { total=nDone; score=nRight; }
-  if(mode==="test"){QS.forEach((q,i)=>{if(answered[i])recordQuestionPerformance(q,correct(q,ANS[i]));});}
-  recordCompletedSession();
+  if(mode==="test"){const attempts=[];QS.forEach((q,i)=>{if(answered[i])attempts.push(localAttemptData(q,correct(q,ANS[i])));});recordQuestionBatch(attempts,true);}
+  else recordCompletedSession();
   const pct = total? Math.round(score/total*100) : 0;
   const grade = pct>=90?"Excellent! ⭐⭐⭐":pct>=75?"Great work! ⭐⭐":pct>=60?"Good effort! ⭐":"Keep practising 💪";
 
@@ -2596,7 +2600,7 @@ function finish(auto){
     h+='<p class="help">Hints used: '+hintsUsed+'</p>';
   if(sessionKind==="assessment"){
     if(pct===100){
-      if(level<5){unlockThrough(level+1);h+='<div class="unlock-banner">🎉 Perfect score! You unlocked <strong>'+esc(APP_LEVELS[level].name)+'</strong>.<div style="margin-top:.75rem"><button class="btn sm" type="button" id="resultNextLevel">Take me to Next Level: '+esc(APP_LEVELS[level].name)+' →</button></div></div>';}
+      if(level<5){const already=getPathProgress().highestUnlocked>level;h+=already?'<div class="unlock-banner">✓ '+esc(APP_LEVELS[level].name)+' is already unlocked.<div style="margin-top:.75rem"><button class="btn sm" type="button" id="resultNextLevel">Take me to Next Level: '+esc(APP_LEVELS[level].name)+' →</button></div></div>':'<div class="unlock-banner" id="unlockResultStatus">Perfect score! Verifying the next-level unlock with the account server…</div>';}
       else h+='<div class="unlock-banner">🏆 Perfect score! You completed the Supreme assessment.</div>';
     } else h+='<p class="badge no">You need 100% to unlock the next level. Review the answers, practise, and try again.</p>';
   } else if(pct>=90&&level<5) h+='<p class="badge ok">Strong work — keep practising toward the level assessment. 🚀</p>';
@@ -2631,9 +2635,8 @@ function finish(auto){
 
   $("resultCard").innerHTML=h;
   $("revBtn").onclick=()=>$("rev").classList.toggle("hide");
-  {const nb=$("resultNextLevel");if(nb)nb.onclick=()=>{renderLearningPath();openLevel(level+1);};}
+  {const bindNext=()=>{const nb=$("resultNextLevel");if(nb)nb.onclick=()=>{renderLearningPath();openLevel(level+1);};};bindNext();if(sessionKind==="assessment"&&pct===100&&level<5&&getPathProgress().highestUnlocked<=level){const completed=level,nextName=APP_LEVELS[level].name;unlockThrough(level+1,total,score).then(()=>{const box=$("unlockResultStatus");if(box){box.innerHTML='🎉 Perfect score verified! You unlocked <strong>'+esc(nextName)+'</strong>.<div style="margin-top:.75rem"><button class="btn sm" type="button" id="resultNextLevel">Take me to Next Level: '+esc(nextName)+' →</button></div>';bindNext();}renderLearningPath();}).catch(e=>{const box=$("unlockResultStatus");if(box){box.className="hintbox";box.textContent="Your score is correct, but the server could not save the unlock: "+e.message;}});}}
   {const pb=$("printBtn");if(pb)pb.onclick=()=>window.print();}
-  const printBtn=$("printBtn"); if(printBtn) printBtn.onclick=()=>window.print();
   show("results");
   window.scrollTo(0,0);
 }
@@ -2644,6 +2647,8 @@ function finish(auto){
 const VIEWS = ["home","registerView","loginView","practicePath","topicHub","setup","runner","results"];
 
 function show(view){
+  if(view!=="registerView")clearRegistrationSecrets();
+  if(view!=="loginView")clearLoginChallenge();
   VIEWS.forEach(v=>{ const el=$(v); if(el) el.classList.toggle("hide", v!==view); });
   window.scrollTo(0,0);
 }
@@ -2654,6 +2659,8 @@ function route(){
   const v=(location.hash||"#home").slice(1);
   if(VIEWS.indexOf(v)===-1) return show("home");
   if(v==="runner"||v==="results") return;       // driven by the app, not the URL
+  if(v==="registerView"){show("registerView");makeCaptcha();return;}
+  if(v==="setup"&&!isLocallyAuthenticated()){prepareLogin("test");return;}
   if(v==="practicePath"){
     if(!isLocallyAuthenticated()){prepareLogin("practice");return;}
     renderLearningPath(); show("practicePath"); return;
@@ -2667,9 +2674,9 @@ function route(){
 }
 
 /* ---------- start a session ---------- */
-function requestSession(kind){
+async function requestSession(kind){
   mode = kind; sessionKind="standard"; activeTopic=null; assessmentLevel=null;
-  setLocalAuth(false);
+  await revokeLocalSession();
   prepareLogin(kind);
 }
 ["goPractice","goPractice2"].forEach(id=>{ const b=$(id); if(b) b.onclick=()=>requestSession("practice"); });
@@ -2733,7 +2740,7 @@ function paintQuote(){
 
 /* ---------- boot ---------- */
 paintQuote();
-route();
+refreshRemoteSession().finally(route);
 </script>
 </body>
 </html>

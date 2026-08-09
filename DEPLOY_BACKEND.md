@@ -1,91 +1,219 @@
-# Finish deployment: Grade 3 Math accounts
+# Deploy `math-auth` for Grade 3 Mathematics
 
-The code is complete, but two external resources still have to be configured by the repository/account owner: a Cloudflare Worker deployment and a GitHub credential that can write only to `mijiCUET/users-private`.
+This release uses:
 
-## A. Put the backend source in GitHub
+```text
+mijicuet.github.io                 public GitHub Pages frontend
+        |
+        v
+Cloudflare Worker: math-auth      authentication + progress API
+        |
+        v
+mijiCUET/users-private            private pseudonymous account records
+```
 
-Recommended: create a separate repository named `grade3-auth-backend` and copy the contents of the supplied `grade3-auth-backend/` directory into it.
+## 1. Add the backend source to GitHub
 
-Do **not** put learner JSON records in that source repository. Learner records are written automatically to:
+Because Cloudflare is already connected to `mijiCUET/mijicuet.github.io`, the simplest layout is:
+
+```text
+mijicuet.github.io/
+├── index.html
+├── README.md
+├── SECURITY.md
+├── configure_frontend.py
+└── math-auth-backend/
+    ├── package.json
+    ├── wrangler.jsonc
+    ├── src/index.ts
+    └── ...
+```
+
+Copy the supplied `math-auth-backend/` directory into the website repository and commit it.
+
+Do **not** put learner JSON records there. The Worker writes them only to:
 
 ```text
 mijiCUET/users-private/users/<username>.json
 ```
 
-## B. Give the Worker private-repo access
+## 2. Ensure the private data repo is ready
 
-Quick path: create a GitHub fine-grained token restricted to only `mijiCUET/users-private` with **Contents: Read and write**.
+`mijiCUET/users-private` must be private and have a `main` branch. If it is empty, create/commit a README first.
 
-Do not paste that token into `index.html`, a GitHub commit, or this chat.
+## 3. Create the least-privilege GitHub credential
 
-The backend also supports a GitHub App if you prefer that after initial deployment.
+### Preferred: GitHub App
 
-## C. Deploy the Worker
+Create/install a GitHub App only on `mijiCUET/users-private` with repository **Contents: Read and write**. Keep:
 
-From the backend directory:
+- App ID
+- Installation ID
+- downloaded private key
 
-```bash
-npm install
-npx wrangler login
+The Worker further requests installation tokens for only `users-private` and only Contents write.
 
-npx wrangler secret put SESSION_SECRET
-npx wrangler secret put DATA_ENCRYPTION_KEY
-npx wrangler secret put GITHUB_TOKEN
+### Simpler fallback: fine-grained PAT
 
-npm run deploy
-```
-
-Use two different long random values for `SESSION_SECRET` and `DATA_ENCRYPTION_KEY`.
-
-Wrangler will return a URL similar to:
+Create a fine-grained token with:
 
 ```text
-https://grade3-math-auth.<your-workers-subdomain>.workers.dev
+Resource owner: mijiCUET
+Repository access: only users-private
+Repository permission: Contents — Read and write
 ```
 
-Check it:
+Never paste the token/private key into `index.html`, Git commits, screenshots, or chat.
+
+## 4. Create the Worker from the connected GitHub repository
+
+In Cloudflare:
+
+**Workers & Pages → Create → Import a repository → `mijiCUET/mijicuet.github.io`**
+
+Use:
+
+```text
+Worker name:       math-auth
+Production branch: the branch you actually deploy from
+Root directory:   math-auth-backend
+Deploy command:   npx wrangler deploy
+```
+
+`wrangler.jsonc` already names the Worker `math-auth`.
+
+The rate-limit namespace IDs `1001`, `1002`, `1003` must be positive integer strings unique to the intended rate-limit state in your Cloudflare account. If you already use those IDs elsewhere and do not want counters shared, choose unused positive integers.
+
+## 5. Add Worker secrets
+
+Generate three unrelated random values. **All three values must be different**; the Worker rejects a configuration that reuses one cryptographic secret for multiple purposes:
 
 ```bash
-curl https://grade3-math-auth.<your-workers-subdomain>.workers.dev/health
+python - <<'PY'
+import secrets
+for _ in range(3):
+    print(secrets.token_urlsafe(48))
+PY
+```
+
+In Cloudflare **math-auth → Settings → Variables and Secrets**, add as **Secret**:
+
+```text
+SESSION_SECRET
+DATA_ENCRYPTION_KEY
+PASSWORD_PEPPER
+```
+
+Then add exactly one GitHub credential method.
+
+Fine-grained token:
+
+```text
+GITHUB_TOKEN
+```
+
+or GitHub App:
+
+```text
+GITHUB_APP_ID
+GITHUB_INSTALLATION_ID
+GITHUB_PRIVATE_KEY
+```
+
+Do not configure both methods simultaneously; the Worker deliberately refuses ambiguous credential configuration.
+
+The normal non-secret variables are already in `wrangler.jsonc`:
+
+```text
+FRONTEND_ORIGIN = https://mijicuet.github.io
+GITHUB_OWNER     = mijiCUET
+GITHUB_REPO      = users-private
+GITHUB_BRANCH    = main
+```
+
+
+## Important: Free-plan CPU test
+
+The backend intentionally uses 600,000-iteration PBKDF2-HMAC-SHA-256 for password derivation. Cloudflare Workers Free currently has a 10 ms CPU-per-request limit. Strong password derivation may exceed that limit. **Do not reduce the work factor to make it fit.**
+
+Deploy first and test registration/login while watching Cloudflare invocation errors. If authentication produces CPU-limit / Error 1102 failures, move this Worker to Workers Paid (or another backend runtime with an adequate CPU budget). The `/health` endpoint alone does not exercise password hashing and therefore cannot prove that the free CPU budget is sufficient.
+
+## 6. Verify the Worker
+
+After deployment Cloudflare gives an origin similar to:
+
+```text
+https://math-auth.<your-workers-subdomain>.workers.dev
+```
+
+Open:
+
+```text
+https://math-auth.<your-workers-subdomain>.workers.dev/health
 ```
 
 Expected:
 
 ```json
-{"ok":true,"service":"grade3-math-auth"}
+{"ok":true,"service":"math-auth"}
 ```
 
-## D. Point the website to the Worker
+A `503` with `configured:false` means one or more required secrets/bindings are missing.
 
-In the supplied `index.html`, replace:
+## 7. Configure the frontend safely
 
-```html
-<meta name="grade3-api-base" content="https://grade3-math-auth.YOUR-WORKERS-SUBDOMAIN.workers.dev">
+Do not hand-edit the CSP. From the website-repository root run:
+
+```bash
+python configure_frontend.py https://math-auth.<your-workers-subdomain>.workers.dev index.html
 ```
 
-with the real Worker URL.
+The helper validates the origin, updates `grade3-api-base`, narrows `connect-src` to that exact Worker origin, and recomputes the inline script/style CSP hashes.
 
-No JavaScript or CSS changes are needed for that substitution, so the already pinned CSP script/style hashes remain valid.
+Then run:
 
-Then commit/push the updated `index.html` to the GitHub Pages repository.
+```bash
+python verify_release.py
+```
 
-## E. Test the full path
+Commit/push the configured `index.html`.
 
-1. Open the GitHub Pages site in a fresh browser session.
-2. Click **New user? Create account**.
-3. Accept the non-PII notice and pass the local CAPTCHA.
-4. Create a username matching the six-character pattern.
-5. Set a password and made-up security answer.
-6. Scan the QR code in an authenticator app and submit its current code.
-7. Confirm a new file appears in `users-private/users/`.
-8. Log in with username/password, then TOTP.
-9. Complete practice questions.
-10. Confirm the dashboard updates and the private JSON record receives progress updates.
-11. Complete a level assessment with 100% and confirm the next level unlocks server-side.
+## 8. First production test
 
-## F. Before public launch
+Use an Incognito/Private browser window.
 
-- Keep `users-private` private.
-- Keep every Worker/GitHub secret out of Git.
-- Enable GitHub account 2FA/passkey for repository administrators.
-- Review the child/privacy policy wording before public launch because persistent pseudonymous learner accounts and performance records are now stored server-side.
+1. Homepage must show **Home**, **Login**, and **New user? Create account** while logged out.
+2. Click **Practice**. It must open Login.
+3. Click **New user? Create account**.
+4. Check the privacy acknowledgement and solve the server-backed arithmetic human check.
+5. Verify invalid username formats do not open the password stage; `Ab12cd`-format usernames do.
+6. Create a long passphrase and a made-up/non-personal security answer.
+7. Generate Authenticator setup. The QR code must appear first, with the manual Base32 key directly beneath it.
+8. Verify a TOTP code and create the account.
+9. Confirm `users-private/users/<username>.json` appears and does **not** contain plaintext password or security answer.
+10. Login: username/password first; TOTP stage must remain hidden until credentials pass.
+11. After MFA, the header must display the pseudonymous username and Logout.
+12. Answer Practice/Test questions and confirm the dashboard and private JSON progress update.
+13. Reload while logged in and confirm the app revalidates the bearer session with `/api/me` before showing protected content.
+14. Manually try `#setup`, `#practicePath`, and `#topicHub` while logged out; each protected path must return to Login instead of opening content.
+15. Logout; then confirm the old session no longer works by reloading/navigating back.
+16. Earn a true 100% assessment through the UI and confirm only the next sequential level unlocks.
+
+## 9. Dependency verification before public launch
+
+This package exact-pins its direct package versions. On your machine, run:
+
+```bash
+cd math-auth-backend
+npm install
+npm run verify
+npm audit --audit-level=moderate
+```
+
+Commit the generated `package-lock.json`. Do this before production deployment so transitive build-tool dependencies are locked as well.
+
+## 10. Important limitation
+
+The server protects account ownership and requires sequential unlocks, but assessment questions and scoring are currently performed in browser JavaScript. A technically capable authenticated learner can forge *their own* sequential `100%` unlock request. They cannot use that to modify another username, but perfect-score unlocks are not tamper-proof until assessments are generated/signed or scored server-side.
+
+Do not represent the current progression gate as an examination-grade integrity system.

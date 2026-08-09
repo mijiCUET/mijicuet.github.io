@@ -1,182 +1,80 @@
-# Grade 3 Math — Practice &amp; Test
+# Grade 3 Mathematics — Practice & Test
 
-Live at **<https://mijicuet.github.io>**
+Live frontend: **https://mijicuet.github.io**
 
-A single self-contained web page for Grade 3 mathematics practice and timed testing.
-One HTML file, no dependencies, no build step, no backend and no tracking. Practice uses an optional device-local learning profile; nothing is transmitted. The guided Practice page now builds each level's topic dashboard directly from the generators eligible at that level, so newly added generator domains appear automatically.
+This repository contains a browser-generated Grade 3 mathematics practice/test application plus the small `math-auth` backend used for pseudonymous accounts and learning progress.
 
----
+## User experience
 
-## What it does
+Logged out, the masthead shows **Home**, **Login**, and **New user? Create account**. Clicking either **Practice** or **Take a Test** requires a fresh login: username/password are verified first; only then is the TOTP authenticator field shown.
 
-**Five difficulty levels**
+Registration is staged:
 
-Beginner → Developing → Intermediate → Advanced → **Supreme**
+1. privacy acknowledgement stating not to enter real/legal personal information;
+2. server-backed arithmetic human check;
+3. six-character pseudonymous username: uppercase, lowercase, two digits, two letters (example format `Ab12cd`);
+4. passphrase/password;
+5. invented/non-personal security-question answer;
+6. authenticator QR code, then manual key, then verification code.
 
-**Four subjects**
+No email address or real/legal name is requested.
 
-| Subject | Contents |
-|---------|----------|
-| Everything | Arithmetic + geometry, plus Supreme problems at levels 4–5 (like a full exam) |
-| Arithmetic | Operations, place value, fractions, time, money, measurement, data |
-| Geometry | All nine chapters: shapes, angles, quadrilaterals, symmetry, perimeter, area, partitioning, 3D solids, competition geometry |
-| Supreme only | Competition problems only (needs level 4 or 5) |
+After login, the learner sees the pseudonymous username, Logout, current unlocked level, questions attempted, correct answers, overall accuracy, session count, and per-topic performance.
 
-**Three question types**
+## Learning path
 
-| Type | How you answer |
-|------|----------------|
-| Typed | Enter a number |
-| Multiple choice | Pick one option |
-| **Select all that apply** | Tick every correct option — all of them, and nothing else |
+Five levels:
 
-**Answer flow**
+**Beginner → Developing → Intermediate → Advanced → Supreme**
 
-Choose your answer, then press **Submit**. The next question appears automatically —
-no extra clicking.
+Only Beginner starts unlocked. Each level's topic dashboard is derived directly from the generators eligible at that level rather than from a separate short hard-coded topic list. The engine includes arithmetic, number sense, money, measurement, time/data, fractions, geometry, perimeter/area, patterns, odd/even, comparisons, and progressively harder/Supreme domains.
 
-**Two modes, both timed**
+At the end of each level, a 100% assessment can request the next sequential level unlock. See the integrity limitation in `SECURITY_AUDIT.md`: browser-side assessment scoring is not tamper-proof against a learner deliberately modifying requests.
 
-- **Practice** — count-up stopwatch, unlimited questions. Get one wrong and a hint appears;
-  you can try again. Up to **three hints** per question, each more specific than the last.
-  After the third, the answer is shown and the app moves on. The question pool extends
-  itself automatically, so it never runs out.
-- **Test** — countdown timer, fixed length, question palette for jumping around (you can
-  revise earlier answers), auto-submits at 0:00, then a score with a per-topic breakdown
-  and a full answer review.
+## Architecture
 
-**How the three hints work**
+```text
+GitHub Pages: mijicuet.github.io
+        |
+        | HTTPS JSON
+        v
+Cloudflare Worker: math-auth
+        |
+        | least-privilege server credential
+        v
+Private repo: mijiCUET/users-private
+```
 
-1. **Hint 1** — a strategy for that topic ("Perimeter is the distance all the way around").
-2. **Hint 2** — the specific idea behind this question.
-3. **Hint 3** — narrows it down without giving it away ("Exactly 3 options are correct;
-   you can rule out 63 and 59", or "The answer is an even number with 2 digits").
-
----
-
-## The welcome page
-
-Visitors land on a page about **why mathematics is worth learning** — not a sign-up form.
-
-It opens with the idea that mathematics is how we read the world, then rotates through
-**sixteen quotations** from mathematicians across four centuries — Galileo, Gauss, Cantor,
-Poincaré, Hilbert, Einstein, Ada Lovelace, Sofia Kovalevskaya, Katherine Johnson, Shakuntala
-Devi, William Thurston and Maryam Mirzakhani among them. Each is shown with its source, and
-where a line is a condensed version of a longer passage the note says so rather than passing
-the short form off as the original. A *Another one ↻* button shuffles through the whole set
-before repeating any.
-
-Below that, four short cards on what mathematics actually explains — why the Moon does not
-fall, why bees build hexagons, how Eratosthenes measured the Earth with two shadows, how
-Katherine Johnson's arithmetic carried Apollo home — and four on what is inside the app.
-
-Then two buttons, and nothing else:
-
-**Practice** · **Take a Test**
-
-**Practice and Take a Test both require the device-local login gate.** Clicking either home button opens Login first. Username and password are verified before the authenticator-code field is revealed; successful TOTP verification then returns the learner to the originally requested destination. A visible Login/Logout control is also available in the masthead. New users choose **Create account** from Login, which opens the staged registration flow behind a privacy acknowledgement and local CAPTCHA. The site asks for a made-up six-character username, a new password, a non-personal security answer, and a TOTP authenticator code. These values are processed and stored only in the current browser; no email, real name, school ID, phone number, address, or legal-document information is requested or transmitted.
-
----
-
-## The question bank
-
-**166 generators** producing 76 distinct topics:
-
-| Group | Generators |
-|-------|-----------|
-| Arithmetic | 36 |
-| Curriculum gap-fillers (length, properties of operations, line plots) | 8 |
-| Geometry (9 chapters) | 69 |
-| Supreme / competition | 38 (25 arithmetic, 13 geometry) |
-| Select-all-that-apply | 15 |
-
-Every question is generated **fresh in the browser**, so no two attempts are ever the same.
-
-Supreme problems follow the style of Math Kangaroo (Grades 3–4), MOEMS and Noetic:
-handshake counting, Gauss sums, sums of odd numbers, digit puzzles, page-numbering,
-last-digit cycles, day-of-week arithmetic, frog-on-stairs, magic squares, working backwards,
-age and balance problems, coin combinations, remainders, rates, averages, painted cubes,
-counting squares and rectangles in grids, grid diagonals, toothpick figures, staircase
-perimeters, paper folding, tiling and optimisation.
-
-### Originality and correctness
-
-All problems are **original and generated by algorithm** — nothing is copied from any
-textbook. The topic coverage was derived by scanning a library of 31 Grade 3 textbooks for
-*which subjects they teach*, not by extracting their questions.
-
-Every Supreme formula is verified against independent brute-force computation before
-shipping: C(n,2), Gauss sums, coin-change counts, page-digit totals, painted-cube identities
-(which must sum to n³), squares-in-a-grid (1, 5, 14, 30), rectangles-in-a-grid, the
-m + n − gcd(m,n) diagonal rule, clock angles and Fibonacci stair-climbing.
-
-The full bank is swept for structural errors on every change — most recently **48,000
-generated questions** across every subject × level, all well-formed and answerable.
-
----
-
-## Security
-
-The app was security-tested; findings and fixes are documented in **[SECURITY.md](SECURITY.md)**.
-
-Headlines: two XSS vulnerabilities and two answer-integrity flaws were found and fixed; there
-are no dependencies, no cookies, no analytics and no network calls of any kind. `localStorage` is used for the device-local Practice profile and level progress. The page ships a hash-pinned Content-Security-Policy with `default-src 'none'`,
-`connect-src 'none'` and no `unsafe-inline` or `unsafe-eval`.
-
-**Nothing a child types or the local learning-path progress ever leaves their browser** — which is also why the site sits outside
-COPPA and GDPR-K data-collection obligations entirely. It collects nothing, so there is
-nothing to consent to, nothing to breach and nothing to delete.
-
-The suites are re-run on every change — currently **130 assertions** across four files:
-feature behaviour, XSS payloads, resource-abuse resilience, and the home page / guided Practice flow. Re-run the suites whenever profile or routing code changes.
-
-> ⚠️ If you edit `index.html`, the CSP script/style hashes must be recomputed or the browser
-> will refuse to run the page. The one-shot snippet is in SECURITY.md.
-
----
+The private repo stores one pseudonymous JSON account record per username. Plaintext passwords and security answers are not stored. TOTP seeds are encrypted at rest; progress is persisted server-side.
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `index.html` | The entire application (~147 KB, self-contained) |
-| `SECURITY.md` | Security assessment and maintenance notes |
-| `robots.txt`, `sitemap.xml` | Search-engine metadata |
-| `.nojekyll` | Serve files as-is on GitHub Pages |
+| Path | Purpose |
+|---|---|
+| `index.html` | Complete static math frontend/question engine |
+| `math-auth-backend/` | Hono + Cloudflare Worker backend |
+| `configure_frontend.py` | Safely set the deployed Worker origin and re-pin CSP |
+| `verify_release.py` | Release/static security checks |
+| `DEPLOY_BACKEND.md` | Step-by-step deployment |
+| `SECURITY.md` | Frontend/backend security overview |
+| `SECURITY_AUDIT.md` | Detailed 2026-08-08 audit, fixes, tests, residual risks |
+| `GENERATOR_COVERAGE.md` | Generator/topic coverage audit by level |
 
----
+## Security-sensitive deployment
 
-## Local preview
+The distributed `index.html` intentionally contains the placeholder:
 
-```bash
-python3 -m http.server 8000   # then open http://localhost:8000
+```text
+https://math-auth.your-workers-subdomain.workers.dev
 ```
 
-Or simply double-click `index.html` — it works straight from the filesystem.
-
-## Deploying
+That safe default prevents accidental API use before deployment. After Cloudflare gives you the real Worker origin, run:
 
 ```bash
-git add -A && git commit -m "Update math app" && git push origin master
+python configure_frontend.py https://math-auth.<your-workers-subdomain>.workers.dev index.html
+python verify_release.py
 ```
 
-Then enable **Settings → Pages → Enforce HTTPS**.
+Do not manually paste GitHub credentials or Worker secrets into the HTML.
 
----
-
-## Earlier versions of this repository
-
-This repo previously held a personal research portfolio. That site is preserved in git
-history and can be recovered at any time:
-
-```bash
-git log --oneline            # find the commit
-git checkout <commit> -- .   # restore those files
-```
-
-The last commit containing the full portfolio is tagged in the history as
-*"Rebuild site around nanophotonics and plasmonics PhD research"*.
-
----
-
-© Md Kausar Hamid Miji. All problems and graphics generated for this project.
+See `DEPLOY_BACKEND.md` for the full process.
