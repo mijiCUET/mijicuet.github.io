@@ -1,0 +1,16 @@
+# Copy to .dev.vars for local development. Never commit .dev.vars.
+SESSION_SECRET=replace-with-a-long-random-secret
+DATA_ENCRYPTION_KEY=replace-with-a-different-long-random-secret
+PASSWORD_PEPPER=replace-with-a-third-different-long-random-secret
+
+# Choose ONE GitHub authentication method.
+
+# Option A: fine-grained token restricted to mijiCUET/users-private,
+# repository permission Contents: Read and write.
+GITHUB_TOKEN=
+
+# Option B: GitHub App installed ONLY on mijiCUET/users-private.
+# Leave GITHUB_TOKEN blank when using these fields.
+GITHUB_APP_ID=
+GITHUB_INSTALLATION_ID=
+GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"

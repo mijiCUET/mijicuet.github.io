@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "username": "Ab12cd",
+  "createdAt": "2026-08-08T00:00:00.000Z",
+  "consent": {
+    "noticeVersion": "2026-08-08.v1",
+    "acceptedAt": "2026-08-08T00:00:00.000Z"
+  },
+  "auth": {
+    "algorithm": "PBKDF2-HMAC-SHA256",
+    "salt": "<base64url 16 random bytes>",
+    "iterations": 600000,
+    "hash": "<base64url 32-byte derived value>",
+    "peppered": true
+  },
+  "security": {
+    "question": "word",
+    "salt": "<base64url 16 random bytes>",
+    "iterations": 600000,
+    "answerHash": "<base64url 32-byte derived value>",
+    "peppered": true
+  },
+  "totp": {
+    "version": 2,
+    "iv": "<base64url 12-byte AES-GCM IV>",
+    "ciphertext": "<base64url encrypted TOTP seed + authentication tag>",
+    "lastUsedCounter": 0
+  },
+  "session": {
+    "id": "<base64url 16-byte random current-session ID>",
+    "issuedAt": "2026-08-08T00:00:00.000Z"
+  },
+  "progress": {
+    "highestUnlocked": 1,
+    "attempted": 0,
+    "correct": 0,
+    "sessions": 0,
+    "topics": {},
+    "updatedAt": "2026-08-08T00:00:00.000Z"
+  }
+}

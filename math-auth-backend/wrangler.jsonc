@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "math-auth",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-08",
+  "ratelimits": [
+    { "name": "AUTH_IP_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } },
+    { "name": "AUTH_ACCOUNT_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 12, "period": 60 } },
+    { "name": "PROGRESS_RATE_LIMITER", "namespace_id": "1003", "simple": { "limit": 120, "period": 60 } }
+  ],
+  "vars": {
+    "FRONTEND_ORIGIN": "https://mijicuet.github.io",
+    "GITHUB_OWNER": "mijiCUET",
+    "GITHUB_REPO": "users-private",
+    "GITHUB_BRANCH": "main"
+  }
+}
