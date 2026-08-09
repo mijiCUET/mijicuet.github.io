@@ -19,20 +19,26 @@ type Bindings = {
 }
 
 type CredentialHash = {
-  algorithm?: 'PBKDF2-HMAC-SHA256'
+  algorithm?: 'PBKDF2-HMAC-SHA256' | 'CLIENT-PBKDF2-SHA256-HMAC-SHA256-v1'
   salt: string
   iterations: number
   hash: string
   peppered?: boolean
 }
+type ClientCredentialInput = {
+  algorithm: 'PBKDF2-SHA256'
+  salt: string
+  iterations: number
+  verifier: string
+}
 type TopicStat = { attempted: number; correct: number }
 type UserRecord = {
-  schemaVersion: 1 | 2
+  schemaVersion: 1 | 2 | 3
   username: string
   createdAt: string
   consent?: { noticeVersion: string; acceptedAt: string }
   auth: CredentialHash
-  security: { question: string; salt: string; iterations: number; answerHash: string; peppered?: boolean }
+  security: { question: string; algorithm?: CredentialHash['algorithm']; salt: string; iterations: number; answerHash: string; peppered?: boolean }
   totp: { version?: number; iv: string; ciphertext: string; lastUsedCounter?: number }
   session?: { id: string; issuedAt: string }
   progress: {
@@ -52,6 +58,8 @@ const ISSUER = 'Grade3Math'
 const API_VERSION = '2026-03-10'
 const USER_RE = /^[A-Z][a-z][0-9]{2}[A-Za-z]{2}$/
 const PASSWORD_ITERATIONS = 600_000
+const CLIENT_CREDENTIAL_ALGORITHM = 'CLIENT-PBKDF2-SHA256-HMAC-SHA256-v1' as const
+const CLIENT_KDF_ALGORITHM = 'PBKDF2-SHA256' as const
 const MAX_BODY_BYTES = 8 * 1024
 const MAX_USER_RECORD_BYTES = 128 * 1024
 const MAX_TOPIC_COUNT = 160
@@ -232,27 +240,28 @@ async function openToken(secret: string, token: string): Promise<Record<string, 
     return obj
   } catch { return null }
 }
-async function deriveCredential(value: string, saltB64: string, iterations: number, pepper: string, domain: string, peppered: boolean) {
-  const material = peppered ? await hmacBytes(pepper, `${domain}\0${value}`) : enc.encode(value)
-  const key = await crypto.subtle.importKey('raw', material, 'PBKDF2', false, ['deriveBits'])
-  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: fromB64url(saltB64), iterations }, key, 256)
-  return b64url(new Uint8Array(bits))
+function parseClientCredential(raw: unknown): ClientCredentialInput {
+  if (!isObject(raw) || raw.algorithm !== CLIENT_KDF_ALGORITHM || Number(raw.iterations) !== PASSWORD_ITERATIONS ||
+      !validB64urlBytes(raw.salt, 16, 16) || !validB64urlBytes(raw.verifier, 32, 32)) {
+    throw new AppError(400, 'Credential derivation data is invalid.')
+  }
+  return { algorithm: CLIENT_KDF_ALGORITHM, salt: String(raw.salt), iterations: PASSWORD_ITERATIONS, verifier: String(raw.verifier) }
 }
-async function makeCredential(value: string, env: Bindings, domain: string): Promise<CredentialHash> {
-  const salt = b64url(randomBytes(16))
+async function verifierMac(env: Bindings, username: string, domain: string, verifier: string) {
+  return hmacText(env.PASSWORD_PEPPER, `client-verifier-v1\0${domain}\0${username}\0${verifier}`)
+}
+async function protectClientCredential(raw: unknown, env: Bindings, username: string, domain: string): Promise<CredentialHash> {
+  const input = parseClientCredential(raw)
   return {
-    algorithm: 'PBKDF2-HMAC-SHA256', salt, iterations: PASSWORD_ITERATIONS, peppered: true,
-    hash: await deriveCredential(value, salt, PASSWORD_ITERATIONS, env.PASSWORD_PEPPER, domain, true)
+    algorithm: CLIENT_CREDENTIAL_ALGORITHM,
+    salt: input.salt,
+    iterations: input.iterations,
+    peppered: true,
+    hash: await verifierMac(env, username, domain, input.verifier)
   }
 }
-async function verifyCredential(value: string, stored: CredentialHash, env: Bindings, domain: string) {
-  const iterations = clampInt(stored.iterations, 100_000, 2_000_000, 0)
-  if (!iterations || typeof stored.salt !== 'string' || typeof stored.hash !== 'string') return false
-  const hash = await deriveCredential(value, stored.salt, iterations, env.PASSWORD_PEPPER, domain, stored.peppered === true)
-  return timingSafeEqual(hash, stored.hash)
-}
-function needsCredentialUpgrade(stored: CredentialHash) {
-  return stored.peppered !== true || stored.iterations < PASSWORD_ITERATIONS || stored.algorithm !== 'PBKDF2-HMAC-SHA256'
+function isClientCredential(stored: CredentialHash) {
+  return stored.algorithm === CLIENT_CREDENTIAL_ALGORITHM && stored.iterations === PASSWORD_ITERATIONS && stored.peppered === true
 }
 
 function bytesToBase32(bytes: Uint8Array) {
@@ -409,11 +418,11 @@ function normalizeProgress(raw: unknown): UserRecord['progress'] {
 }
 function normalizeCredential(raw: unknown): CredentialHash {
   if (!isObject(raw) || !validB64urlBytes(raw.salt, 16, 32) || !validB64urlBytes(raw.hash, 32, 32)) throw new Error('Invalid credential record')
-  return {
-    algorithm: raw.algorithm === 'PBKDF2-HMAC-SHA256' ? 'PBKDF2-HMAC-SHA256' : undefined,
-    salt: String(raw.salt), hash: String(raw.hash),
-    iterations: clampInt(raw.iterations, 100_000, 2_000_000, 240_000), peppered: raw.peppered === true
-  }
+  const algorithm = raw.algorithm === CLIENT_CREDENTIAL_ALGORITHM ? CLIENT_CREDENTIAL_ALGORITHM
+    : raw.algorithm === 'PBKDF2-HMAC-SHA256' ? 'PBKDF2-HMAC-SHA256' : undefined
+  const iterations = clampInt(raw.iterations, 100_000, 2_000_000, 240_000)
+  if (algorithm === CLIENT_CREDENTIAL_ALGORITHM && (iterations !== PASSWORD_ITERATIONS || raw.peppered !== true)) throw new Error('Invalid client credential record')
+  return { algorithm, salt: String(raw.salt), hash: String(raw.hash), iterations, peppered: raw.peppered === true }
 }
 function normalizeUser(raw: unknown, expectedUsername: string): UserRecord {
   if (!isObject(raw) || raw.username !== expectedUsername || !USER_RE.test(expectedUsername)) throw new Error('Invalid learner record')
@@ -422,15 +431,23 @@ function normalizeUser(raw: unknown, expectedUsername: string): UserRecord {
   const totp = raw.totp
   if (typeof security.question !== 'string' || !SECURITY_QUESTIONS.has(security.question) || !validB64urlBytes(security.salt, 16, 32) || !validB64urlBytes(security.answerHash, 32, 32)) throw new Error('Invalid learner record')
   if (!validB64urlBytes(totp.iv, 12, 12) || !validB64urlBytes(totp.ciphertext, 17, 128)) throw new Error('Invalid learner record')
+  const auth = normalizeCredential(raw.auth)
+  const schemaVersion = raw.schemaVersion === 3 ? 3 : raw.schemaVersion === 2 ? 2 : 1
+  if (schemaVersion === 3) {
+    if (!isClientCredential(auth) || security.algorithm !== CLIENT_CREDENTIAL_ALGORITHM || Number(security.iterations) !== PASSWORD_ITERATIONS || security.peppered !== true) throw new Error('Invalid version 3 learner record')
+  }
   return {
-    schemaVersion: raw.schemaVersion === 2 ? 2 : 1,
+    schemaVersion,
     username: expectedUsername,
     createdAt: typeof raw.createdAt === 'string' ? raw.createdAt.slice(0, 40) : new Date(0).toISOString(),
     ...(isObject(raw.consent) && typeof raw.consent.noticeVersion === 'string' && typeof raw.consent.acceptedAt === 'string'
       ? { consent: { noticeVersion: raw.consent.noticeVersion.slice(0, 40), acceptedAt: raw.consent.acceptedAt.slice(0, 40) } } : {}),
-    auth: normalizeCredential(raw.auth),
+    auth,
     security: {
-      question: String(security.question).slice(0, 40), salt: String(security.salt),
+      question: String(security.question).slice(0, 40),
+      algorithm: security.algorithm === CLIENT_CREDENTIAL_ALGORITHM ? CLIENT_CREDENTIAL_ALGORITHM
+        : security.algorithm === 'PBKDF2-HMAC-SHA256' ? 'PBKDF2-HMAC-SHA256' : undefined,
+      salt: String(security.salt),
       iterations: clampInt(security.iterations, 100_000, 2_000_000, 240_000),
       answerHash: String(security.answerHash), peppered: security.peppered === true
     },
@@ -584,8 +601,6 @@ app.post('/api/captcha', async c => {
 app.post('/api/register/start', async c => {
   const b = await readJson(c)
   const username = String(b.username || '').trim()
-  const password = normalizePassword(String(b.password || ''))
-  const answer = normalizeAnswer(String(b.securityAnswer || ''))
   const question = String(b.securityQuestion || '').trim()
   if (b.privacyAccepted !== true) throw new AppError(400, 'Privacy acknowledgement is required.')
   const cap = await openToken(c.env.SESSION_SECRET, String(b.captchaChallenge || ''))
@@ -593,15 +608,14 @@ app.post('/api/register/start', async c => {
   if (!cap || cap.typ !== 'captcha' || !timingSafeEqual(String(cap.ipTag || ''), expectedIpTag) || Number(b.captchaAnswer) !== Number(cap.answer)) throw new AppError(400, 'Human-check challenge is invalid or expired.')
   if (!USER_RE.test(username)) throw new AppError(400, 'Username must match the required six-character pattern.')
   await accountLimit(c, 'register', username)
-  if (!validatePassword(password, username)) throw new AppError(400, 'Password does not meet the password policy.')
-  if (!SECURITY_QUESTIONS.has(question) || !validSecurityAnswer(answer)) throw new AppError(400, 'Security question or answer is invalid.')
+  if (!SECURITY_QUESTIONS.has(question)) throw new AppError(400, 'Security question is invalid.')
   if (await readUser(c.env, username)) throw new AppError(409, 'That username already exists.')
-  const passwordRecord = await makeCredential(password, c.env, 'password')
-  const answerRecord = await makeCredential(answer, c.env, 'security-answer')
+  const passwordRecord = await protectClientCredential(b.passwordCredential, c.env, username, 'password')
+  const answerRecord = await protectClientCredential(b.securityCredential, c.env, username, 'security-answer')
   const secret = bytesToBase32(randomBytes(20))
   const payload: TokenPayload = {
     typ: 'registration', username, question, privacyNoticeVersion: PRIVACY_NOTICE_VERSION, password: passwordRecord,
-    security: { salt: answerRecord.salt, iterations: answerRecord.iterations, answerHash: answerRecord.hash, peppered: true },
+    security: { algorithm: answerRecord.algorithm, salt: answerRecord.salt, iterations: answerRecord.iterations, answerHash: answerRecord.hash, peppered: true },
     totp: await encryptTotp(c.env.DATA_ENCRYPTION_KEY, username, secret)
   }
   const challenge = await sealToken(c.env.SESSION_SECRET, payload, REGISTRATION_TTL_SEC)
@@ -624,7 +638,7 @@ app.post('/api/register/finish', async c => {
   if (enrollmentCounter === null) throw new AppError(401, 'Authenticator code is incorrect or expired.')
   const now = new Date().toISOString()
   const user: UserRecord = {
-    schemaVersion: 2, username, createdAt: now,
+    schemaVersion: 3, username, createdAt: now,
     consent: { noticeVersion: String(p.privacyNoticeVersion || PRIVACY_NOTICE_VERSION).slice(0, 40), acceptedAt: now },
     auth: p.password as CredentialHash,
     security: { question: String(p.question), ...(p.security as any) },
@@ -639,21 +653,28 @@ app.post('/api/register/finish', async c => {
   return c.json({ ok: true, username })
 })
 
+app.post('/api/login/parameters', async c => {
+  const b = await readJson(c)
+  const username = String(b.username || '').trim()
+  if (!USER_RE.test(username)) throw new AppError(400, 'Username format is invalid.')
+  await accountLimit(c, 'login-parameters', username)
+  const row = await readUser(c.env, username)
+  let salt: string
+  if (row && isClientCredential(row.user.auth)) salt = row.user.auth.salt
+  else salt = b64url((await hmacBytes(c.env.SESSION_SECRET, `login-kdf-salt-v1\0${username}`)).slice(0, 16))
+  return c.json({ ok: true, kdf: { algorithm: CLIENT_KDF_ALGORITHM, hash: 'SHA-256', salt, iterations: PASSWORD_ITERATIONS, keyBytes: 32 } })
+})
+
 app.post('/api/login/password', async c => {
   const b = await readJson(c)
-  const username = String(b.username || '').trim(), password = normalizePassword(String(b.password || ''))
-  if (!USER_RE.test(username) || codePointLength(password) > 128) throw new AppError(401, 'Username or password is incorrect.')
+  const username = String(b.username || '').trim(), verifier = String(b.verifier || '')
+  if (!USER_RE.test(username) || !validB64urlBytes(verifier, 32, 32)) throw new AppError(401, 'Username or password is incorrect.')
   await accountLimit(c, 'login-password', username)
   const row = await readUser(c.env, username)
-  if (!row) {
-    const dummySalt = b64url(enc.encode('0123456789abcdef'))
-    await deriveCredential(password || 'x', dummySalt, PASSWORD_ITERATIONS, c.env.PASSWORD_PEPPER, 'password', true)
-    throw new AppError(401, 'Username or password is incorrect.')
-  }
-  if (!(await verifyCredential(password, row.user.auth, c.env, 'password'))) throw new AppError(401, 'Username or password is incorrect.')
-  const upgradeAuth = needsCredentialUpgrade(row.user.auth) ? await makeCredential(password, c.env, 'password') : undefined
+  const candidateMac = await verifierMac(c.env, username, 'password', verifier)
+  if (!row || !isClientCredential(row.user.auth) || !timingSafeEqual(candidateMac, row.user.auth.hash)) throw new AppError(401, 'Username or password is incorrect.')
   const challenge = await sealToken(c.env.SESSION_SECRET, {
-    typ: 'login-mfa', sub: username, nonce: b64url(randomBytes(16)), ...(upgradeAuth ? { upgradeAuth } : {})
+    typ: 'login-mfa', sub: username, nonce: b64url(randomBytes(16))
   }, LOGIN_CHALLENGE_TTL_SEC)
   return c.json({ ok: true, challenge, expiresIn: LOGIN_CHALLENGE_TTL_SEC })
 })
@@ -675,8 +696,7 @@ app.post('/api/login/mfa', async c => {
     const upgradedTotp = await encryptTotp(c.env.DATA_ENCRYPTION_KEY, username, secret)
     row.user.totp = { ...upgradedTotp, lastUsedCounter: counter }
   }
-  if (isObject(p.upgradeAuth)) row.user.auth = normalizeCredential(p.upgradeAuth)
-  row.user.schemaVersion = 2
+  row.user.schemaVersion = isClientCredential(row.user.auth) ? 3 : row.user.schemaVersion
   const sessionId = b64url(randomBytes(16))
   row.user.session = { id: sessionId, issuedAt: new Date().toISOString() }
   try { await writeUser(c.env, row.user, row.sha, 'Secure login metadata update') }
