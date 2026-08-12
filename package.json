@@ -1,0 +1,22 @@
+{
+  "name": "mijicuet.github.io",
+  "version": "1.0.0",
+  "description": "Live frontend: **https://mijicuet.github.io**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/git-miji/mijiCUET.github.io.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/git-miji/mijiCUET.github.io/issues"
+  },
+  "homepage": "https://github.com/git-miji/mijiCUET.github.io#readme",
+  "dependencies": {
+    "ollama-agent-kit": "^0.3.0"
+  }
+}
