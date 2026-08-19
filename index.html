@@ -12,7 +12,7 @@
 <meta property="og:description" content="Visual Grade 3 lessons, topic mastery, arithmetic, geometry, Supreme competition practice, timed tests and Math Challenge.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jfv/5HC4RBQocY6zK4fGTrdUzvpRIsZ2WwKblqskgVk='; style-src 'sha256-Bg7zPr0vpQzx50VHI5Y9K0BYX0W84Yc2PD6LZKxneo0='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.miji-cuet-eee.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jfv/5HC4RBQocY6zK4fGTrdUzvpRIsZ2WwKblqskgVk='; style-src 'sha256-jSLd0Kp5obA/IBZ5LWtGd9sjPiQn92jqKFFYhMWcink='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.miji-cuet-eee.workers.dev">
 <meta name="referrer" content="no-referrer">
 <meta name="grade3-api-base" content="https://math-auth.miji-cuet-eee.workers.dev">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -302,6 +302,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
 /* ---------- account controls / staged login ---------- */
 .mast-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.15rem;min-height:42px}
 .mast-home-btn,.mast-account-btn{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:.52rem 1rem;font:inherit;font-size:.88rem;font-weight:750;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.portal-link{text-decoration:none;display:inline-flex;align-items:center}
 .mast-home-btn:hover,.mast-account-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.52)}
 .account-strip{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;margin-left:auto}
 .account-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.42rem .8rem;border:1px solid rgba(255,255,255,.26);border-radius:999px;background:rgba(8,20,45,.34);color:#e6efff;font-size:.84rem;font-weight:750;white-space:nowrap}
@@ -534,8 +535,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
       </nav>
       <div class="account-corner" aria-label="Account controls">
         <div class="account-guest-actions" id="guestAccountActions">
-          <button class="mast-account-btn" id="headerLoginBtn" type="button">Login</button>
-          <button class="mast-account-btn create" id="headerCreateBtn" type="button">New user? Create account</button>
+          <a class="mast-account-btn portal-link" href="grade9-10-mathematics.html">Grade 9–10 portal</a>
         </div>
         <div class="hide" id="loggedAccountActions">
           <button class="account-user" id="accountStatus" type="button" title="Open performance dashboard">Username</button>
@@ -566,6 +566,7 @@ footer.ft{background:linear-gradient(120deg,#081329,#17113b 55%,#062c3b)}
         <button class="btn sec big" type="button" data-go="lessonView">Explore Lessons</button>
         <button class="btn big" type="button" id="goPractice">Practice</button>
         <button class="btn sec big" type="button" id="goTest">Take a Test</button>
+        <a class="btn big portal-link" href="grade9-10-mathematics.html">Grade 9–10 Mathematics</a>
       </div>
       <p class="help">Practice and test progress is stored in the private account repository through the secure backend. Do not enter personal information.</p>
     </div>
