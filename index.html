@@ -12,7 +12,7 @@
 <meta property="og:description" content="Visual Grade 3 lessons, topic mastery, arithmetic, geometry, Supreme competition practice, timed tests and Math Challenge.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xDzs7mnXk+QXWQMB0Uj/kfktMNb5ebkwXDuhuizlYdo='; style-src 'sha256-jSLd0Kp5obA/IBZ5LWtGd9sjPiQn92jqKFFYhMWcink='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.miji-cuet-eee.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-sjekK490275iNem0SAjxe0QxXWzQPY5QATEWIJ5uCQk='; style-src 'sha256-jSLd0Kp5obA/IBZ5LWtGd9sjPiQn92jqKFFYhMWcink='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.miji-cuet-eee.workers.dev">
 <meta name="referrer" content="no-referrer">
 <meta name="grade3-api-base" content="https://math-auth.miji-cuet-eee.workers.dev">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -2958,7 +2958,7 @@ function route(){
 /* ---------- start a session ---------- */
 async function requestSession(kind){
   mode = kind; sessionKind="standard"; activeTopic=null; assessmentLevel=null;
-  if(isLocallyAuthenticated()){if(kind==="practice"){renderLearningPath();go("practicePath");return;}[...$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k==="test")));refreshSetup();go("setup");return;}
+  if(isLocallyAuthenticated()){if(kind==="practice"){level=grade3AdaptiveState().level;subject="all";name=(profileData()&&profileData().username)||"Learner";launchQuestions(buildSession(12,level,subject),"standard");return;}[$("modeGrid").children].forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k==="test")));refreshSetup();go("setup");return;}
   prepareLogin(kind);
 }
 ["goPractice","goPractice2"].forEach(id=>{ const b=$(id); if(b) b.onclick=()=>requestSession("practice"); });
