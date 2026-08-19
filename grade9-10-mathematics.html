@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Secure Grade 9-10 Mathematics practice for Bangladeshi students.">
   <meta name="learning-api-base" content="https://mijicuet-learning-api.miji-cuet-eee.workers.dev">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-6uhJramzvpShRTkDdXF9qG747h3ilj8x4cL8f9q6GNA=' 'sha256-H4a/qOI4LdGmK73BU1VxoHRtqJbozobxoTsSXV2zNQk='; style-src 'sha256-DZR2OGmvzuqO5mBeJAP52hdOdZy1q4VY+MkyhmfohlQ='; connect-src https://mijicuet-learning-api.miji-cuet-eee.workers.dev; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-6uhJramzvpShRTkDdXF9qG747h3ilj8x4cL8f9q6GNA=' 'sha256-H4a/qOI4LdGmK73BU1VxoHRtqJbozobxoTsSXV2zNQk=' 'sha256-ZtQVv0YfH9LI/INvhDFbiRUcArd0HuB5+B20R+dB00E='; style-src 'sha256-DZR2OGmvzuqO5mBeJAP52hdOdZy1q4VY+MkyhmfohlQ='; connect-src https://mijicuet-learning-api.miji-cuet-eee.workers.dev; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
   <title>Grade 9-10 Mathematics Practice | mijiCUET</title>
   <style>
     :root{--ink:#10243d;--muted:#59708d;--paper:#f5f8fc;--line:#d8e1ee;--blue:#155eef;--blue2:#0b3b9a;--green:#067647;--red:#b42318;--amber:#b54708;--card:#fff}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}.shell{width:min(1080px,calc(100% - 32px));margin:auto}.mast{background:linear-gradient(120deg,#102a55,#155eef);color:#fff;padding:28px 0 22px}.mast h1{margin:0;font-size:clamp(1.65rem,4vw,2.65rem)}.mast p{margin:.25rem 0 0;color:#dceaff}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px}.topbar a{color:#fff}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin:24px 0;box-shadow:0 8px 22px #10243d0d}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}label{font-weight:700;display:block;margin-top:12px}input,select,button{font:inherit}input,select{width:100%;padding:11px 12px;border:1px solid #aebdd0;border-radius:10px;background:#fff;color:var(--ink)}button{border:0;border-radius:10px;padding:10px 15px;font-weight:750;cursor:pointer;background:var(--blue);color:#fff}button:hover{background:var(--blue2)}button.secondary{background:#e7efff;color:#123d96}button.secondary:hover{background:#d4e2ff}button.warn{background:#fff2e8;color:#9a3412}button:disabled{opacity:.55;cursor:not-allowed}.hide{display:none!important}.notice{border-radius:10px;padding:11px 13px;margin-top:14px}.notice.info{background:#e9f2ff;color:#174ea6}.notice.good{background:#eafbf2;color:var(--green)}.notice.bad{background:#fff0ef;color:var(--red)}.notice.warn{background:#fff7e8;color:var(--amber)}.choice{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px;margin:9px 0;cursor:pointer}.choice input{width:auto;margin-top:5px}.question{font-size:1.24rem;font-weight:750;white-space:pre-wrap}.meta{font-size:.9rem;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{border:1px solid var(--line);border-radius:12px;padding:15px}.metric b{display:block;font-size:1.7rem}.mastery{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:10px}.topic{border:1px solid var(--line);border-radius:10px;padding:12px}.topic small{display:block;color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.hint{border-left:4px solid #f79009;background:#fff8e7;padding:12px;margin-top:10px}.solution{border-left:4px solid var(--blue);background:#edf4ff;padding:12px;margin-top:10px}.policy{list-style:none;padding:0;margin:10px 0}.policy li{padding:4px 0;font-weight:650}.policy .ok{color:var(--green)}.policy .bad{color:var(--red)}.temporary{background:#fff8e7;border-left:4px solid #f79009;padding:12px;border-radius:8px}@media(max-width:700px){.grid,.grid3{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.metrics{grid-template-columns:1fr}}
@@ -81,6 +81,87 @@
           $('hints').append(solution); $('solutionActions').classList.add('hide');
         } catch (error) { setMessage('feedback', error.message, 'bad'); }
       }, true);
+    })();
+  </script>
+  <script>
+    (() => {
+      let testMode = false, testToken = '', testDeadline = 0, testTimer = null, reviewToken = '';
+      const practiceSection = $('subject').closest('section');
+      const difficultyField = $('difficulty').closest('div');
+      difficultyField.classList.add('hide');
+      $('answerButton').textContent = 'Submit answer';
+      const activity = document.createElement('div');
+      activity.className = 'actions';
+      activity.innerHTML = '<button type="button" class="secondary" id="activityPractice">Practice</button><button type="button" class="secondary" id="activityTest">Chapter Test</button><label id="testCountLabel" class="hide">Questions<select id="testCount"><option value="5">5 questions - 10 minutes</option><option value="10">10 questions - 20 minutes</option><option value="15">15 questions - 30 minutes</option><option value="20">20 questions - 40 minutes</option></select></label><button type="button" id="startTest" class="hide">Start chapter test</button>';
+      practiceSection.querySelector('.actions').replaceWith(activity);
+      const timer = document.createElement('p'); timer.id = 'testTimer'; timer.className = 'meta hide';
+      $('questionCard').insertBefore(timer, $('questionMeta'));
+      const results = document.createElement('section'); results.id = 'testResults'; results.className = 'card hide';
+      $('portal').append(results);
+      function language() { return $('language')?.value === 'en' ? 'en' : 'bn'; }
+      function formatTime(seconds) { const n = Math.max(0, Math.ceil(seconds)); return `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`; }
+      function showActivity(kind) {
+        testMode = kind === 'test';
+        $('testCountLabel').classList.toggle('hide', !testMode);
+        $('startTest').classList.toggle('hide', !testMode);
+        $('activityPractice').classList.toggle('warn', !testMode);
+        $('activityTest').classList.toggle('warn', testMode);
+        $('testResults').classList.add('hide');
+      }
+      function tick() {
+        const left = Math.max(0, testDeadline - Math.floor(Date.now() / 1000));
+        $('testTimer').textContent = `Time remaining: ${formatTime(left)}`;
+        if (!left) finishTest();
+      }
+      function beginTimer() { clearInterval(testTimer); $('testTimer').classList.remove('hide'); tick(); testTimer = setInterval(tick, 1000); }
+      function stopTimer() { clearInterval(testTimer); testTimer = null; $('testTimer').classList.add('hide'); }
+      function renderTestQuestion() {
+        renderQuestion();
+        $('answerButton').textContent = current.index === undefined ? 'Submit and continue' : 'Submit and continue';
+        $('feedback').replaceChildren(); $('hintActions').classList.add('hide'); $('solutionActions').classList.add('hide');
+      }
+      async function beginPractice() {
+        testMode = false; stopTimer();
+        const data = await api('/api/practice/next', { method: 'POST', body: JSON.stringify({ subject: $('subject').value, chapterId: $('chapter').value }) });
+        current = data.question; attemptToken = data.attemptToken; renderQuestion(); $('answerButton').textContent = 'Submit answer';
+      }
+      async function beginTest() {
+        const data = await api('/api/test/start', { method: 'POST', body: JSON.stringify({ subject: $('subject').value, chapterId: $('chapter').value, count: Number($('testCount').value) }) });
+        testMode = true; testToken = data.testToken; testDeadline = Math.floor(Date.now() / 1000) + data.durationSeconds; current = data.question;
+        renderTestQuestion(); $('questionMeta').textContent = `Chapter test - Question ${data.questionNumber} of ${data.total}`; beginTimer();
+      }
+      async function submitTestAnswer() {
+        const data = await api('/api/test/answer', { method: 'POST', body: JSON.stringify({ testToken, answer: selectedAnswer() }) });
+        if (data.finished) return showTestResults(data);
+        testToken = data.testToken; current = data.question; testDeadline = Math.floor(Date.now() / 1000) + data.secondsRemaining;
+        renderTestQuestion(); $('questionMeta').textContent = `Chapter test - Question ${data.questionNumber} of ${data.total}`; tick();
+      }
+      async function finishTest() {
+        if (!testMode || !testToken) return;
+        try { const data = await api('/api/test/finish', { method: 'POST', body: JSON.stringify({ testToken }) }); showTestResults(data); } catch (error) { setMessage('feedback', error.message, 'bad'); }
+      }
+      function reviewQuestion(result, index) {
+        const lang = language(), q = result.question, box = document.createElement('article'); box.className = `topic ${result.correct ? 'notice good' : 'notice bad'}`;
+        const title = document.createElement('b'); title.textContent = `${index + 1}. ${result.correct ? 'Correct' : 'Needs review'}`;
+        const prompt = document.createElement('p'); prompt.textContent = lang === 'en' ? q.promptEnglish : q.promptBangla;
+        const actions = document.createElement('div'); actions.className = 'actions';
+        for (let hintNumber = 1; hintNumber <= 3; hintNumber++) { const button = document.createElement('button'); button.className = 'secondary'; button.type = 'button'; button.textContent = `Show hint ${hintNumber}`; button.addEventListener('click', async () => { const data = await api('/api/test/review/help', { method: 'POST', body: JSON.stringify({ reviewToken, index, kind: 'hint', hintNumber, language: lang }) }); const hint = document.createElement('p'); hint.className = 'hint'; hint.textContent = `Hint ${data.hintNumber}: ${data.hint}`; box.append(hint); button.disabled = true; }); actions.append(button); }
+        const solution = document.createElement('button'); solution.className = 'secondary'; solution.type = 'button'; solution.textContent = 'Show full solution'; solution.addEventListener('click', async () => { const data = await api('/api/test/review/help', { method: 'POST', body: JSON.stringify({ reviewToken, index, kind: 'solution', language: lang }) }); const detail = document.createElement('p'); detail.className = 'solution'; detail.textContent = data.solution; box.append(detail); solution.disabled = true; }); actions.append(solution);
+        box.append(title, prompt, actions); return box;
+      }
+      function showTestResults(data) {
+        testMode = false; testToken = ''; stopTimer(); reviewToken = data.reviewToken; user.progress = data.progress; updateMetrics(); $('questionCard').classList.add('hide');
+        $('testResults').replaceChildren(); $('testResults').classList.remove('hide');
+        const heading = document.createElement('h2'); heading.textContent = `Test complete: ${data.score}/${data.total}`;
+        const note = document.createElement('p'); note.textContent = 'Review each question below. Your correct and incorrect answers are marked, and hints or full solutions are available only when you choose them.';
+        const list = document.createElement('div'); list.className = 'mastery'; data.results.forEach((result, index) => list.append(reviewQuestion(result, index)));
+        $('testResults').append(heading, note, list);
+      }
+      $('activityPractice').addEventListener('click', () => beginPractice().catch(error => setMessage('feedback', error.message, 'bad')));
+      $('activityTest').addEventListener('click', () => showActivity('test'));
+      $('startTest').addEventListener('click', () => beginTest().catch(error => setMessage('feedback', error.message, 'bad')));
+      $('answerForm').addEventListener('submit', event => { if (!testMode) return; event.preventDefault(); event.stopImmediatePropagation(); submitTestAnswer().catch(error => setMessage('feedback', error.message, 'bad')); }, true);
+      showActivity('practice');
     })();
   </script>
 </body>
