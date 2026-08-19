@@ -12,7 +12,7 @@
 <meta property="og:description" content="Visual Grade 3 lessons, topic mastery, arithmetic, geometry, Supreme competition practice, timed tests and Math Challenge.">
 <meta property="og:url" content="https://mijicuet.github.io/">
 <meta name="theme-color" content="#060b18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jfv/5HC4RBQocY6zK4fGTrdUzvpRIsZ2WwKblqskgVk='; style-src 'sha256-jSLd0Kp5obA/IBZ5LWtGd9sjPiQn92jqKFFYhMWcink='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.miji-cuet-eee.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xDzs7mnXk+QXWQMB0Uj/kfktMNb5ebkwXDuhuizlYdo='; style-src 'sha256-jSLd0Kp5obA/IBZ5LWtGd9sjPiQn92jqKFFYhMWcink='; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; connect-src https://math-auth.miji-cuet-eee.workers.dev">
 <meta name="referrer" content="no-referrer">
 <meta name="grade3-api-base" content="https://math-auth.miji-cuet-eee.workers.dev">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -2177,7 +2177,7 @@ function cleanNum(v){
   return /^-?\d{0,12}(\.\d{0,6})?$/.test(t) ? t : "";
 }
 
-let mode="practice", subject="all", level=3;
+let mode="practice", subject="all", level=1;
 let QS=[],ANS=[],cur=0,answered=[],tick=null,elapsed=0,remaining=0,limitMin=30,name="Learner";
 let nRight=0,nDone=0;
 let sessionKind="standard", activeTopic=null, pathLevel=1, assessmentLevel=null;
@@ -2185,6 +2185,13 @@ let tries=[];           // wrong attempts per question (drives hint reveal)
 let hintsShown=[];      // hints revealed so far per question
 let advanceTimer=null;  // auto-advance handle
 let finishing=false;      // guards duplicate result/progress submission
+const GRADE3_ADAPTIVE_PREFIX="grade3AdaptiveLevel.v1.";
+function grade3AdaptiveState(){
+  const p=profileData(),key=GRADE3_ADAPTIVE_PREFIX+(p&&p.username?p.username:"guest");
+  try { return {...{level:1,correctStreak:0,incorrectStreak:0},...JSON.parse(localStorage.getItem(key)||"{}")} }
+  catch(e) { return {level:1,correctStreak:0,incorrectStreak:0}; }
+}
+function updateGrade3Adaptive(isRight){const p=profileData(),key=GRADE3_ADAPTIVE_PREFIX+(p&&p.username?p.username:"guest"),s=grade3AdaptiveState();if(isRight){s.correctStreak++;s.incorrectStreak=0;if(s.correctStreak>=3&&s.level<5){s.level++;s.correctStreak=0;}}else{s.incorrectStreak++;s.correctStreak=0;if(s.incorrectStreak>=2&&s.level>1){s.level--;s.incorrectStreak=0;}}try{localStorage.setItem(key,JSON.stringify(s));}catch(e){}level=s.level;return s;}
 
 /* ---- setup UI ---- */
 
@@ -2207,6 +2214,8 @@ tiles("modeGrid",[
 tiles("subjGrid",SUBJECTS.map(s=>({k:s.k,name:s.name,desc:s.desc,oly:s.oly})),()=>subject,v=>subject=v,true);
 tiles("lvlGrid",APP_LEVELS.map(l=>({k:String(l.n),name:l.n+". "+l.name,desc:l.desc,stars:l.stars})),
       ()=>String(level),v=>level=+v);
+$('lvlGrid').previousElementSibling.classList.add('hide');$('lvlGrid').classList.add('hide');$('lvlNote').classList.add('hide');
+$('tmin').closest('div').classList.add('hide');const autoTime=document.createElement('p');autoTime.id='autoTestTime';autoTime.className='help';$('testOpts').append(autoTime);function refreshAutoTestTime(){const n=+$('qcount').value;autoTime.textContent='Time limit: '+(n*2)+' minutes (2 minutes per question).';}$('qcount').onchange=refreshAutoTestTime;refreshAutoTestTime();
 
 function refreshSetup(){
   $("testOpts").classList.toggle("hide",mode!=="test");
@@ -2417,7 +2426,7 @@ function localAttemptData(q,isRight){if(!q)return null;return {topic:(q.domain||
 function applyLocalAttempt(a){if(!a)return;const d=performanceData();d.attempted++;if(a.correct)d.correct++;d.topics[a.topic]=d.topics[a.topic]||{attempted:0,correct:0};d.topics[a.topic].attempted++;if(a.correct)d.topics[a.topic].correct++;savePerformance(d);}
 let progressWriteChain=Promise.resolve();
 function queueProgressWrite(task){const run=progressWriteChain.catch(()=>{}).then(task);progressWriteChain=run.catch(()=>{});return run;}
-function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return Promise.resolve();const a=localAttemptData(q,isRight);applyLocalAttempt(a);renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/attempt",{method:"POST",body:JSON.stringify(a)}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
+function recordQuestionPerformance(q,isRight){if(!isLocallyAuthenticated()||!q)return Promise.resolve();if(mode==="practice")updateGrade3Adaptive(isRight);const a=localAttemptData(q,isRight);applyLocalAttempt(a);renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/attempt",{method:"POST",body:JSON.stringify(a)}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
 function recordQuestionBatch(attempts,sessionCompleted=true){if(!isLocallyAuthenticated()||!attempts.length)return Promise.resolve();attempts.forEach(applyLocalAttempt);if(sessionCompleted){const d=performanceData();d.sessions++;savePerformance(d);}renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/batch",{method:"POST",body:JSON.stringify({attempts,sessionCompleted:!!sessionCompleted})}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
 function recordCompletedSession(){if(!isLocallyAuthenticated())return Promise.resolve();const d=performanceData();d.sessions++;savePerformance(d);renderDashboard();return queueProgressWrite(()=>apiCall("/api/progress/session",{method:"POST",body:"{}"}).then(x=>applyRemoteProgress(x.progress)).catch(()=>refreshRemoteSession()));}
 function renderDashboard(){renderDashboardV2();}
@@ -2580,10 +2589,10 @@ function resetArrays(n){
 $("startBtn").onclick=()=>{
   if(!isLocallyAuthenticated()){prepareLogin(mode==="test"?"test":"practice");return;}
   finishing=false;name=(profileData()&&profileData().username)||"Learner";if($("setupUserLine"))$("setupUserLine").textContent="Session username: "+name;
-  const L = (subject==="supreme") ? Math.max(level,4) : level;
+  level=grade3AdaptiveState().level;const L = (subject==="supreme") ? Math.max(level,4) : level;
   level=L;
   if(mode==="test"){
-    const n=+$("qcount").value; limitMin=+$("tmin").value;
+    const n=+$("qcount").value; limitMin=n*2;
     QS=buildSession(n,L,subject);
   } else {
     QS=buildSession(12,L,subject);
@@ -2802,6 +2811,7 @@ function showFeedback(){
 function goNext(){
   clearTimeout(advanceTimer);
   cur++;
+  if(mode==="practice"&&cur<QS.length){const next=buildSession(1,level,subject)[0];if(next){QS[cur]=next;ANS[cur]=null;answered[cur]=false;tries[cur]=0;hintsShown[cur]=0;}}
   if(cur>=QS.length){
     if(mode==="practice"){
       const extra=sessionKind==="topic"&&activeTopic?buildTopicSession(12,level,activeTopic):sessionKind==="lessonPractice"&&activeLessonUnit?buildLessonSession(12,level,activeLessonUnit):buildSession(12,level,subject);
